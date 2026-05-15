@@ -1,0 +1,30 @@
+{
+  "existing": {
+    "login": {
+      "LOGIN00": {
+        "password": "s1e",
+        "token": "s1f",
+        "username": "s20"
+      },
+      "LOGIN01": {
+        "password": "s3c",
+        "token": "s3d",
+        "username": "s3e"
+      },
+      "LOGIN02": {
+        "password": "s5a",
+        "token": "s5b",
+        "username": "s5c"
+      }
+    }
+  },
+  "new": {
+    "login": {
+      "login_ref01": {
+        "password": "s78",
+        "token": "s79",
+        "username": "s7a"
+      }
+    }
+  }
+}

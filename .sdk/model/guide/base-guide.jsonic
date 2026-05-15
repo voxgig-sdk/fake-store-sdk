@@ -1,0 +1,50 @@
+# Guide
+
+guide: {
+  metrics: count: entity: 4
+  metrics: count: path: 7
+  metrics: count: method: 16
+
+  entity: cart: {
+    path: "/carts": {
+      op: create: method: *POST
+      op: list: method: *GET
+    }
+    path: "/carts/{id}": {
+      op: load: method: *GET
+      op: remove: method: *DELETE
+      op: update: method: *PUT
+    }
+  }
+
+  entity: login: {
+    path: "/auth/login": {
+      op: create: method: *POST
+    }
+  }
+
+  entity: product: {
+    path: "/products": {
+      op: create: method: *POST
+      op: list: method: *GET
+    }
+    path: "/products/{id}": {
+      op: load: method: *GET
+      op: remove: method: *DELETE
+      op: update: method: *PUT
+    }
+  }
+
+  entity: user: {
+    path: "/users": {
+      op: create: method: *POST
+      op: list: method: *GET
+    }
+    path: "/users/{id}": {
+      op: load: method: *GET
+      op: remove: method: *DELETE
+      op: update: method: *PUT
+    }
+  }
+
+}

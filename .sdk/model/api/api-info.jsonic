@@ -1,0 +1,27 @@
+# API Information
+
+
+main: {
+  kit: {
+    info: {
+      contact: {
+        email: "support@fakestoreapi.com"
+        url: "https://fakestoreapi.com/docs"
+      }
+      description: "A free fake API for testing and prototyping e-commerce applications."
+      servers: [
+        {
+          url: "https://fakestoreapi.com"
+        }
+      ]
+      title: "FakeStoreAPI"
+      version: "v2.1.11"
+      "x-logo": {
+        href: "/"
+        url: "/icons/logo.png"
+      }
+    }
+  }
+}
+
+}

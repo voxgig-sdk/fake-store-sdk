@@ -1,0 +1,41 @@
+{
+  "existing": {
+    "product": {
+      "PRODUCT00": {
+        "category": "s3c",
+        "description": "s3d",
+        "id": "PRODUCT00",
+        "image": "s3f",
+        "price": 64,
+        "title": "s41"
+      },
+      "PRODUCT01": {
+        "category": "s78",
+        "description": "s79",
+        "id": "PRODUCT01",
+        "image": "s7b",
+        "price": 124,
+        "title": "s7d"
+      },
+      "PRODUCT02": {
+        "category": "sb4",
+        "description": "sb5",
+        "id": "PRODUCT02",
+        "image": "sb7",
+        "price": 184,
+        "title": "sb9"
+      }
+    }
+  },
+  "new": {
+    "product": {
+      "product_ref01": {
+        "category": "sf0",
+        "description": "sf1",
+        "image": "sf3",
+        "price": 244,
+        "title": "sf5"
+      }
+    }
+  }
+}

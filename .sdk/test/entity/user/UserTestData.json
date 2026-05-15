@@ -1,0 +1,33 @@
+{
+  "existing": {
+    "user": {
+      "USER00": {
+        "email": "s28",
+        "id": "USER00",
+        "password": "s2a",
+        "username": "s2b"
+      },
+      "USER01": {
+        "email": "s50",
+        "id": "USER01",
+        "password": "s52",
+        "username": "s53"
+      },
+      "USER02": {
+        "email": "s78",
+        "id": "USER02",
+        "password": "s7a",
+        "username": "s7b"
+      }
+    }
+  },
+  "new": {
+    "user": {
+      "user_ref01": {
+        "email": "sa0",
+        "password": "sa2",
+        "username": "sa3"
+      }
+    }
+  }
+}

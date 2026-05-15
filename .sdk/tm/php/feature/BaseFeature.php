@@ -1,0 +1,37 @@
+<?php
+declare(strict_types=1);
+
+// FakeStore SDK base feature
+
+class FakeStoreBaseFeature
+{
+    public string $version;
+    public string $name;
+    public bool $active;
+
+    public function __construct()
+    {
+        $this->version = '0.0.1';
+        $this->name = 'base';
+        $this->active = true;
+    }
+
+    public function get_version(): string { return $this->version; }
+    public function get_name(): string { return $this->name; }
+    public function get_active(): bool { return $this->active; }
+
+    public function init(FakeStoreContext $ctx, array $options): void {}
+    public function PostConstruct(FakeStoreContext $ctx): void {}
+    public function PostConstructEntity(FakeStoreContext $ctx): void {}
+    public function SetData(FakeStoreContext $ctx): void {}
+    public function GetData(FakeStoreContext $ctx): void {}
+    public function GetMatch(FakeStoreContext $ctx): void {}
+    public function SetMatch(FakeStoreContext $ctx): void {}
+    public function PrePoint(FakeStoreContext $ctx): void {}
+    public function PreSpec(FakeStoreContext $ctx): void {}
+    public function PreRequest(FakeStoreContext $ctx): void {}
+    public function PreResponse(FakeStoreContext $ctx): void {}
+    public function PreResult(FakeStoreContext $ctx): void {}
+    public function PreDone(FakeStoreContext $ctx): void {}
+    public function PreUnexpected(FakeStoreContext $ctx): void {}
+}
