@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	sdk "github.com/voxgig-sdk/fake-store-sdk"
-	"github.com/voxgig-sdk/fake-store-sdk/core"
+	sdk "github.com/voxgig-sdk/fake-store-sdk/go"
+	"github.com/voxgig-sdk/fake-store-sdk/go/core"
 
-	vs "github.com/voxgig/struct"
+	vs "github.com/voxgig-sdk/fake-store-sdk/go/utility/struct"
 )
 
 func TestProductEntity(t *testing.T) {

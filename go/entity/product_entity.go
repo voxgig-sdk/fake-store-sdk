@@ -1,9 +1,9 @@
 package entity
 
 import (
-	"github.com/voxgig-sdk/fake-store-sdk/core"
+	"github.com/voxgig-sdk/fake-store-sdk/go/core"
 
-	vs "github.com/voxgig/struct"
+	vs "github.com/voxgig-sdk/fake-store-sdk/go/utility/struct"
 )
 
 type ProductEntity struct {

@@ -4,17 +4,20 @@
       "LOGIN00": {
         "password": "s1e",
         "token": "s1f",
-        "username": "s20"
+        "username": "s20",
+        "id": "LOGIN00"
       },
       "LOGIN01": {
         "password": "s3c",
         "token": "s3d",
-        "username": "s3e"
+        "username": "s3e",
+        "id": "LOGIN01"
       },
       "LOGIN02": {
         "password": "s5a",
         "token": "s5b",
-        "username": "s5c"
+        "username": "s5c",
+        "id": "LOGIN02"
       }
     }
   },

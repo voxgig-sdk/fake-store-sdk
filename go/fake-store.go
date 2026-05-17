@@ -1,10 +1,10 @@
 package voxgigfakestoresdk
 
 import (
-	"github.com/voxgig-sdk/fake-store-sdk/core"
-	"github.com/voxgig-sdk/fake-store-sdk/entity"
-	"github.com/voxgig-sdk/fake-store-sdk/feature"
-	_ "github.com/voxgig-sdk/fake-store-sdk/utility"
+	"github.com/voxgig-sdk/fake-store-sdk/go/core"
+	"github.com/voxgig-sdk/fake-store-sdk/go/entity"
+	"github.com/voxgig-sdk/fake-store-sdk/go/feature"
+	_ "github.com/voxgig-sdk/fake-store-sdk/go/utility"
 )
 
 // Type aliases preserve external API.
