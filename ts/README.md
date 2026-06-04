@@ -17,9 +17,7 @@ loading a specific record.
 ```ts
 import { FakeStoreSDK } from 'fake-store'
 
-const client = new FakeStoreSDK({
-  apikey: process.env.FAKE-STORE_APIKEY,
-})
+const client = new FakeStoreSDK({})
 ```
 
 ### 2. List carts
@@ -114,7 +112,7 @@ const result = await client.Planet().load({ id: 'test01' })
 You can also use the instance method:
 
 ```ts
-const client = new FakeStoreSDK({ apikey: '...' })
+const client = new FakeStoreSDK()
 const testClient = client.tester()
 ```
 
@@ -150,7 +148,6 @@ const logger = {
 }
 
 const client = new FakeStoreSDK({
-  apikey: '...',
   extend: [logger],
 })
 ```
@@ -161,7 +158,6 @@ Create a `.env.local` file at the project root:
 
 ```
 FAKE-STORE_TEST_LIVE=TRUE
-FAKE-STORE_APIKEY=<your-key>
 ```
 
 Then run:
@@ -179,7 +175,6 @@ cd ts && npm test
 
 ```ts
 new FakeStoreSDK(options?: {
-  apikey?: string
   base?: string
   prefix?: string
   suffix?: string
@@ -190,7 +185,6 @@ new FakeStoreSDK(options?: {
 
 | Option | Type | Description |
 | --- | --- | --- |
-| `apikey` | `string` | API key for authentication. |
 | `base` | `string` | Base URL of the API server. |
 | `prefix` | `string` | URL path prefix prepended to all requests. |
 | `suffix` | `string` | URL path suffix appended to all requests. |

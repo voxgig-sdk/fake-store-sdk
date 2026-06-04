@@ -87,7 +87,6 @@ def _login_basic_setup(extra):
         "FAKESTORE_TEST_LOGIN_ENTID": idmap,
         "FAKESTORE_TEST_LIVE": "FALSE",
         "FAKESTORE_TEST_EXPLAIN": "FALSE",
-        "FAKESTORE_APIKEY": "NONE",
     })
 
     idmap_resolved = helpers.to_map(
@@ -98,7 +97,6 @@ def _login_basic_setup(extra):
     if env.get("FAKESTORE_TEST_LIVE") == "TRUE":
         merged_opts = vs.merge([
             {
-                "apikey": env.get("FAKESTORE_APIKEY"),
             },
             extra or {},
         ])

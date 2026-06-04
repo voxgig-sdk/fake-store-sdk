@@ -86,7 +86,6 @@ function login_basic_setup(extra)
     ["FAKESTORE_TEST_LOGIN_ENTID"] = idmap,
     ["FAKESTORE_TEST_LIVE"] = "FALSE",
     ["FAKESTORE_TEST_EXPLAIN"] = "FALSE",
-    ["FAKESTORE_APIKEY"] = "NONE",
   })
 
   local idmap_resolved = helpers.to_map(
@@ -98,7 +97,6 @@ function login_basic_setup(extra)
   if env["FAKESTORE_TEST_LIVE"] == "TRUE" then
     local merged_opts = vs.merge({
       {
-        apikey = env["FAKESTORE_APIKEY"],
       },
       extra or {},
     })

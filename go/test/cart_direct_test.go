@@ -194,14 +194,12 @@ func cartDirectSetup(mockres any) *cartDirectSetupResult {
 	env := envOverride(map[string]any{
 		"FAKESTORE_TEST_CART_ENTID": map[string]any{},
 		"FAKESTORE_TEST_LIVE":    "FALSE",
-		"FAKESTORE_APIKEY":       "NONE",
 	})
 
 	live := env["FAKESTORE_TEST_LIVE"] == "TRUE"
 
 	if live {
 		mergedOpts := map[string]any{
-			"apikey": env["FAKESTORE_APIKEY"],
 		}
 		client := sdk.NewFakeStoreSDK(mergedOpts)
 

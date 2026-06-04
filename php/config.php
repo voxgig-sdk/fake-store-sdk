@@ -20,9 +20,6 @@ class FakeStoreConfig
             ],
             "options" => [
                 "base" => "https://fakestoreapi.com",
-                "auth" => [
-                    "prefix" => "Bearer",
-                ],
                 "headers" => [
           'content-type' => 'application/json',
         ],

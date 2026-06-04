@@ -109,14 +109,12 @@ def _user_direct_setup(mockres):
     env = runner.env_override({
         "FAKESTORE_TEST_USER_ENTID": {},
         "FAKESTORE_TEST_LIVE": "FALSE",
-        "FAKESTORE_APIKEY": "NONE",
     })
 
     live = env.get("FAKESTORE_TEST_LIVE") == "TRUE"
 
     if live:
         merged_opts = {
-            "apikey": env.get("FAKESTORE_APIKEY"),
         }
         client = FakeStoreSDK(merged_opts)
         return {
