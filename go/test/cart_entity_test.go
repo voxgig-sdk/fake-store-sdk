@@ -189,6 +189,7 @@ func cartBasicSetup(extra map[string]any) *entityTestSetup {
 		"FAKESTORE_TEST_CART_ENTID": idmap,
 		"FAKESTORE_TEST_LIVE":      "FALSE",
 		"FAKESTORE_TEST_EXPLAIN":   "FALSE",
+		"FAKESTORE_APIKEY":         "NONE",
 	})
 
 	idmapResolved := core.ToMapAny(env["FAKESTORE_TEST_CART_ENTID"])
@@ -199,6 +200,7 @@ func cartBasicSetup(extra map[string]any) *entityTestSetup {
 	if env["FAKESTORE_TEST_LIVE"] == "TRUE" {
 		mergedOpts := vs.Merge([]any{
 			map[string]any{
+				"apikey": env["FAKESTORE_APIKEY"],
 			},
 			extra,
 		})

@@ -1,22 +1,8 @@
 # FakeStore SDK
 
-Free RESTful API of fake e-commerce data — products, carts, users, and login tokens — for prototyping and testing
+FakeStoreAPI client, generated from the OpenAPI spec.
 
 > TypeScript, Python, PHP, Golang, Ruby, Lua SDKs, a CLI, an interactive REPL, and an MCP server for AI agents — all generated from one OpenAPI spec by [@voxgig/sdkgen](https://github.com/voxgig/sdkgen).
-
-## About FakeStoreAPI
-
-[Fake Store API](https://fakestoreapi.com) is a free RESTful API that returns realistic-looking e-commerce data so you can build front-ends, demos, and tutorials without standing up a backend. The project is maintained by MohammadReza Keikavousi and the source lives on GitHub at [keikaavousi/fake-store-api](https://github.com/keikaavousi/fake-store-api).
-
-What you get from the API:
-
-- A catalogue of about 20 **products**, each with title, price, category, description, and image URL.
-- Product **categories** you can list and filter by.
-- About 20 **carts** containing a user id plus product ids and quantities.
-- About 10 **users** with name, email, and address details.
-- A **login** endpoint that returns a JWT-style token so you can exercise auth flows.
-
-Operational notes: the API is public — no API key or sign-up. CORS is enabled on every endpoint. The community catalogue page lists no formal rate limit. Writes (POST/PUT/DELETE) are accepted by the API but, as with most fake-data services, they are not persisted server-side.
 
 ## Try it
 
@@ -50,29 +36,31 @@ gem install fake-store-sdk
 luarocks install fake-store-sdk
 ```
 
-## 30-second quickstart
+## Quickstart
 
 ### TypeScript
 
 ```ts
 import { FakeStoreSDK } from 'fake-store'
 
-const client = new FakeStoreSDK({})
+const client = new FakeStoreSDK({
+  apikey: process.env.FAKE-STORE_APIKEY,
+})
 
 // List all carts
 const carts = await client.Cart().list()
+console.log(carts.data)
 ```
 
-See the [TypeScript README](ts/README.md) for the
-full guide, or scroll down for the same example in other languages.
+See the [TypeScript README](ts/README.md) for the full guide.
 
-## What's in the box
+## Surfaces
 
-| Surface | Use it for | Path |
-| --- | --- | --- |
-| **SDK** (TypeScript, Python, PHP, Golang, Ruby, Lua) | App integration | `ts/` `py/` `php/` `go/` `rb/` `lua/` |
-| **CLI** | Scripts, CI, ops, one-off API calls | `go-cli/` |
-| **MCP server** | AI agents (Claude, Cursor, Cline) | `go-mcp/` |
+| Surface | Path |
+| --- | --- |
+| **SDK** (TypeScript, Python, PHP, Golang, Ruby, Lua) | `ts/` `py/` `php/` `go/` `rb/` `lua/` |
+| **CLI** | `go-cli/` |
+| **MCP server** | `go-mcp/` |
 
 ## Use it from an AI agent (MCP)
 
@@ -102,10 +90,10 @@ The API exposes 4 entities:
 
 | Entity | Description | API path |
 | --- | --- | --- |
-| **Cart** | Shopping carts that bundle a user id with a list of product ids and quantities; served from `/carts` and `/carts/{id}`. | `/carts` |
-| **Login** | Authentication endpoint that exchanges a username and password for a JWT-style token; served from `/auth/login`. | `/auth/login` |
-| **Product** | Catalogue items with title, price, category, description, and image URL; served from `/products`, `/products/{id}`, and `/products/categories`. | `/products` |
-| **User** | Sample user profiles with name, email, and address fields; served from `/users` and `/users/{id}`. | `/users` |
+| **Cart** |  | `/carts` |
+| **Login** |  | `/auth/login` |
+| **Product** |  | `/products` |
+| **User** |  | `/users` |
 
 Each entity supports the following operations where available: **load**,
 **list**, **create**, **update**, and **remove**.
@@ -115,17 +103,20 @@ Each entity supports the following operations where available: **load**,
 ### Python
 
 ```python
+import os
 from fakestore_sdk import FakeStoreSDK
 
-client = FakeStoreSDK({})
+client = FakeStoreSDK({
+    "apikey": os.environ.get("FAKE-STORE_APIKEY"),
+})
 
 # List all carts
-carts, err = client.Cart(None).list(None, None)
+carts, err = client.Cart().list()
+print(carts)
 
 # Load a specific cart
-cart, err = client.Cart(None).load(
-    {"id": "example_id"}, None
-)
+cart, err = client.Cart().load({"id": "example_id"})
+print(cart)
 ```
 
 ### PHP
@@ -134,15 +125,17 @@ cart, err = client.Cart(None).load(
 <?php
 require_once 'fakestore_sdk.php';
 
-$client = new FakeStoreSDK([]);
+$client = new FakeStoreSDK([
+    "apikey" => getenv("FAKE-STORE_APIKEY"),
+]);
 
 // List all carts
-[$carts, $err] = $client->Cart(null)->list(null, null);
+[$carts, $err] = $client->Cart()->list();
+print_r($carts);
 
 // Load a specific cart
-[$cart, $err] = $client->Cart(null)->load(
-    ["id" => "example_id"], null
-);
+[$cart, $err] = $client->Cart()->load(["id" => "example_id"]);
+print_r($cart);
 ```
 
 ### Golang
@@ -150,10 +143,13 @@ $client = new FakeStoreSDK([]);
 ```go
 import sdk "github.com/voxgig-sdk/fake-store-sdk/go"
 
-client := sdk.NewFakeStoreSDK(map[string]any{})
+client := sdk.NewFakeStoreSDK(map[string]any{
+    "apikey": os.Getenv("FAKE-STORE_APIKEY"),
+})
 
 // List all carts
 carts, err := client.Cart(nil).List(nil, nil)
+fmt.Println(carts)
 ```
 
 ### Ruby
@@ -161,15 +157,17 @@ carts, err := client.Cart(nil).List(nil, nil)
 ```ruby
 require_relative "FakeStore_sdk"
 
-client = FakeStoreSDK.new({})
+client = FakeStoreSDK.new({
+  "apikey" => ENV["FAKE-STORE_APIKEY"],
+})
 
 # List all carts
-carts, err = client.Cart(nil).list(nil, nil)
+carts, err = client.Cart().list
+puts carts
 
 # Load a specific cart
-cart, err = client.Cart(nil).load(
-  { "id" => "example_id" }, nil
-)
+cart, err = client.Cart().load({ "id" => "example_id" })
+puts cart
 ```
 
 ### Lua
@@ -177,15 +175,17 @@ cart, err = client.Cart(nil).load(
 ```lua
 local sdk = require("fake-store_sdk")
 
-local client = sdk.new({})
+local client = sdk.new({
+  apikey = os.getenv("FAKE-STORE_APIKEY"),
+})
 
 -- List all carts
-local carts, err = client:Cart(nil):list(nil, nil)
+local carts, err = client:Cart():list()
+print(carts)
 
 -- Load a specific cart
-local cart, err = client:Cart(nil):load(
-  { id = "example_id" }, nil
-)
+local cart, err = client:Cart():load({ id = "example_id" })
+print(cart)
 ```
 
 ## Unit testing in offline mode
@@ -204,25 +204,21 @@ const result = await client.Cart().load({ id: 'test01' })
 ### Python
 
 ```python
-client = FakeStoreSDK.test(None, None)
-result, err = client.Cart(None).load(
-    {"id": "test01"}, None
-)
+client = FakeStoreSDK.test()
+result, err = client.Cart().load({"id": "test01"})
 ```
 
 ### PHP
 
 ```php
-$client = FakeStoreSDK::test(null, null);
-[$result, $err] = $client->Cart(null)->load(
-    ["id" => "test01"], null
-);
+$client = FakeStoreSDK::test();
+[$result, $err] = $client->Cart()->load(["id" => "test01"]);
 ```
 
 ### Golang
 
 ```go
-client := sdk.TestSDK(nil, nil)
+client := sdk.Test()
 result, err := client.Cart(nil).Load(
     map[string]any{"id": "test01"}, nil,
 )
@@ -231,19 +227,15 @@ result, err := client.Cart(nil).Load(
 ### Ruby
 
 ```ruby
-client = FakeStoreSDK.test(nil, nil)
-result, err = client.Cart(nil).load(
-  { "id" => "test01" }, nil
-)
+client = FakeStoreSDK.test
+result, err = client.Cart().load({ "id" => "test01" })
 ```
 
 ### Lua
 
 ```lua
-local client = sdk.test(nil, nil)
-local result, err = client:Cart(nil):load(
-  { id = "test01" }, nil
-)
+local client = sdk.test()
+local result, err = client:Cart():load({ id = "test01" })
 ```
 
 ## How it works
@@ -347,16 +339,6 @@ local result, err = client:direct({
 - [Golang](go/README.md)
 - [Ruby](rb/README.md)
 - [Lua](lua/README.md)
-
-## Using the FakeStoreAPI
-
-- Upstream: [https://fakestoreapi.com](https://fakestoreapi.com)
-- API docs: [https://fakestoreapi.com/docs](https://fakestoreapi.com/docs)
-
-- No licence is published on the project homepage or community catalogue page.
-- The service is provided free of charge for prototyping, testing, and teaching.
-- No authentication is required and CORS is enabled on all endpoints.
-- Treat the returned data as throwaway sample data; do not rely on it for production.
 
 ---
 

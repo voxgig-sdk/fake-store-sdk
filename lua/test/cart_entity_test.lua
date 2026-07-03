@@ -139,6 +139,7 @@ function cart_basic_setup(extra)
     ["FAKESTORE_TEST_CART_ENTID"] = idmap,
     ["FAKESTORE_TEST_LIVE"] = "FALSE",
     ["FAKESTORE_TEST_EXPLAIN"] = "FALSE",
+    ["FAKESTORE_APIKEY"] = "NONE",
   })
 
   local idmap_resolved = helpers.to_map(
@@ -150,6 +151,7 @@ function cart_basic_setup(extra)
   if env["FAKESTORE_TEST_LIVE"] == "TRUE" then
     local merged_opts = vs.merge({
       {
+        apikey = env["FAKESTORE_APIKEY"],
       },
       extra or {},
     })

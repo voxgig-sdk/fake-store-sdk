@@ -136,12 +136,14 @@ function directSetup(mockres?: any) {
   const env = envOverride({
     'FAKESTORE_TEST_PRODUCT_ENTID': {},
     'FAKESTORE_TEST_LIVE': 'FALSE',
+    'FAKESTORE_APIKEY': 'NONE',
   })
 
   const live = 'TRUE' === env.FAKESTORE_TEST_LIVE
 
   if (live) {
     const client = new FakeStoreSDK({
+      apikey: env.FAKESTORE_APIKEY,
     })
 
     let idmap: any = env['FAKESTORE_TEST_PRODUCT_ENTID']

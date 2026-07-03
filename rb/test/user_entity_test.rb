@@ -135,6 +135,7 @@ def user_basic_setup(extra)
     "FAKESTORE_TEST_USER_ENTID" => idmap,
     "FAKESTORE_TEST_LIVE" => "FALSE",
     "FAKESTORE_TEST_EXPLAIN" => "FALSE",
+    "FAKESTORE_APIKEY" => "NONE",
   })
 
   idmap_resolved = Helpers.to_map(
@@ -146,6 +147,7 @@ def user_basic_setup(extra)
   if env["FAKESTORE_TEST_LIVE"] == "TRUE"
     merged_opts = Vs.merge([
       {
+        "apikey" => env["FAKESTORE_APIKEY"],
       },
       extra || {},
     ])

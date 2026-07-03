@@ -30,12 +30,12 @@ Create a new SDK client instance.
 
 ### Static Methods
 
-#### `sdk.test(testopts, sdkopts)`
+#### `sdk.test(testopts?, sdkopts?)`
 
-Create a test client with mock features active. Both arguments may be `nil`.
+Create a test client with mock features active. Both arguments are optional.
 
 ```lua
-local client = sdk.test(nil, nil)
+local client = sdk.test()
 ```
 
 
@@ -114,8 +114,8 @@ local cart = client:Cart(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:Cart(nil):create({
-}, nil)
+local result, err = client:Cart():create({
+})
 ```
 
 #### `list(reqmatch, ctrl) -> any, err`
@@ -123,7 +123,7 @@ local result, err = client:Cart(nil):create({
 List entities matching the given criteria. Returns an array.
 
 ```lua
-local results, err = client:Cart(nil):list(nil, nil)
+local results, err = client:Cart():list()
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
@@ -131,7 +131,7 @@ local results, err = client:Cart(nil):list(nil, nil)
 Load a single entity matching the given criteria.
 
 ```lua
-local result, err = client:Cart(nil):load({ id = "cart_id" }, nil)
+local result, err = client:Cart():load({ id = "cart_id" })
 ```
 
 #### `remove(reqmatch, ctrl) -> any, err`
@@ -139,7 +139,7 @@ local result, err = client:Cart(nil):load({ id = "cart_id" }, nil)
 Remove the entity matching the given criteria.
 
 ```lua
-local result, err = client:Cart(nil):remove({ id = "cart_id" }, nil)
+local result, err = client:Cart():remove({ id = "cart_id" })
 ```
 
 #### `update(reqdata, ctrl) -> any, err`
@@ -147,10 +147,10 @@ local result, err = client:Cart(nil):remove({ id = "cart_id" }, nil)
 Update an existing entity. The data must include the entity `id`.
 
 ```lua
-local result, err = client:Cart(nil):update({
+local result, err = client:Cart():update({
   id = "cart_id",
   -- Fields to update
-}, nil)
+})
 ```
 
 ### Common Methods
@@ -204,8 +204,8 @@ local login = client:Login(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:Login(nil):create({
-}, nil)
+local result, err = client:Login():create({
+})
 ```
 
 ### Common Methods
@@ -262,8 +262,8 @@ local product = client:Product(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:Product(nil):create({
-}, nil)
+local result, err = client:Product():create({
+})
 ```
 
 #### `list(reqmatch, ctrl) -> any, err`
@@ -271,7 +271,7 @@ local result, err = client:Product(nil):create({
 List entities matching the given criteria. Returns an array.
 
 ```lua
-local results, err = client:Product(nil):list(nil, nil)
+local results, err = client:Product():list()
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
@@ -279,7 +279,7 @@ local results, err = client:Product(nil):list(nil, nil)
 Load a single entity matching the given criteria.
 
 ```lua
-local result, err = client:Product(nil):load({ id = "product_id" }, nil)
+local result, err = client:Product():load({ id = "product_id" })
 ```
 
 #### `remove(reqmatch, ctrl) -> any, err`
@@ -287,7 +287,7 @@ local result, err = client:Product(nil):load({ id = "product_id" }, nil)
 Remove the entity matching the given criteria.
 
 ```lua
-local result, err = client:Product(nil):remove({ id = "product_id" }, nil)
+local result, err = client:Product():remove({ id = "product_id" })
 ```
 
 #### `update(reqdata, ctrl) -> any, err`
@@ -295,10 +295,10 @@ local result, err = client:Product(nil):remove({ id = "product_id" }, nil)
 Update an existing entity. The data must include the entity `id`.
 
 ```lua
-local result, err = client:Product(nil):update({
+local result, err = client:Product():update({
   id = "product_id",
   -- Fields to update
-}, nil)
+})
 ```
 
 ### Common Methods
@@ -353,8 +353,8 @@ local user = client:User(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:User(nil):create({
-}, nil)
+local result, err = client:User():create({
+})
 ```
 
 #### `list(reqmatch, ctrl) -> any, err`
@@ -362,7 +362,7 @@ local result, err = client:User(nil):create({
 List entities matching the given criteria. Returns an array.
 
 ```lua
-local results, err = client:User(nil):list(nil, nil)
+local results, err = client:User():list()
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
@@ -370,7 +370,7 @@ local results, err = client:User(nil):list(nil, nil)
 Load a single entity matching the given criteria.
 
 ```lua
-local result, err = client:User(nil):load({ id = "user_id" }, nil)
+local result, err = client:User():load({ id = "user_id" })
 ```
 
 #### `remove(reqmatch, ctrl) -> any, err`
@@ -378,7 +378,7 @@ local result, err = client:User(nil):load({ id = "user_id" }, nil)
 Remove the entity matching the given criteria.
 
 ```lua
-local result, err = client:User(nil):remove({ id = "user_id" }, nil)
+local result, err = client:User():remove({ id = "user_id" })
 ```
 
 #### `update(reqdata, ctrl) -> any, err`
@@ -386,10 +386,10 @@ local result, err = client:User(nil):remove({ id = "user_id" }, nil)
 Update an existing entity. The data must include the entity `id`.
 
 ```lua
-local result, err = client:User(nil):update({
+local result, err = client:User():update({
   id = "user_id",
   -- Fields to update
-}, nil)
+})
 ```
 
 ### Common Methods

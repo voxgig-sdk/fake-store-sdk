@@ -1,6 +1,11 @@
 # FakeStore PHP SDK
 
-The PHP SDK for the FakeStore API. Provides an entity-oriented interface using PHP conventions.
+
+
+The PHP SDK for the FakeStore API — an entity-oriented client using PHP conventions.
+
+> Other languages, the CLI, and MCP server live alongside this one — see
+> the [top-level README](../README.md).
 
 
 ## Install
@@ -20,13 +25,15 @@ loading a specific record.
 <?php
 require_once 'fakestore_sdk.php';
 
-$client = new FakeStoreSDK([]);
+$client = new FakeStoreSDK([
+    "apikey" => getenv("FAKE-STORE_APIKEY"),
+]);
 ```
 
 ### 2. List carts
 
 ```php
-[$result, $err] = $client->Cart(null)->list(null, null);
+[$result, $err] = $client->Cart()->list();
 if ($err) { throw new \Exception($err); }
 
 if (is_array($result)) {
@@ -40,7 +47,7 @@ if (is_array($result)) {
 ### 3. Load a cart
 
 ```php
-[$result, $err] = $client->Cart(null)->load(["id" => "example_id"], null);
+[$result, $err] = $client->Cart()->load(["id" => "example_id"]);
 if ($err) { throw new \Exception($err); }
 print_r($result);
 ```
@@ -49,13 +56,13 @@ print_r($result);
 
 ```php
 // Create
-[$created, $_] = $client->Cart(null)->create(["name" => "Example"], null);
+[$created, $_] = $client->Cart()->create(["name" => "Example"]);
 
 // Update
-$client->Cart(null)->update(["id" => $created["id"], "name" => "Example-Renamed"], null);
+$client->Cart()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
 
 // Remove
-$client->Cart(null)->remove(["id" => $created["id"]], null);
+$client->Cart()->remove(["id" => $created["id"]]);
 ```
 
 
@@ -99,11 +106,9 @@ print_r($fetchdef["headers"]);
 Create a mock client for unit testing — no server required:
 
 ```php
-$client = FakeStoreSDK::test(null, null);
+$client = FakeStoreSDK::test();
 
-[$result, $err] = $client->FakeStore(null)->load(
-    ["id" => "test01"], null
-);
+[$result, $err] = $client->FakeStore()->load(["id" => "test01"]);
 // $result contains mock response data
 ```
 
@@ -138,6 +143,7 @@ Create a `.env.local` file at the project root:
 
 ```
 FAKE-STORE_TEST_LIVE=TRUE
+FAKE-STORE_APIKEY=<your-key>
 ```
 
 Then run:
@@ -160,6 +166,7 @@ Creates a new SDK client.
 
 | Option | Type | Description |
 | --- | --- | --- |
+| `apikey` | `string` | API key for authentication. |
 | `base` | `string` | Base URL of the API server. |
 | `prefix` | `string` | URL path prefix prepended to all requests. |
 | `suffix` | `string` | URL path suffix appended to all requests. |

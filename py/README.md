@@ -1,6 +1,11 @@
 # FakeStore Python SDK
 
-The Python SDK for the FakeStore API. Provides an entity-oriented interface following Pythonic conventions.
+
+
+The Python SDK for the FakeStore API — an entity-oriented client following Pythonic conventions.
+
+> Other languages, the CLI, and MCP server live alongside this one — see
+> the [top-level README](../README.md).
 
 
 ## Install
@@ -23,15 +28,18 @@ loading a specific record.
 ### 1. Create a client
 
 ```python
+import os
 from fakestore_sdk import FakeStoreSDK
 
-client = FakeStoreSDK({})
+client = FakeStoreSDK({
+    "apikey": os.environ.get("FAKE-STORE_APIKEY"),
+})
 ```
 
 ### 2. List carts
 
 ```python
-result, err = client.Cart(None).list(None, None)
+result, err = client.Cart().list()
 if err:
     raise Exception(err)
 
@@ -44,7 +52,7 @@ if isinstance(result, list):
 ### 3. Load a cart
 
 ```python
-result, err = client.Cart(None).load({"id": "example_id"}, None)
+result, err = client.Cart().load({"id": "example_id"})
 if err:
     raise Exception(err)
 print(result)
@@ -54,13 +62,13 @@ print(result)
 
 ```python
 # Create
-created, _ = client.Cart(None).create({"name": "Example"}, None)
+created, _ = client.Cart().create({"name": "Example"})
 
 # Update
-client.Cart(None).update({"id": created["id"], "name": "Example-Renamed"}, None)
+client.Cart().update({"id": created["id"], "name": "Example-Renamed"})
 
 # Remove
-client.Cart(None).remove({"id": created["id"]}, None)
+client.Cart().remove({"id": created["id"]})
 ```
 
 
@@ -105,11 +113,9 @@ print(fetchdef["headers"])
 Create a mock client for unit testing — no server required:
 
 ```python
-client = FakeStoreSDK.test(None, None)
+client = FakeStoreSDK.test()
 
-result, err = client.FakeStore(None).load(
-    {"id": "test01"}, None
-)
+result, err = client.FakeStore().load({"id": "test01"})
 # result contains mock response data
 ```
 
@@ -140,6 +146,7 @@ Create a `.env.local` file at the project root:
 
 ```
 FAKE-STORE_TEST_LIVE=TRUE
+FAKE-STORE_APIKEY=<your-key>
 ```
 
 Then run:
@@ -163,6 +170,7 @@ Creates a new SDK client.
 
 | Option | Type | Description |
 | --- | --- | --- |
+| `apikey` | `str` | API key for authentication. |
 | `base` | `str` | Base URL of the API server. |
 | `prefix` | `str` | URL path prefix prepended to all requests. |
 | `suffix` | `str` | URL path suffix appended to all requests. |
