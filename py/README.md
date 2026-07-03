@@ -10,7 +10,7 @@ The Python SDK for the FakeStore API — an entity-oriented client following Pyt
 
 ## Install
 ```bash
-pip install fake-store-sdk
+pip install voxgig-sdk-fake-store
 ```
 
 Or install from source:

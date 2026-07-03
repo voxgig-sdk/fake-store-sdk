@@ -10,13 +10,13 @@ The Ruby SDK for the FakeStore API — an entity-oriented client using idiomatic
 
 ## Install
 ```bash
-gem install fake-store-sdk
+gem install voxgig-sdk-fake-store
 ```
 
 Or add to your `Gemfile`:
 
 ```ruby
-gem "fake-store-sdk"
+gem "voxgig-sdk-fake-store"
 ```
 
 Then run:

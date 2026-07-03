@@ -10,7 +10,7 @@ The Lua SDK for the FakeStore API — an entity-oriented client using Lua conven
 
 ## Install
 ```bash
-luarocks install fake-store-sdk
+luarocks install voxgig-sdk-fake-store
 ```
 
 If the module is not yet published, add the source directory to

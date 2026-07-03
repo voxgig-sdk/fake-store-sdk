@@ -1,7 +1,23 @@
 {
   "name": "@voxgig-sdk/fake-store",
   "version": "0.0.1",
-  "description": "DESCRIPTION",
+  "description": "Unofficial generated TypeScript SDK for the FakeStore public API. Not affiliated with or endorsed by the upstream API provider.",
+  "keywords": [
+    "voxgig",
+    "sdk",
+    "generated-sdk",
+    "openapi",
+    "api-client",
+    "fake-store"
+  ],
+  "homepage": "https://github.com/voxgig-sdk/fake-store-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voxgig-sdk/fake-store-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voxgig-sdk/fake-store-sdk/issues"
+  },
   "main": "dist/FakeStoreSDK.js",
   "type": "commonjs",
   "types": "dist/FakeStoreSDK.d.ts",
@@ -14,7 +30,10 @@
     "clean": "rm -rf node_modules yarn.lock package-lock.json",
     "reset": "npm run clean && npm i && npm run build && npm test"
   },
-  "author": "FakeStore",
+  "author": {
+    "name": "Voxgig",
+    "url": "https://voxgig.com"
+  },
   "license": "MIT",
   "dependencies": {},
   "peerDependencies": {},

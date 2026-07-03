@@ -10,7 +10,7 @@ The TypeScript SDK for the FakeStore API — a type-safe, entity-oriented client
 
 ## Install
 ```bash
-npm install fake-store
+npm install @voxgig-sdk/fake-store
 ```
 ## Tutorial: your first API call
 

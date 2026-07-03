@@ -10,7 +10,7 @@ The PHP SDK for the FakeStore API — an entity-oriented client using PHP conven
 
 ## Install
 ```bash
-composer require voxgig/fake-store-sdk
+composer require voxgig-sdk/fake-store
 ```
 
 
