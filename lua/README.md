@@ -31,39 +31,40 @@ local sdk = require("fake-store_sdk")
 local client = sdk.new()
 ```
 
-### 2. List carts
+### 2. List cart records
+
+Entity operations return `(value, err)`. For `list`, `value` is the
+array of records itself — iterate it directly (there is no wrapper).
 
 ```lua
-local result, err = client:cart():list()
+local carts, err = client:Cart():list()
 if err then error(err) end
 
-if type(result) == "table" then
-  for _, item in ipairs(result) do
-    local d = item:data_get()
-    print(d["id"], d["name"])
-  end
+for _, item in ipairs(carts) do
+  print(item["id"], item["name"])
 end
 ```
 
 ### 3. Load a cart
 
 ```lua
-local result, err = client:cart():load({ id = "example_id" })
+local cart, err = client:Cart():load({ id = "example_id" })
 if err then error(err) end
-print(result)
+print(cart)
 ```
 
 ### 4. Create, update, and remove
 
 ```lua
 -- Create
-local created, _ = client:cart():create({ name = "Example" })
+local created, err = client:Cart():create({ name = "Example" })
+if err then error(err) end
 
 -- Update
-client:cart():update({ id = created["id"], name = "Example-Renamed" })
+client:Cart():update({ id = created["id"], name = "Example-Renamed" })
 
 -- Remove
-client:cart():remove({ id = created["id"] })
+client:Cart():remove({ id = created["id"] })
 ```
 
 
@@ -109,8 +110,8 @@ Create a mock client for unit testing — no server required:
 ```lua
 local client = sdk.test()
 
-local result, err = client:cart():load({ id = "test01" })
--- result contains mock response data
+local result, err = client:Cart():load({ id = "test01" })
+-- result is the loaded data; err is set on failure
 ```
 
 ### Use a custom fetch function
@@ -191,7 +192,7 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `Cart` | `(data) -> CartEntity` | Create a Cart entity instance. |
 | `Login` | `(data) -> LoginEntity` | Create a Login entity instance. |
 | `Product` | `(data) -> ProductEntity` | Create a Product entity instance. |
-| `User` | `(data) -> UserEntity` | Create a User entity instance. |
+| `User` | `(data) -> UserEntity` | Create an User entity instance. |
 
 ### Entity interface
 
@@ -213,17 +214,22 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return `(any, err)`. The first value is a
-`table` with these keys:
+Entity operations return `(value, err)`. The `value` is the operation's
+data **directly** — there is no wrapper:
 
-| Key | Type | Description |
-| --- | --- | --- |
-| `ok` | `boolean` | `true` if the HTTP status is 2xx. |
-| `status` | `number` | HTTP status code. |
-| `headers` | `table` | Response headers. |
-| `data` | `any` | Parsed JSON response body. |
+| Operation | `value` |
+| --- | --- |
+| `load` / `create` / `update` / `remove` | the entity record (a `table`) |
+| `list` | an array (`table`) of entity records |
 
-On error, `ok` is `false` and `err` contains the error value.
+Check `err` first (it is non-`nil` on failure), then use `value`:
+
+    local cart, err = client:Cart():load({ id = "example_id" })
+    if err then error(err) end
+    -- cart is the loaded record
+
+Only `direct()` returns a response envelope — a `table` with `ok`,
+`status`, `headers`, and `data` keys.
 
 ### Entities
 
@@ -286,7 +292,7 @@ API path: `/users`
 
 ### Cart
 
-Create an instance: `const cart = client.cart`
+Create an instance: `local cart = client:Cart(nil)`
 
 #### Operations
 
@@ -308,27 +314,27 @@ Create an instance: `const cart = client.cart`
 
 #### Example: Load
 
-```ts
-const cart = await client.cart.load({ id: 'cart_id' })
+```lua
+local cart, err = client:Cart():load({ id = "cart_id" })
 ```
 
 #### Example: List
 
-```ts
-const carts = await client.cart.list()
+```lua
+local carts, err = client:Cart():list()
 ```
 
 #### Example: Create
 
-```ts
-const cart = await client.cart.create({
+```lua
+local cart, err = client:Cart():create({
 })
 ```
 
 
 ### Login
 
-Create an instance: `const login = client.login`
+Create an instance: `local login = client:Login(nil)`
 
 #### Operations
 
@@ -346,15 +352,15 @@ Create an instance: `const login = client.login`
 
 #### Example: Create
 
-```ts
-const login = await client.login.create({
+```lua
+local login, err = client:Login():create({
 })
 ```
 
 
 ### Product
 
-Create an instance: `const product = client.product`
+Create an instance: `local product = client:Product(nil)`
 
 #### Operations
 
@@ -379,27 +385,27 @@ Create an instance: `const product = client.product`
 
 #### Example: Load
 
-```ts
-const product = await client.product.load({ id: 'product_id' })
+```lua
+local product, err = client:Product():load({ id = "product_id" })
 ```
 
 #### Example: List
 
-```ts
-const products = await client.product.list()
+```lua
+local products, err = client:Product():list()
 ```
 
 #### Example: Create
 
-```ts
-const product = await client.product.create({
+```lua
+local product, err = client:Product():create({
 })
 ```
 
 
 ### User
 
-Create an instance: `const user = client.user`
+Create an instance: `local user = client:User(nil)`
 
 #### Operations
 
@@ -422,20 +428,20 @@ Create an instance: `const user = client.user`
 
 #### Example: Load
 
-```ts
-const user = await client.user.load({ id: 'user_id' })
+```lua
+local user, err = client:User():load({ id = "user_id" })
 ```
 
 #### Example: List
 
-```ts
-const users = await client.user.list()
+```lua
+local users, err = client:User():list()
 ```
 
 #### Example: Create
 
-```ts
-const user = await client.user.create({
+```lua
+local user, err = client:User():create({
 })
 ```
 
@@ -511,7 +517,7 @@ Entity instances are stateful. After a successful `load`, the entity
 stores the returned data and match criteria internally.
 
 ```lua
-local cart = client:cart()
+local cart = client:Cart()
 cart:load({ id = "example_id" })
 
 -- cart:data_get() now returns the loaded cart data

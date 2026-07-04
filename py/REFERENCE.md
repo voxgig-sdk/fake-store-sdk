@@ -92,7 +92,7 @@ Prepare a fetch definition without sending. Returns the `fetchdef` and raises on
 ## CartEntity
 
 ```python
-cart = client.cart
+cart = client.Cart()
 ```
 
 ### Fields
@@ -110,7 +110,7 @@ cart = client.cart
 Create a new entity with the given data. Returns the created entity data and raises on error.
 
 ```python
-result = client.cart.create({
+result = client.Cart().create({
 })
 ```
 
@@ -119,7 +119,9 @@ result = client.cart.create({
 List entities matching the given criteria. Returns a list and raises on error.
 
 ```python
-results = client.cart.list({})
+results = client.Cart().list({})
+for cart in results:
+    print(cart)
 ```
 
 #### `load(reqmatch, ctrl=None) -> dict`
@@ -127,7 +129,7 @@ results = client.cart.list({})
 Load a single entity matching the given criteria. Returns the entity data and raises on error.
 
 ```python
-result = client.cart.load({"id": "cart_id"})
+result = client.Cart().load({"id": "cart_id"})
 ```
 
 #### `remove(reqmatch, ctrl=None) -> dict`
@@ -135,7 +137,7 @@ result = client.cart.load({"id": "cart_id"})
 Remove the entity matching the given criteria. Raises on error.
 
 ```python
-result = client.cart.remove({"id": "cart_id"})
+result = client.Cart().remove({"id": "cart_id"})
 ```
 
 #### `update(reqdata, ctrl=None) -> dict`
@@ -143,7 +145,7 @@ result = client.cart.remove({"id": "cart_id"})
 Update an existing entity. The data must include the entity `id`. Returns the updated entity data and raises on error.
 
 ```python
-result = client.cart.update({
+result = client.Cart().update({
     "id": "cart_id",
     # Fields to update
 })
@@ -181,7 +183,7 @@ Return the entity name.
 ## LoginEntity
 
 ```python
-login = client.login
+login = client.Login()
 ```
 
 ### Fields
@@ -199,7 +201,7 @@ login = client.login
 Create a new entity with the given data. Returns the created entity data and raises on error.
 
 ```python
-result = client.login.create({
+result = client.Login().create({
 })
 ```
 
@@ -235,7 +237,7 @@ Return the entity name.
 ## ProductEntity
 
 ```python
-product = client.product
+product = client.Product()
 ```
 
 ### Fields
@@ -256,7 +258,7 @@ product = client.product
 Create a new entity with the given data. Returns the created entity data and raises on error.
 
 ```python
-result = client.product.create({
+result = client.Product().create({
 })
 ```
 
@@ -265,7 +267,9 @@ result = client.product.create({
 List entities matching the given criteria. Returns a list and raises on error.
 
 ```python
-results = client.product.list({})
+results = client.Product().list({})
+for product in results:
+    print(product)
 ```
 
 #### `load(reqmatch, ctrl=None) -> dict`
@@ -273,7 +277,7 @@ results = client.product.list({})
 Load a single entity matching the given criteria. Returns the entity data and raises on error.
 
 ```python
-result = client.product.load({"id": "product_id"})
+result = client.Product().load({"id": "product_id"})
 ```
 
 #### `remove(reqmatch, ctrl=None) -> dict`
@@ -281,7 +285,7 @@ result = client.product.load({"id": "product_id"})
 Remove the entity matching the given criteria. Raises on error.
 
 ```python
-result = client.product.remove({"id": "product_id"})
+result = client.Product().remove({"id": "product_id"})
 ```
 
 #### `update(reqdata, ctrl=None) -> dict`
@@ -289,7 +293,7 @@ result = client.product.remove({"id": "product_id"})
 Update an existing entity. The data must include the entity `id`. Returns the updated entity data and raises on error.
 
 ```python
-result = client.product.update({
+result = client.Product().update({
     "id": "product_id",
     # Fields to update
 })
@@ -327,7 +331,7 @@ Return the entity name.
 ## UserEntity
 
 ```python
-user = client.user
+user = client.User()
 ```
 
 ### Fields
@@ -346,7 +350,7 @@ user = client.user
 Create a new entity with the given data. Returns the created entity data and raises on error.
 
 ```python
-result = client.user.create({
+result = client.User().create({
 })
 ```
 
@@ -355,7 +359,9 @@ result = client.user.create({
 List entities matching the given criteria. Returns a list and raises on error.
 
 ```python
-results = client.user.list({})
+results = client.User().list({})
+for user in results:
+    print(user)
 ```
 
 #### `load(reqmatch, ctrl=None) -> dict`
@@ -363,7 +369,7 @@ results = client.user.list({})
 Load a single entity matching the given criteria. Returns the entity data and raises on error.
 
 ```python
-result = client.user.load({"id": "user_id"})
+result = client.User().load({"id": "user_id"})
 ```
 
 #### `remove(reqmatch, ctrl=None) -> dict`
@@ -371,7 +377,7 @@ result = client.user.load({"id": "user_id"})
 Remove the entity matching the given criteria. Raises on error.
 
 ```python
-result = client.user.remove({"id": "user_id"})
+result = client.User().remove({"id": "user_id"})
 ```
 
 #### `update(reqdata, ctrl=None) -> dict`
@@ -379,7 +385,7 @@ result = client.user.remove({"id": "user_id"})
 Update an existing entity. The data must include the entity `id`. Returns the updated entity data and raises on error.
 
 ```python
-result = client.user.update({
+result = client.User().update({
     "id": "user_id",
     # Fields to update
 })

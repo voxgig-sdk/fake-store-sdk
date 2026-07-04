@@ -29,18 +29,16 @@ require_once 'fakestore_sdk.php';
 $client = new FakeStoreSDK();
 ```
 
-### 2. List carts
+### 2. List cart records
 
 ```php
 try {
-    $result = $client->cart()->list();
-    if (is_array($result)) {
-        foreach ($result as $item) {
-            $d = $item->data_get();
-            echo $d["id"] . " " . $d["name"] . "\n";
-        }
+    // list() returns an array of Cart records — iterate directly.
+    $carts = $client->Cart()->list();
+    foreach ($carts as $item) {
+        echo $item["id"] . " " . $item["name"] . "\n";
     }
-} catch (\Exception $err) {
+} catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
 ```
@@ -49,9 +47,10 @@ try {
 
 ```php
 try {
-    $result = $client->cart()->load(["id" => "example_id"]);
-    print_r($result);
-} catch (\Exception $err) {
+    // load() returns the bare Cart record (throws on error).
+    $cart = $client->Cart()->load(["id" => "example_id"]);
+    print_r($cart);
+} catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
 ```
@@ -59,14 +58,14 @@ try {
 ### 4. Create, update, and remove
 
 ```php
-// Create
-$created = $client->cart()->create(["name" => "Example"]);
+// create() returns the bare created Cart record.
+$created = $client->Cart()->create(["name" => "Example"]);
 
-// Update
-$client->cart()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
+// Update — index the bare record directly ($created["id"]).
+$client->Cart()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
 
 // Remove
-$client->cart()->remove(["id" => $created["id"]]);
+$client->Cart()->remove(["id" => $created["id"]]);
 ```
 
 
@@ -110,13 +109,17 @@ print_r($fetchdef["headers"]);
 
 ### Use test mode
 
-Create a mock client for unit testing — no server required:
+Create a mock client for unit testing — no server required. Seed fixture
+data via the `entity` option so offline calls resolve without a live server:
 
 ```php
-$client = FakeStoreSDK::test();
+$client = FakeStoreSDK::test([
+    "entity" => ["cart" => ["test01" => ["id" => "test01"]]],
+]);
 
-$result = $client->cart()->load(["id" => "test01"]);
-// $result contains mock response data
+// load() returns the bare mock record (throws on error).
+$cart = $client->Cart()->load(["id" => "test01"]);
+print_r($cart);
 ```
 
 ### Use a custom fetch function
@@ -198,7 +201,7 @@ Creates a test-mode client with mock transport. Both arguments may be `null`.
 | `Cart` | `($data): CartEntity` | Create a Cart entity instance. |
 | `Login` | `($data): LoginEntity` | Create a Login entity instance. |
 | `Product` | `($data): ProductEntity` | Create a Product entity instance. |
-| `User` | `($data): UserEntity` | Create a User entity instance. |
+| `User` | `($data): UserEntity` | Create an User entity instance. |
 
 ### Entity interface
 
@@ -297,7 +300,7 @@ API path: `/users`
 
 ### Cart
 
-Create an instance: `const cart = client.cart`
+Create an instance: `$cart = $client->Cart();`
 
 #### Operations
 
@@ -319,27 +322,29 @@ Create an instance: `const cart = client.cart`
 
 #### Example: Load
 
-```ts
-const cart = await client.cart.load({ id: 'cart_id' })
+```php
+// load() returns the bare Cart record (throws on error).
+$cart = $client->Cart()->load(["id" => "cart_id"]);
 ```
 
 #### Example: List
 
-```ts
-const carts = await client.cart.list()
+```php
+// list() returns an array of Cart records (throws on error).
+$carts = $client->Cart()->list();
 ```
 
 #### Example: Create
 
-```ts
-const cart = await client.cart.create({
-})
+```php
+$cart = $client->Cart()->create([
+]);
 ```
 
 
 ### Login
 
-Create an instance: `const login = client.login`
+Create an instance: `$login = $client->Login();`
 
 #### Operations
 
@@ -357,15 +362,15 @@ Create an instance: `const login = client.login`
 
 #### Example: Create
 
-```ts
-const login = await client.login.create({
-})
+```php
+$login = $client->Login()->create([
+]);
 ```
 
 
 ### Product
 
-Create an instance: `const product = client.product`
+Create an instance: `$product = $client->Product();`
 
 #### Operations
 
@@ -390,27 +395,29 @@ Create an instance: `const product = client.product`
 
 #### Example: Load
 
-```ts
-const product = await client.product.load({ id: 'product_id' })
+```php
+// load() returns the bare Product record (throws on error).
+$product = $client->Product()->load(["id" => "product_id"]);
 ```
 
 #### Example: List
 
-```ts
-const products = await client.product.list()
+```php
+// list() returns an array of Product records (throws on error).
+$products = $client->Product()->list();
 ```
 
 #### Example: Create
 
-```ts
-const product = await client.product.create({
-})
+```php
+$product = $client->Product()->create([
+]);
 ```
 
 
 ### User
 
-Create an instance: `const user = client.user`
+Create an instance: `$user = $client->User();`
 
 #### Operations
 
@@ -433,21 +440,23 @@ Create an instance: `const user = client.user`
 
 #### Example: Load
 
-```ts
-const user = await client.user.load({ id: 'user_id' })
+```php
+// load() returns the bare User record (throws on error).
+$user = $client->User()->load(["id" => "user_id"]);
 ```
 
 #### Example: List
 
-```ts
-const users = await client.user.list()
+```php
+// list() returns an array of User records (throws on error).
+$users = $client->User()->list();
 ```
 
 #### Example: Create
 
-```ts
-const user = await client.user.create({
-})
+```php
+$user = $client->User()->create([
+]);
 ```
 
 
@@ -522,7 +531,7 @@ Entity instances are stateful. After a successful `load`, the entity
 stores the returned data and match criteria internally.
 
 ```php
-$cart = $client->cart();
+$cart = $client->Cart();
 $cart->load(["id" => "example_id"]);
 
 // $cart->dataGet() now returns the loaded cart data

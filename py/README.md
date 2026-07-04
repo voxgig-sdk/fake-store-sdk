@@ -31,24 +31,28 @@ from fakestore_sdk import FakeStoreSDK
 client = FakeStoreSDK()
 ```
 
-### 2. List carts
+### 2. List cart records
+
+`list()` returns a `list` of records (each a `dict`) and raises on
+error — iterate it directly.
 
 ```python
 try:
-    result = client.cart.list()
-    for item in result:
-        d = item.data_get()
-        print(d["id"], d["name"])
+    carts = client.Cart().list({})
+    for cart in carts:
+        print(cart)
 except Exception as err:
     print(f"list failed: {err}")
 ```
 
 ### 3. Load a cart
 
+`load()` returns the bare record (a `dict`) and raises on error.
+
 ```python
 try:
-    result = client.cart.load({"id": "example_id"})
-    print(result)
+    cart = client.Cart().load({"id": "example_id"})
+    print(cart)
 except Exception as err:
     print(f"load failed: {err}")
 ```
@@ -56,14 +60,14 @@ except Exception as err:
 ### 4. Create, update, and remove
 
 ```python
-# Create
-created = client.cart.create({"name": "Example"})
+# Create — returns the bare created record (a dict)
+created = client.Cart().create({"name": "Example"})
 
-# Update
-client.cart.update({"id": created["id"], "name": "Example-Renamed"})
+# Update — the created record's id is a plain dict key
+client.Cart().update({"id": created["id"], "name": "Example-Renamed"})
 
 # Remove
-client.cart.remove({"id": created["id"]})
+client.Cart().remove({"id": created["id"]})
 ```
 
 
@@ -109,8 +113,9 @@ Create a mock client for unit testing — no server required:
 ```python
 client = FakeStoreSDK.test()
 
-result = client.cart.load({"id": "test01"})
-# result contains mock response data
+# Entity ops return the bare record and raise on error.
+cart = client.Cart().load({"id": "test01"})
+# cart contains the mock response record
 ```
 
 ### Use a custom fetch function
@@ -189,7 +194,7 @@ Creates a test-mode client with mock transport. Both arguments may be `None`.
 | `Cart` | `(data) -> CartEntity` | Create a Cart entity instance. |
 | `Login` | `(data) -> LoginEntity` | Create a Login entity instance. |
 | `Product` | `(data) -> ProductEntity` | Create a Product entity instance. |
-| `User` | `(data) -> UserEntity` | Create a User entity instance. |
+| `User` | `(data) -> UserEntity` | Create an User entity instance. |
 
 ### Entity interface
 
@@ -288,7 +293,7 @@ API path: `/users`
 
 ### Cart
 
-Create an instance: `const cart = client.cart`
+Create an instance: `cart = client.Cart()`
 
 #### Operations
 
@@ -310,27 +315,27 @@ Create an instance: `const cart = client.cart`
 
 #### Example: Load
 
-```ts
-const cart = await client.cart.load({ id: 'cart_id' })
+```python
+cart = client.Cart().load({"id": "cart_id"})
 ```
 
 #### Example: List
 
-```ts
-const carts = await client.cart.list()
+```python
+carts = client.Cart().list({})
 ```
 
 #### Example: Create
 
-```ts
-const cart = await client.cart.create({
+```python
+cart = client.Cart().create({
 })
 ```
 
 
 ### Login
 
-Create an instance: `const login = client.login`
+Create an instance: `login = client.Login()`
 
 #### Operations
 
@@ -348,15 +353,15 @@ Create an instance: `const login = client.login`
 
 #### Example: Create
 
-```ts
-const login = await client.login.create({
+```python
+login = client.Login().create({
 })
 ```
 
 
 ### Product
 
-Create an instance: `const product = client.product`
+Create an instance: `product = client.Product()`
 
 #### Operations
 
@@ -381,27 +386,27 @@ Create an instance: `const product = client.product`
 
 #### Example: Load
 
-```ts
-const product = await client.product.load({ id: 'product_id' })
+```python
+product = client.Product().load({"id": "product_id"})
 ```
 
 #### Example: List
 
-```ts
-const products = await client.product.list()
+```python
+products = client.Product().list({})
 ```
 
 #### Example: Create
 
-```ts
-const product = await client.product.create({
+```python
+product = client.Product().create({
 })
 ```
 
 
 ### User
 
-Create an instance: `const user = client.user`
+Create an instance: `user = client.User()`
 
 #### Operations
 
@@ -424,20 +429,20 @@ Create an instance: `const user = client.user`
 
 #### Example: Load
 
-```ts
-const user = await client.user.load({ id: 'user_id' })
+```python
+user = client.User().load({"id": "user_id"})
 ```
 
 #### Example: List
 
-```ts
-const users = await client.user.list()
+```python
+users = client.User().list({})
 ```
 
 #### Example: Create
 
-```ts
-const user = await client.user.create({
+```python
+user = client.User().create({
 })
 ```
 
@@ -512,7 +517,7 @@ Entity instances are stateful. After a successful `load`, the entity
 stores the returned data and match criteria internally.
 
 ```python
-cart = client.cart
+cart = client.Cart()
 cart.load({"id": "example_id"})
 
 # cart.data_get() now returns the loaded cart data

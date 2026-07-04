@@ -208,52 +208,28 @@ class FakeStoreSDK
   end
 
 
-  # Idiomatic facade: client.cart.list / client.cart.load({ "id" => ... })
-  def cart
-    require_relative 'entity/cart_entity'
-    @cart ||= CartEntity.new(self, nil)
-  end
-
-  # Deprecated: use client.cart instead.
+  # Canonical facade: client.Cart.list / client.Cart.load({ "id" => ... })
   def Cart(data = nil)
     require_relative 'entity/cart_entity'
     CartEntity.new(self, data)
   end
 
 
-  # Idiomatic facade: client.login.list / client.login.load({ "id" => ... })
-  def login
-    require_relative 'entity/login_entity'
-    @login ||= LoginEntity.new(self, nil)
-  end
-
-  # Deprecated: use client.login instead.
+  # Canonical facade: client.Login.list / client.Login.load({ "id" => ... })
   def Login(data = nil)
     require_relative 'entity/login_entity'
     LoginEntity.new(self, data)
   end
 
 
-  # Idiomatic facade: client.product.list / client.product.load({ "id" => ... })
-  def product
-    require_relative 'entity/product_entity'
-    @product ||= ProductEntity.new(self, nil)
-  end
-
-  # Deprecated: use client.product instead.
+  # Canonical facade: client.Product.list / client.Product.load({ "id" => ... })
   def Product(data = nil)
     require_relative 'entity/product_entity'
     ProductEntity.new(self, data)
   end
 
 
-  # Idiomatic facade: client.user.list / client.user.load({ "id" => ... })
-  def user
-    require_relative 'entity/user_entity'
-    @user ||= UserEntity.new(self, nil)
-  end
-
-  # Deprecated: use client.user instead.
+  # Canonical facade: client.User.list / client.User.load({ "id" => ... })
   def User(data = nil)
     require_relative 'entity/user_entity'
     UserEntity.new(self, data)

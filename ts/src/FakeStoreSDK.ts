@@ -207,56 +207,28 @@ class FakeStoreSDK {
 
 
 
-  _cart?: CartEntity
-
-  // Idiomatic facade: `client.cart.list()` / `client.cart.load({ id })`.
-  get cart(): CartEntity {
-    return (this._cart ??= new CartEntity(this, undefined))
-  }
-
-  /** @deprecated Use `client.cart` instead. */
+  // Entity access: `client.Cart().list()` / `client.Cart().load({ id })`.
   Cart(data?: any) {
     const self = this
     return new CartEntity(self,data)
   }
 
 
-  _login?: LoginEntity
-
-  // Idiomatic facade: `client.login.list()` / `client.login.load({ id })`.
-  get login(): LoginEntity {
-    return (this._login ??= new LoginEntity(this, undefined))
-  }
-
-  /** @deprecated Use `client.login` instead. */
+  // Entity access: `client.Login().list()` / `client.Login().load({ id })`.
   Login(data?: any) {
     const self = this
     return new LoginEntity(self,data)
   }
 
 
-  _product?: ProductEntity
-
-  // Idiomatic facade: `client.product.list()` / `client.product.load({ id })`.
-  get product(): ProductEntity {
-    return (this._product ??= new ProductEntity(this, undefined))
-  }
-
-  /** @deprecated Use `client.product` instead. */
+  // Entity access: `client.Product().list()` / `client.Product().load({ id })`.
   Product(data?: any) {
     const self = this
     return new ProductEntity(self,data)
   }
 
 
-  _user?: UserEntity
-
-  // Idiomatic facade: `client.user.list()` / `client.user.load({ id })`.
-  get user(): UserEntity {
-    return (this._user ??= new UserEntity(this, undefined))
-  }
-
-  /** @deprecated Use `client.user` instead. */
+  // Entity access: `client.User().list()` / `client.User().load({ id })`.
   User(data?: any) {
     const self = this
     return new UserEntity(self,data)

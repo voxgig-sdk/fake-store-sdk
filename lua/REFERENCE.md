@@ -95,7 +95,7 @@ same parameters as `direct()`.
 ## CartEntity
 
 ```lua
-local cart = client:cart(nil)
+local cart = client:Cart(nil)
 ```
 
 ### Fields
@@ -113,7 +113,7 @@ local cart = client:cart(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:cart():create({
+local result, err = client:Cart():create({
 })
 ```
 
@@ -122,7 +122,7 @@ local result, err = client:cart():create({
 List entities matching the given criteria. Returns an array.
 
 ```lua
-local results, err = client:cart():list()
+local results, err = client:Cart():list()
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
@@ -130,7 +130,7 @@ local results, err = client:cart():list()
 Load a single entity matching the given criteria.
 
 ```lua
-local result, err = client:cart():load({ id = "cart_id" })
+local result, err = client:Cart():load({ id = "cart_id" })
 ```
 
 #### `remove(reqmatch, ctrl) -> any, err`
@@ -138,7 +138,7 @@ local result, err = client:cart():load({ id = "cart_id" })
 Remove the entity matching the given criteria.
 
 ```lua
-local result, err = client:cart():remove({ id = "cart_id" })
+local result, err = client:Cart():remove({ id = "cart_id" })
 ```
 
 #### `update(reqdata, ctrl) -> any, err`
@@ -146,7 +146,7 @@ local result, err = client:cart():remove({ id = "cart_id" })
 Update an existing entity. The data must include the entity `id`.
 
 ```lua
-local result, err = client:cart():update({
+local result, err = client:Cart():update({
   id = "cart_id",
   -- Fields to update
 })
@@ -185,7 +185,7 @@ Return the entity name.
 ## LoginEntity
 
 ```lua
-local login = client:login(nil)
+local login = client:Login(nil)
 ```
 
 ### Fields
@@ -203,7 +203,7 @@ local login = client:login(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:login():create({
+local result, err = client:Login():create({
 })
 ```
 
@@ -240,7 +240,7 @@ Return the entity name.
 ## ProductEntity
 
 ```lua
-local product = client:product(nil)
+local product = client:Product(nil)
 ```
 
 ### Fields
@@ -261,7 +261,7 @@ local product = client:product(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:product():create({
+local result, err = client:Product():create({
 })
 ```
 
@@ -270,7 +270,7 @@ local result, err = client:product():create({
 List entities matching the given criteria. Returns an array.
 
 ```lua
-local results, err = client:product():list()
+local results, err = client:Product():list()
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
@@ -278,7 +278,7 @@ local results, err = client:product():list()
 Load a single entity matching the given criteria.
 
 ```lua
-local result, err = client:product():load({ id = "product_id" })
+local result, err = client:Product():load({ id = "product_id" })
 ```
 
 #### `remove(reqmatch, ctrl) -> any, err`
@@ -286,7 +286,7 @@ local result, err = client:product():load({ id = "product_id" })
 Remove the entity matching the given criteria.
 
 ```lua
-local result, err = client:product():remove({ id = "product_id" })
+local result, err = client:Product():remove({ id = "product_id" })
 ```
 
 #### `update(reqdata, ctrl) -> any, err`
@@ -294,7 +294,7 @@ local result, err = client:product():remove({ id = "product_id" })
 Update an existing entity. The data must include the entity `id`.
 
 ```lua
-local result, err = client:product():update({
+local result, err = client:Product():update({
   id = "product_id",
   -- Fields to update
 })
@@ -333,7 +333,7 @@ Return the entity name.
 ## UserEntity
 
 ```lua
-local user = client:user(nil)
+local user = client:User(nil)
 ```
 
 ### Fields
@@ -352,7 +352,7 @@ local user = client:user(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:user():create({
+local result, err = client:User():create({
 })
 ```
 
@@ -361,7 +361,7 @@ local result, err = client:user():create({
 List entities matching the given criteria. Returns an array.
 
 ```lua
-local results, err = client:user():list()
+local results, err = client:User():list()
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
@@ -369,7 +369,7 @@ local results, err = client:user():list()
 Load a single entity matching the given criteria.
 
 ```lua
-local result, err = client:user():load({ id = "user_id" })
+local result, err = client:User():load({ id = "user_id" })
 ```
 
 #### `remove(reqmatch, ctrl) -> any, err`
@@ -377,7 +377,7 @@ local result, err = client:user():load({ id = "user_id" })
 Remove the entity matching the given criteria.
 
 ```lua
-local result, err = client:user():remove({ id = "user_id" })
+local result, err = client:User():remove({ id = "user_id" })
 ```
 
 #### `update(reqdata, ctrl) -> any, err`
@@ -385,7 +385,7 @@ local result, err = client:user():remove({ id = "user_id" })
 Update an existing entity. The data must include the entity `id`.
 
 ```lua
-local result, err = client:user():update({
+local result, err = client:User():update({
   id = "user_id",
   -- Fields to update
 })

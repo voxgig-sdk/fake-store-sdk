@@ -4,143 +4,127 @@
 # params (op.<name>.points[].args.params[]). Field/param types come from the
 # canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 # @voxgig/apidef VALID_CANON). Do not edit by hand.
+#
+# These are TypedDicts, not dataclasses: the SDK ops return/accept plain dicts
+# at runtime, and a TypedDict IS a dict shape, so the types match the runtime.
+# Optional (req:false) keys are modelled as TypedDict key-optionality
+# (total=False), split into a required base + total=False subclass when a type
+# has both required and optional keys.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Optional, Any
+from typing import TypedDict, Any
 
 
-@dataclass
-class Cart:
-    id: Optional[int] = None
-    product: Optional[list] = None
-    user_id: Optional[int] = None
+class Cart(TypedDict, total=False):
+    id: int
+    product: list
+    user_id: int
 
 
-@dataclass
-class CartLoadMatch:
+class CartLoadMatch(TypedDict):
     id: int
 
 
-@dataclass
-class CartListMatch:
-    id: Optional[int] = None
-    product: Optional[list] = None
-    user_id: Optional[int] = None
+class CartListMatch(TypedDict, total=False):
+    id: int
+    product: list
+    user_id: int
 
 
-@dataclass
-class CartCreateData:
-    id: Optional[int] = None
-    product: Optional[list] = None
-    user_id: Optional[int] = None
+class CartCreateData(TypedDict, total=False):
+    id: int
+    product: list
+    user_id: int
 
 
-@dataclass
-class CartUpdateData:
+class CartUpdateData(TypedDict):
     id: int
 
 
-@dataclass
-class CartRemoveMatch:
+class CartRemoveMatch(TypedDict):
     id: int
 
 
-@dataclass
-class Login:
-    password: Optional[str] = None
-    token: Optional[str] = None
-    username: Optional[str] = None
+class Login(TypedDict, total=False):
+    password: str
+    token: str
+    username: str
 
 
-@dataclass
-class LoginCreateData:
-    password: Optional[str] = None
-    token: Optional[str] = None
-    username: Optional[str] = None
+class LoginCreateData(TypedDict, total=False):
+    password: str
+    token: str
+    username: str
 
 
-@dataclass
-class Product:
-    category: Optional[str] = None
-    description: Optional[str] = None
-    id: Optional[int] = None
-    image: Optional[str] = None
-    price: Optional[float] = None
-    title: Optional[str] = None
+class Product(TypedDict, total=False):
+    category: str
+    description: str
+    id: int
+    image: str
+    price: float
+    title: str
 
 
-@dataclass
-class ProductLoadMatch:
+class ProductLoadMatch(TypedDict):
     id: int
 
 
-@dataclass
-class ProductListMatch:
-    category: Optional[str] = None
-    description: Optional[str] = None
-    id: Optional[int] = None
-    image: Optional[str] = None
-    price: Optional[float] = None
-    title: Optional[str] = None
+class ProductListMatch(TypedDict, total=False):
+    category: str
+    description: str
+    id: int
+    image: str
+    price: float
+    title: str
 
 
-@dataclass
-class ProductCreateData:
-    category: Optional[str] = None
-    description: Optional[str] = None
-    id: Optional[int] = None
-    image: Optional[str] = None
-    price: Optional[float] = None
-    title: Optional[str] = None
+class ProductCreateData(TypedDict, total=False):
+    category: str
+    description: str
+    id: int
+    image: str
+    price: float
+    title: str
 
 
-@dataclass
-class ProductUpdateData:
+class ProductUpdateData(TypedDict):
     id: int
 
 
-@dataclass
-class ProductRemoveMatch:
+class ProductRemoveMatch(TypedDict):
     id: int
 
 
-@dataclass
-class User:
-    email: Optional[str] = None
-    id: Optional[int] = None
-    password: Optional[str] = None
-    username: Optional[str] = None
+class User(TypedDict, total=False):
+    email: str
+    id: int
+    password: str
+    username: str
 
 
-@dataclass
-class UserLoadMatch:
+class UserLoadMatch(TypedDict):
     id: int
 
 
-@dataclass
-class UserListMatch:
-    email: Optional[str] = None
-    id: Optional[int] = None
-    password: Optional[str] = None
-    username: Optional[str] = None
+class UserListMatch(TypedDict, total=False):
+    email: str
+    id: int
+    password: str
+    username: str
 
 
-@dataclass
-class UserCreateData:
-    email: Optional[str] = None
-    id: Optional[int] = None
-    password: Optional[str] = None
-    username: Optional[str] = None
+class UserCreateData(TypedDict, total=False):
+    email: str
+    id: int
+    password: str
+    username: str
 
 
-@dataclass
-class UserUpdateData:
+class UserUpdateData(TypedDict):
     id: int
 
 
-@dataclass
-class UserRemoveMatch:
+class UserRemoveMatch(TypedDict):
     id: int
-

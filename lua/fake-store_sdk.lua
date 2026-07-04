@@ -244,8 +244,9 @@ end
 
 
 
--- Idiomatic facade: client:cart():list() / client:cart():load({ id = ... })
-function FakeStoreSDK:cart(data)
+-- Idiomatic facade: client:Cart():list() / client:Cart():load({ id = ... })
+-- Entity access is capitalised (PascalCase) for parity with the other SDKs.
+function FakeStoreSDK:Cart(data)
   local EntityMod = require("entity.cart_entity")
   if data == nil then
     if self._cart == nil then
@@ -256,15 +257,10 @@ function FakeStoreSDK:cart(data)
   return EntityMod.new(self, data)
 end
 
--- Deprecated: use client:cart() instead.
-function FakeStoreSDK:Cart(data)
-  local EntityMod = require("entity.cart_entity")
-  return EntityMod.new(self, data)
-end
 
-
--- Idiomatic facade: client:login():list() / client:login():load({ id = ... })
-function FakeStoreSDK:login(data)
+-- Idiomatic facade: client:Login():list() / client:Login():load({ id = ... })
+-- Entity access is capitalised (PascalCase) for parity with the other SDKs.
+function FakeStoreSDK:Login(data)
   local EntityMod = require("entity.login_entity")
   if data == nil then
     if self._login == nil then
@@ -275,15 +271,10 @@ function FakeStoreSDK:login(data)
   return EntityMod.new(self, data)
 end
 
--- Deprecated: use client:login() instead.
-function FakeStoreSDK:Login(data)
-  local EntityMod = require("entity.login_entity")
-  return EntityMod.new(self, data)
-end
 
-
--- Idiomatic facade: client:product():list() / client:product():load({ id = ... })
-function FakeStoreSDK:product(data)
+-- Idiomatic facade: client:Product():list() / client:Product():load({ id = ... })
+-- Entity access is capitalised (PascalCase) for parity with the other SDKs.
+function FakeStoreSDK:Product(data)
   local EntityMod = require("entity.product_entity")
   if data == nil then
     if self._product == nil then
@@ -294,15 +285,10 @@ function FakeStoreSDK:product(data)
   return EntityMod.new(self, data)
 end
 
--- Deprecated: use client:product() instead.
-function FakeStoreSDK:Product(data)
-  local EntityMod = require("entity.product_entity")
-  return EntityMod.new(self, data)
-end
 
-
--- Idiomatic facade: client:user():list() / client:user():load({ id = ... })
-function FakeStoreSDK:user(data)
+-- Idiomatic facade: client:User():list() / client:User():load({ id = ... })
+-- Entity access is capitalised (PascalCase) for parity with the other SDKs.
+function FakeStoreSDK:User(data)
   local EntityMod = require("entity.user_entity")
   if data == nil then
     if self._user == nil then
@@ -310,12 +296,6 @@ function FakeStoreSDK:user(data)
     end
     return self._user
   end
-  return EntityMod.new(self, data)
-end
-
--- Deprecated: use client:user() instead.
-function FakeStoreSDK:User(data)
-  local EntityMod = require("entity.user_entity")
   return EntityMod.new(self, data)
 end
 

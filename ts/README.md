@@ -28,45 +28,48 @@ import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
 const client = new FakeStoreSDK()
 ```
 
-### 2. List carts
+### 2. List cart records
+
+`list()` resolves to an array of Cart objects — iterate it directly:
 
 ```ts
-const result = await client.cart.list()
+const carts = await client.Cart().list()
 
-if (result.ok) {
-  for (const item of result.data) {
-    console.log(item.id, item.name)
-  }
+for (const cart of carts) {
+  console.log(cart)
 }
 ```
 
 ### 3. Load a cart
 
-```ts
-const result = await client.cart.load({ id: 'example_id' })
+`load()` returns the entity directly and throws on failure:
 
-if (result.ok) {
-  console.log(result.data)
+```ts
+try {
+  const cart = await client.Cart().load({ id: 'example_id' })
+  console.log(cart)
+} catch (err) {
+  console.error('load failed:', err)
 }
 ```
 
 ### 4. Create, update, and remove
 
 ```ts
-// Create
-const created = await client.cart.create({
+// Create — returns the created Cart
+const created = await client.Cart().create({
   name: 'Example',
 })
 
-// Update
-const updated = await client.cart.update({
-  id: created.data.id,
+// Update — the id comes straight off the returned entity
+const updated = await client.Cart().update({
+  id: created.id,
   name: 'Example-Renamed',
 })
 
 // Remove
-const removed = await client.cart.remove({
-  id: created.data.id,
+await client.Cart().remove({
+  id: created.id,
 })
 ```
 
@@ -84,6 +87,9 @@ const result = await client.direct({
   params: { id: 'example' },
 })
 
+if (result instanceof Error) {
+  throw result
+}
 if (result.ok) {
   console.log(result.status)  // 200
   console.log(result.data)    // response body
@@ -112,9 +118,9 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = FakeStoreSDK.test()
 
-const result = await client.cart.load({ id: 'test01' })
-// result.ok === true
-// result.data contains mock response data
+const cart = await client.Cart().load({ id: 'test01' })
+// cart is a bare entity populated with mock response data
+console.log(cart)
 ```
 
 You can also use the instance method:
@@ -129,7 +135,7 @@ const testClient = client.tester()
 Entity instances remember their last match and data:
 
 ```ts
-const entity = client.cart
+const entity = client.Cart()
 
 // First call sets internal match
 await entity.load({ id: 'example' })
@@ -210,7 +216,7 @@ new FakeStoreSDK(options?: {
 | `Cart(data?)` | `CartEntity` | Create a Cart entity instance. |
 | `Login(data?)` | `LoginEntity` | Create a Login entity instance. |
 | `Product(data?)` | `ProductEntity` | Create a Product entity instance. |
-| `User(data?)` | `UserEntity` | Create a User entity instance. |
+| `User(data?)` | `UserEntity` | Create an User entity instance. |
 | `tester(testopts?, sdkopts?)` | `FakeStoreSDK` | Create a test-mode client instance. |
 
 #### Static methods
@@ -227,29 +233,30 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `load(reqmatch?, ctrl?): Promise<Result>` | Load a single entity by match criteria. |
-| `list` | `list(reqmatch?, ctrl?): Promise<Result>` | List entities matching the criteria. |
-| `create` | `create(reqdata?, ctrl?): Promise<Result>` | Create a new entity. |
-| `update` | `update(reqdata?, ctrl?): Promise<Result>` | Update an existing entity. |
-| `remove` | `remove(reqmatch?, ctrl?): Promise<Result>` | Remove an entity. |
+| `load` | `load(reqmatch?, ctrl?): Promise<Entity>` | Load a single entity by match criteria. |
+| `list` | `list(reqmatch?, ctrl?): Promise<Entity[]>` | List entities matching the criteria. |
+| `create` | `create(reqdata?, ctrl?): Promise<Entity>` | Create a new entity. |
+| `update` | `update(reqdata?, ctrl?): Promise<Entity>` | Update an existing entity. |
+| `remove` | `remove(reqmatch?, ctrl?): Promise<void>` | Remove an entity. |
 | `data` | `data(data?): any` | Get or set entity data. |
 | `match` | `match(match?): any` | Get or set entity match criteria. |
 | `make` | `make(): Entity` | Create a new instance with the same options. |
 | `client` | `client(): FakeStoreSDK` | Return the parent SDK client. |
 | `entopts` | `entopts(): object` | Return a copy of the entity options. |
 
-#### Result shape
+#### Return values
 
-All entity operations return a Result object:
+Entity operations resolve to the entity data directly — there is no
+result envelope:
 
-```ts
-{
-  ok: boolean      // true if the HTTP status is 2xx
-  status: number   // HTTP status code
-  headers: object  // response headers
-  data: any        // parsed JSON response body
-}
-```
+- `load`, `create` and `update` resolve to a single entity object.
+- `list` resolves to an **array** of entity objects (iterate it directly;
+  there is no `.data` and no `.ok`).
+- `remove` resolves to `void`.
+
+On a failed request these methods **throw**, so wrap calls in
+`try`/`catch` to handle errors. Only `direct()` returns the result
+envelope described below.
 
 ### DirectResult shape
 
@@ -340,7 +347,7 @@ API path: `/users`
 
 ### Cart
 
-Create an instance: `const cart = client.cart`
+Create an instance: `const cart = client.Cart()`
 
 #### Operations
 
@@ -363,26 +370,26 @@ Create an instance: `const cart = client.cart`
 #### Example: Load
 
 ```ts
-const cart = await client.cart.load({ id: 'cart_id' })
+const cart = await client.Cart().load({ id: 'cart_id' })
 ```
 
 #### Example: List
 
 ```ts
-const carts = await client.cart.list()
+const carts = await client.Cart().list()
 ```
 
 #### Example: Create
 
 ```ts
-const cart = await client.cart.create({
+const cart = await client.Cart().create({
 })
 ```
 
 
 ### Login
 
-Create an instance: `const login = client.login`
+Create an instance: `const login = client.Login()`
 
 #### Operations
 
@@ -401,14 +408,14 @@ Create an instance: `const login = client.login`
 #### Example: Create
 
 ```ts
-const login = await client.login.create({
+const login = await client.Login().create({
 })
 ```
 
 
 ### Product
 
-Create an instance: `const product = client.product`
+Create an instance: `const product = client.Product()`
 
 #### Operations
 
@@ -434,26 +441,26 @@ Create an instance: `const product = client.product`
 #### Example: Load
 
 ```ts
-const product = await client.product.load({ id: 'product_id' })
+const product = await client.Product().load({ id: 'product_id' })
 ```
 
 #### Example: List
 
 ```ts
-const products = await client.product.list()
+const products = await client.Product().list()
 ```
 
 #### Example: Create
 
 ```ts
-const product = await client.product.create({
+const product = await client.Product().create({
 })
 ```
 
 
 ### User
 
-Create an instance: `const user = client.user`
+Create an instance: `const user = client.User()`
 
 #### Operations
 
@@ -477,19 +484,19 @@ Create an instance: `const user = client.user`
 #### Example: Load
 
 ```ts
-const user = await client.user.load({ id: 'user_id' })
+const user = await client.User().load({ id: 'user_id' })
 ```
 
 #### Example: List
 
 ```ts
-const users = await client.user.list()
+const users = await client.User().list()
 ```
 
 #### Example: Create
 
 ```ts
-const user = await client.user.create({
+const user = await client.User().create({
 })
 ```
 
@@ -561,7 +568,7 @@ stores the returned data and match criteria internally. Subsequent
 calls on the same instance can rely on this state.
 
 ```ts
-const cart = client.cart
+const cart = client.Cart()
 await cart.load({ id: "example_id" })
 
 // cart.data() now returns the loaded cart data

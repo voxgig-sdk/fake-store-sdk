@@ -26,9 +26,11 @@ import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
 
 const client = new FakeStoreSDK()
 
-// List all carts
-const carts = await client.cart.list()
-console.log(carts.data)
+// List all carts (returns Cart[])
+const carts = await client.Cart().list()
+for (const cart of carts) {
+  console.log(cart)
+}
 ```
 
 See the [TypeScript README](ts/README.md) for the full guide.
@@ -86,12 +88,13 @@ from fakestore_sdk import FakeStoreSDK
 
 client = FakeStoreSDK()
 
-# List all carts
-carts = client.cart.list()
-print(carts)
+# List all carts (returns a list, raises on error)
+carts = client.Cart().list({})
+for cart in carts:
+    print(cart)
 
-# Load a specific cart
-cart = client.cart.load({"id": "example_id"})
+# Load a specific cart (returns the record, raises on error)
+cart = client.Cart().load({"id": "example_id"})
 print(cart)
 ```
 
@@ -103,12 +106,12 @@ require_once 'fakestore_sdk.php';
 
 $client = new FakeStoreSDK();
 
-// List all carts (throws on error)
-$carts = $client->cart()->list();
+// List all carts (returns an array; throws on error)
+$carts = $client->Cart()->list();
 print_r($carts);
 
-// Load a specific cart
-$cart = $client->cart()->load(["id" => "example_id"]);
+// Load a specific cart (returns the bare record; throws on error)
+$cart = $client->Cart()->load(["id" => "example_id"]);
 print_r($cart);
 ```
 
@@ -131,12 +134,12 @@ require_relative "FakeStore_sdk"
 
 client = FakeStoreSDK.new
 
-# List all carts
-carts = client.cart.list
+# List all carts (returns an Array; raises on error)
+carts = client.Cart.list
 puts carts
 
-# Load a specific cart
-cart = client.cart.load({ "id" => "example_id" })
+# Load a specific cart (returns the bare record; raises on error)
+cart = client.Cart.load({ "id" => "example_id" })
 puts cart
 ```
 
@@ -148,11 +151,11 @@ local sdk = require("fake-store_sdk")
 local client = sdk.new()
 
 -- List all carts
-local carts, err = client:cart():list()
+local carts, err = client:Cart():list()
 print(carts)
 
 -- Load a specific cart
-local cart, err = client:cart():load({ id = "example_id" })
+local cart, err = client:Cart():load({ id = "example_id" })
 print(cart)
 ```
 
@@ -165,22 +168,27 @@ in-memory mock, so unit tests run offline.
 
 ```ts
 const client = FakeStoreSDK.test()
-const result = await client.cart.load({ id: 'test01' })
-// result.ok === true, result.data contains mock data
+const cart = await client.Cart().load({ id: 1 })
+// cart is a bare Cart populated with mock data
+console.log(cart)
 ```
 
 ### Python
 
 ```python
 client = FakeStoreSDK.test()
-result = client.cart.load({"id": "test01"})
+cart = client.Cart().load({"id": "test01"})
+print(cart)
 ```
 
 ### PHP
 
 ```php
-$client = FakeStoreSDK::test();
-$result = $client->cart()->load(["id" => "test01"]);
+// Seed fixture data so offline calls resolve without a live server.
+$client = FakeStoreSDK::test([
+    "entity" => ["cart" => ["test01" => ["id" => "test01"]]],
+]);
+$cart = $client->Cart()->load(["id" => "test01"]);
 ```
 
 ### Golang
@@ -195,15 +203,18 @@ result, err := client.Cart(nil).Load(
 ### Ruby
 
 ```ruby
-client = FakeStoreSDK.test
-result = client.cart.load({ "id" => "test01" })
+# Seed fixture data so offline calls resolve without a live server.
+client = FakeStoreSDK.test({
+  "entity" => { "cart" => { "test01" => { "id" => "test01" } } },
+})
+cart = client.Cart.load({ "id" => "test01" })
 ```
 
 ### Lua
 
 ```lua
 local client = sdk.test()
-local result, err = client:cart():load({ id = "test01" })
+local result, err = client:Cart():load({ id = "test01" })
 ```
 
 ## How it works
@@ -251,6 +262,9 @@ const result = await client.direct({
   method: 'GET',
   params: { id: 'example' },
 })
+if (result instanceof Error) {
+  throw result
+}
 console.log(result.data)
 ```
 
