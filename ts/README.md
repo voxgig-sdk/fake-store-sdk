@@ -9,9 +9,12 @@ The TypeScript SDK for the FakeStore API — a type-safe, entity-oriented client
 
 
 ## Install
-```bash
-npm install @voxgig-sdk/fake-store
-```
+This package is not yet published to npm. Install it from the GitHub
+release tag (`ts/vX.Y.Z`):
+
+- Releases: [https://github.com/voxgig-sdk/fake-store-sdk/releases](https://github.com/voxgig-sdk/fake-store-sdk/releases)
+
+
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
@@ -20,17 +23,15 @@ loading a specific record.
 ### 1. Create a client
 
 ```ts
-import { FakeStoreSDK } from 'fake-store'
+import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
 
-const client = new FakeStoreSDK({
-  apikey: process.env.FAKE-STORE_APIKEY,
-})
+const client = new FakeStoreSDK()
 ```
 
 ### 2. List carts
 
 ```ts
-const result = await client.Cart().list()
+const result = await client.cart.list()
 
 if (result.ok) {
   for (const item of result.data) {
@@ -42,7 +43,7 @@ if (result.ok) {
 ### 3. Load a cart
 
 ```ts
-const result = await client.Cart().load({ id: 'example_id' })
+const result = await client.cart.load({ id: 'example_id' })
 
 if (result.ok) {
   console.log(result.data)
@@ -53,18 +54,18 @@ if (result.ok) {
 
 ```ts
 // Create
-const created = await client.Cart().create({
+const created = await client.cart.create({
   name: 'Example',
 })
 
 // Update
-const updated = await client.Cart().update({
+const updated = await client.cart.update({
   id: created.data.id,
   name: 'Example-Renamed',
 })
 
 // Remove
-const removed = await client.Cart().remove({
+const removed = await client.cart.remove({
   id: created.data.id,
 })
 ```
@@ -111,7 +112,7 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = FakeStoreSDK.test()
 
-const result = await client.Planet().load({ id: 'test01' })
+const result = await client.cart.load({ id: 'test01' })
 // result.ok === true
 // result.data contains mock response data
 ```
@@ -119,7 +120,7 @@ const result = await client.Planet().load({ id: 'test01' })
 You can also use the instance method:
 
 ```ts
-const client = new FakeStoreSDK({ apikey: '...' })
+const client = new FakeStoreSDK()
 const testClient = client.tester()
 ```
 
@@ -128,7 +129,7 @@ const testClient = client.tester()
 Entity instances remember their last match and data:
 
 ```ts
-const entity = client.Planet()
+const entity = client.cart
 
 // First call sets internal match
 await entity.load({ id: 'example' })
@@ -155,7 +156,6 @@ const logger = {
 }
 
 const client = new FakeStoreSDK({
-  apikey: '...',
   extend: [logger],
 })
 ```
@@ -165,8 +165,7 @@ const client = new FakeStoreSDK({
 Create a `.env.local` file at the project root:
 
 ```
-FAKE-STORE_TEST_LIVE=TRUE
-FAKE-STORE_APIKEY=<your-key>
+FAKE_STORE_TEST_LIVE=TRUE
 ```
 
 Then run:
@@ -184,7 +183,6 @@ cd ts && npm test
 
 ```ts
 new FakeStoreSDK(options?: {
-  apikey?: string
   base?: string
   prefix?: string
   suffix?: string
@@ -195,7 +193,6 @@ new FakeStoreSDK(options?: {
 
 | Option | Type | Description |
 | --- | --- | --- |
-| `apikey` | `string` | API key for authentication. |
 | `base` | `string` | Base URL of the API server. |
 | `prefix` | `string` | URL path prefix prepended to all requests. |
 | `suffix` | `string` | URL path suffix appended to all requests. |
@@ -343,7 +340,7 @@ API path: `/users`
 
 ### Cart
 
-Create an instance: `const cart = client.Cart()`
+Create an instance: `const cart = client.cart`
 
 #### Operations
 
@@ -366,26 +363,26 @@ Create an instance: `const cart = client.Cart()`
 #### Example: Load
 
 ```ts
-const cart = await client.Cart().load({ id: 'cart_id' })
+const cart = await client.cart.load({ id: 'cart_id' })
 ```
 
 #### Example: List
 
 ```ts
-const carts = await client.Cart().list()
+const carts = await client.cart.list()
 ```
 
 #### Example: Create
 
 ```ts
-const cart = await client.Cart().create({
+const cart = await client.cart.create({
 })
 ```
 
 
 ### Login
 
-Create an instance: `const login = client.Login()`
+Create an instance: `const login = client.login`
 
 #### Operations
 
@@ -404,14 +401,14 @@ Create an instance: `const login = client.Login()`
 #### Example: Create
 
 ```ts
-const login = await client.Login().create({
+const login = await client.login.create({
 })
 ```
 
 
 ### Product
 
-Create an instance: `const product = client.Product()`
+Create an instance: `const product = client.product`
 
 #### Operations
 
@@ -437,26 +434,26 @@ Create an instance: `const product = client.Product()`
 #### Example: Load
 
 ```ts
-const product = await client.Product().load({ id: 'product_id' })
+const product = await client.product.load({ id: 'product_id' })
 ```
 
 #### Example: List
 
 ```ts
-const products = await client.Product().list()
+const products = await client.product.list()
 ```
 
 #### Example: Create
 
 ```ts
-const product = await client.Product().create({
+const product = await client.product.create({
 })
 ```
 
 
 ### User
 
-Create an instance: `const user = client.User()`
+Create an instance: `const user = client.user`
 
 #### Operations
 
@@ -480,19 +477,19 @@ Create an instance: `const user = client.User()`
 #### Example: Load
 
 ```ts
-const user = await client.User().load({ id: 'user_id' })
+const user = await client.user.load({ id: 'user_id' })
 ```
 
 #### Example: List
 
 ```ts
-const users = await client.User().list()
+const users = await client.user.list()
 ```
 
 #### Example: Create
 
 ```ts
-const user = await client.User().create({
+const user = await client.user.create({
 })
 ```
 
@@ -554,7 +551,7 @@ fake-store/
 Import the SDK from the package root:
 
 ```ts
-import { FakeStoreSDK } from 'fake-store'
+import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
 ```
 
 ### Entity state
@@ -564,11 +561,11 @@ stores the returned data and match criteria internally. Subsequent
 calls on the same instance can rely on this state.
 
 ```ts
-const moon = client.Moon()
-await moon.load({ planet_id: 'earth', id: 'luna' })
+const cart = client.cart
+await cart.load({ id: "example_id" })
 
-// moon.data() now returns the loaded moon data
-// moon.match() returns { planet_id: 'earth', id: 'luna' }
+// cart.data() now returns the loaded cart data
+// cart.match() returns { id: "example_id" }
 ```
 
 Call `make()` to create a fresh instance with the same configuration

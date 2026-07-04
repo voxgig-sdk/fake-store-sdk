@@ -244,24 +244,76 @@ end
 
 
 
+-- Idiomatic facade: client:cart():list() / client:cart():load({ id = ... })
+function FakeStoreSDK:cart(data)
+  local EntityMod = require("entity.cart_entity")
+  if data == nil then
+    if self._cart == nil then
+      self._cart = EntityMod.new(self, nil)
+    end
+    return self._cart
+  end
+  return EntityMod.new(self, data)
+end
+
+-- Deprecated: use client:cart() instead.
 function FakeStoreSDK:Cart(data)
   local EntityMod = require("entity.cart_entity")
   return EntityMod.new(self, data)
 end
 
 
+-- Idiomatic facade: client:login():list() / client:login():load({ id = ... })
+function FakeStoreSDK:login(data)
+  local EntityMod = require("entity.login_entity")
+  if data == nil then
+    if self._login == nil then
+      self._login = EntityMod.new(self, nil)
+    end
+    return self._login
+  end
+  return EntityMod.new(self, data)
+end
+
+-- Deprecated: use client:login() instead.
 function FakeStoreSDK:Login(data)
   local EntityMod = require("entity.login_entity")
   return EntityMod.new(self, data)
 end
 
 
+-- Idiomatic facade: client:product():list() / client:product():load({ id = ... })
+function FakeStoreSDK:product(data)
+  local EntityMod = require("entity.product_entity")
+  if data == nil then
+    if self._product == nil then
+      self._product = EntityMod.new(self, nil)
+    end
+    return self._product
+  end
+  return EntityMod.new(self, data)
+end
+
+-- Deprecated: use client:product() instead.
 function FakeStoreSDK:Product(data)
   local EntityMod = require("entity.product_entity")
   return EntityMod.new(self, data)
 end
 
 
+-- Idiomatic facade: client:user():list() / client:user():load({ id = ... })
+function FakeStoreSDK:user(data)
+  local EntityMod = require("entity.user_entity")
+  if data == nil then
+    if self._user == nil then
+      self._user = EntityMod.new(self, nil)
+    end
+    return self._user
+  end
+  return EntityMod.new(self, data)
+end
+
+-- Deprecated: use client:user() instead.
 function FakeStoreSDK:User(data)
   local EntityMod = require("entity.user_entity")
   return EntityMod.new(self, data)

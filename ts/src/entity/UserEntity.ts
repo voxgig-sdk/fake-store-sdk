@@ -14,9 +14,17 @@ import type {
   Control,
 } from '../types'
 
+import type {
+  User,
+  UserLoadMatch,
+  UserListMatch,
+  UserCreateData,
+  UserUpdateData,
+  UserRemoveMatch,
+} from '../FakeStoreTypes'
 
 // TODO: needs Entity superclass
-class UserEntity extends FakeStoreEntityBase {
+class UserEntity extends FakeStoreEntityBase<User> {
 
   constructor(client: FakeStoreSDK, entopts: any) {
     super(client, entopts)
@@ -32,7 +40,7 @@ class UserEntity extends FakeStoreEntityBase {
 
 
 
-  async load(this: any, reqmatch?: any, ctrl?: Control) {
+  async load(this: any, reqmatch?: UserLoadMatch, ctrl?: Control): Promise<User> {
 
     const utility = this._utility
 
@@ -136,14 +144,16 @@ class UserEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<User> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async list(this: any, reqmatch?: any, ctrl?: Control) {
+  async list(this: any, reqmatch?: UserListMatch, ctrl?: Control): Promise<User[]> {
 
     const utility = this._utility
 
@@ -243,14 +253,16 @@ class UserEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<User[]> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async create(this: any, reqdata?: any, ctrl?: Control) {
+  async create(this: any, reqdata?: UserCreateData, ctrl?: Control): Promise<User> {
 
     const utility = this._utility
     const {
@@ -349,14 +361,16 @@ class UserEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<User> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async update(this: any, reqdata?: any, ctrl?: Control) {
+  async update(this: any, reqdata?: UserUpdateData, ctrl?: Control): Promise<User> {
 
     const utility = this._utility
 
@@ -461,14 +475,16 @@ class UserEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<User> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async remove(this: any, reqmatch?: any, ctrl?: Control) {
+  async remove(this: any, reqmatch?: UserRemoveMatch, ctrl?: Control): Promise<User> {
 
     const utility = this._utility
 
@@ -573,7 +589,9 @@ class UserEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<User> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }

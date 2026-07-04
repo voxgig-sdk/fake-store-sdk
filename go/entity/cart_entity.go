@@ -85,6 +85,27 @@ func (e *CartEntity) Match(args ...any) any {
 	return out
 }
 
+// DataTyped is the statically-typed accessor for this entity's data. With no
+// argument it returns the current data as an Cart; with an argument it
+// sets the data and returns the stored value. It delegates to the untyped Data
+// (identical runtime) and converts at the typed boundary.
+func (e *CartEntity) DataTyped(data ...Cart) Cart {
+	if len(data) > 0 {
+		return typedFrom[Cart](e.Data(asMap(data[0])))
+	}
+	return typedFrom[Cart](e.Data())
+}
+
+// MatchTyped mirrors DataTyped for the entity's match filter. The match is a
+// partial of the entity, so it round-trips through Cart (all fields
+// optional at the wire level).
+func (e *CartEntity) MatchTyped(match ...Cart) Cart {
+	if len(match) > 0 {
+		return typedFrom[Cart](e.Match(asMap(match[0])))
+	}
+	return typedFrom[Cart](e.Match())
+}
+
 
 func (e *CartEntity) Load(reqmatch map[string]any, ctrl map[string]any) (any, error) {
 	utility := e.utility
@@ -111,6 +132,17 @@ func (e *CartEntity) Load(reqmatch map[string]any, ctrl map[string]any) (any, er
 	})
 }
 
+// LoadTyped is the statically-typed variant of Load: it takes an
+// CartLoadMatch and returns an Cart. It delegates to the untyped
+// Load (identical runtime) and converts at the typed boundary.
+func (e *CartEntity) LoadTyped(reqmatch CartLoadMatch, ctrl map[string]any) (Cart, error) {
+	res, err := e.Load(asMap(reqmatch), ctrl)
+	if err != nil {
+		return Cart{}, err
+	}
+	return typedFrom[Cart](res), nil
+}
+
 
 
 
@@ -131,6 +163,17 @@ func (e *CartEntity) List(reqmatch map[string]any, ctrl map[string]any) (any, er
 			}
 		}
 	})
+}
+
+// ListTyped is the statically-typed variant of List: it takes an
+// CartListMatch and returns []Cart. It delegates to the untyped
+// List (identical runtime) and converts at the typed boundary.
+func (e *CartEntity) ListTyped(reqmatch CartListMatch, ctrl map[string]any) ([]Cart, error) {
+	res, err := e.List(asMap(reqmatch), ctrl)
+	if err != nil {
+		return nil, err
+	}
+	return typedSliceFrom[Cart](res), nil
 }
 
 
@@ -156,6 +199,17 @@ func (e *CartEntity) Create(reqdata map[string]any, ctrl map[string]any) (any, e
 			}
 		}
 	})
+}
+
+// CreateTyped is the statically-typed variant of Create: it takes an
+// CartCreateData and returns an Cart. It delegates to the untyped
+// Create (identical runtime) and converts at the typed boundary.
+func (e *CartEntity) CreateTyped(reqdata CartCreateData, ctrl map[string]any) (Cart, error) {
+	res, err := e.Create(asMap(reqdata), ctrl)
+	if err != nil {
+		return Cart{}, err
+	}
+	return typedFrom[Cart](res), nil
 }
 
 
@@ -186,6 +240,17 @@ func (e *CartEntity) Update(reqdata map[string]any, ctrl map[string]any) (any, e
 	})
 }
 
+// UpdateTyped is the statically-typed variant of Update: it takes an
+// CartUpdateData and returns an Cart. It delegates to the untyped
+// Update (identical runtime) and converts at the typed boundary.
+func (e *CartEntity) UpdateTyped(reqdata CartUpdateData, ctrl map[string]any) (Cart, error) {
+	res, err := e.Update(asMap(reqdata), ctrl)
+	if err != nil {
+		return Cart{}, err
+	}
+	return typedFrom[Cart](res), nil
+}
+
 
 
 
@@ -212,6 +277,17 @@ func (e *CartEntity) Remove(reqmatch map[string]any, ctrl map[string]any) (any, 
 			}
 		}
 	})
+}
+
+// RemoveTyped is the statically-typed variant of Remove: it takes an
+// CartRemoveMatch and returns an Cart. It delegates to the untyped
+// Remove (identical runtime) and converts at the typed boundary.
+func (e *CartEntity) RemoveTyped(reqmatch CartRemoveMatch, ctrl map[string]any) (Cart, error) {
+	res, err := e.Remove(asMap(reqmatch), ctrl)
+	if err != nil {
+		return Cart{}, err
+	}
+	return typedFrom[Cart](res), nil
 }
 
 

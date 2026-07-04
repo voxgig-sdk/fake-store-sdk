@@ -20,7 +20,6 @@ Create a new SDK client instance.
 | Name | Type | Description |
 | --- | --- | --- |
 | `options` | `Hash` | SDK configuration options. |
-| `options["apikey"]` | `String` | API key for authentication. |
 | `options["base"]` | `String` | Base URL for API requests. |
 | `options["prefix"]` | `String` | URL prefix appended after base. |
 | `options["suffix"]` | `String` | URL suffix appended after path. |
@@ -66,9 +65,11 @@ Return a deep copy of the current SDK options.
 
 Return a copy of the SDK utility object.
 
-#### `direct(fetchargs = {}) -> Hash, err`
+#### `direct(fetchargs = {}) -> Hash`
 
-Make a direct HTTP request to any API endpoint.
+Make a direct HTTP request to any API endpoint. Returns a result hash
+(`{ "ok" => ..., "status" => ..., "data" => ..., "err" => ... }`); it
+does not raise — inspect `result["ok"]`.
 
 **Parameters:**
 
@@ -82,14 +83,14 @@ Make a direct HTTP request to any API endpoint.
 | `fetchargs["body"]` | `any` | Request body (hashes are JSON-serialized). |
 | `fetchargs["ctrl"]` | `Hash` | Control options (e.g. `{ "explain" => true }`). |
 
-**Returns:** `Hash, err`
+**Returns:** `Hash`
 
-#### `prepare(fetchargs = {}) -> Hash, err`
+#### `prepare(fetchargs = {}) -> Hash`
 
 Prepare a fetch definition without sending the request. Accepts the
-same parameters as `direct()`.
+same parameters as `direct()`. Raises on error.
 
-**Returns:** `Hash, err`
+**Returns:** `Hash` (the fetch definition; raises on error)
 
 
 ---
@@ -97,7 +98,7 @@ same parameters as `direct()`.
 ## CartEntity
 
 ```ruby
-cart = client.Cart
+cart = client.cart
 ```
 
 ### Fields
@@ -110,45 +111,45 @@ cart = client.Cart
 
 ### Operations
 
-#### `create(reqdata, ctrl = nil) -> result, err`
+#### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Raises on error.
 
 ```ruby
-result, err = client.Cart.create({
+result = client.cart.create({
 })
 ```
 
-#### `list(reqmatch, ctrl = nil) -> result, err`
+#### `list(reqmatch, ctrl = nil) -> Array`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Returns an array. Raises on error.
 
 ```ruby
-results, err = client.Cart.list(nil)
+results = client.cart.list(nil)
 ```
 
-#### `load(reqmatch, ctrl = nil) -> result, err`
+#### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Raises on error.
 
 ```ruby
-result, err = client.Cart.load({ "id" => "cart_id" })
+result = client.cart.load({ "id" => "cart_id" })
 ```
 
-#### `remove(reqmatch, ctrl = nil) -> result, err`
+#### `remove(reqmatch, ctrl = nil) -> result`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Raises on error.
 
 ```ruby
-result, err = client.Cart.remove({ "id" => "cart_id" })
+result = client.cart.remove({ "id" => "cart_id" })
 ```
 
-#### `update(reqdata, ctrl = nil) -> result, err`
+#### `update(reqdata, ctrl = nil) -> result`
 
-Update an existing entity. The data must include the entity `id`.
+Update an existing entity. The data must include the entity `id`. Raises on error.
 
 ```ruby
-result, err = client.Cart.update({
+result = client.cart.update({
   "id" => "cart_id",
   # Fields to update
 })
@@ -187,7 +188,7 @@ Return the entity name.
 ## LoginEntity
 
 ```ruby
-login = client.Login
+login = client.login
 ```
 
 ### Fields
@@ -200,12 +201,12 @@ login = client.Login
 
 ### Operations
 
-#### `create(reqdata, ctrl = nil) -> result, err`
+#### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Raises on error.
 
 ```ruby
-result, err = client.Login.create({
+result = client.login.create({
 })
 ```
 
@@ -242,7 +243,7 @@ Return the entity name.
 ## ProductEntity
 
 ```ruby
-product = client.Product
+product = client.product
 ```
 
 ### Fields
@@ -258,45 +259,45 @@ product = client.Product
 
 ### Operations
 
-#### `create(reqdata, ctrl = nil) -> result, err`
+#### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Raises on error.
 
 ```ruby
-result, err = client.Product.create({
+result = client.product.create({
 })
 ```
 
-#### `list(reqmatch, ctrl = nil) -> result, err`
+#### `list(reqmatch, ctrl = nil) -> Array`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Returns an array. Raises on error.
 
 ```ruby
-results, err = client.Product.list(nil)
+results = client.product.list(nil)
 ```
 
-#### `load(reqmatch, ctrl = nil) -> result, err`
+#### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Raises on error.
 
 ```ruby
-result, err = client.Product.load({ "id" => "product_id" })
+result = client.product.load({ "id" => "product_id" })
 ```
 
-#### `remove(reqmatch, ctrl = nil) -> result, err`
+#### `remove(reqmatch, ctrl = nil) -> result`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Raises on error.
 
 ```ruby
-result, err = client.Product.remove({ "id" => "product_id" })
+result = client.product.remove({ "id" => "product_id" })
 ```
 
-#### `update(reqdata, ctrl = nil) -> result, err`
+#### `update(reqdata, ctrl = nil) -> result`
 
-Update an existing entity. The data must include the entity `id`.
+Update an existing entity. The data must include the entity `id`. Raises on error.
 
 ```ruby
-result, err = client.Product.update({
+result = client.product.update({
   "id" => "product_id",
   # Fields to update
 })
@@ -335,7 +336,7 @@ Return the entity name.
 ## UserEntity
 
 ```ruby
-user = client.User
+user = client.user
 ```
 
 ### Fields
@@ -349,45 +350,45 @@ user = client.User
 
 ### Operations
 
-#### `create(reqdata, ctrl = nil) -> result, err`
+#### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Raises on error.
 
 ```ruby
-result, err = client.User.create({
+result = client.user.create({
 })
 ```
 
-#### `list(reqmatch, ctrl = nil) -> result, err`
+#### `list(reqmatch, ctrl = nil) -> Array`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Returns an array. Raises on error.
 
 ```ruby
-results, err = client.User.list(nil)
+results = client.user.list(nil)
 ```
 
-#### `load(reqmatch, ctrl = nil) -> result, err`
+#### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Raises on error.
 
 ```ruby
-result, err = client.User.load({ "id" => "user_id" })
+result = client.user.load({ "id" => "user_id" })
 ```
 
-#### `remove(reqmatch, ctrl = nil) -> result, err`
+#### `remove(reqmatch, ctrl = nil) -> result`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Raises on error.
 
 ```ruby
-result, err = client.User.remove({ "id" => "user_id" })
+result = client.user.remove({ "id" => "user_id" })
 ```
 
-#### `update(reqdata, ctrl = nil) -> result, err`
+#### `update(reqdata, ctrl = nil) -> result`
 
-Update an existing entity. The data must include the entity `id`.
+Update an existing entity. The data must include the entity `id`. Raises on error.
 
 ```ruby
-result, err = client.User.update({
+result = client.user.update({
   "id" => "user_id",
   # Fields to update
 })

@@ -45,6 +45,7 @@ class UserEntity
     end
   end
 
+  # @return [User, Hash] the current User data
   def data_get
     @_utility.feature_hook.call(@_entctx, "GetData")
     VoxgigStruct.clone(@_data)
@@ -57,12 +58,18 @@ class UserEntity
     end
   end
 
+  # @return [Hash] the current match filter (any subset of User fields)
   def match_get
     @_utility.feature_hook.call(@_entctx, "GetMatch")
     VoxgigStruct.clone(@_match)
   end
 
   
+  # Load a single User.
+  #
+  # @param reqmatch [UserLoadMatch, Hash, nil] match criteria (id/query fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [User, Hash] the loaded User; raises FakeStoreError on failure
   def load(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -86,6 +93,11 @@ class UserEntity
 
 
   
+  # List User items matching the given filter.
+  #
+  # @param reqmatch [UserListMatch, Hash, nil] match filter (any subset of User fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Array<User>, Array] the matching User items; raises FakeStoreError on failure
   def list(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -106,6 +118,11 @@ class UserEntity
 
 
   
+  # Create a new User.
+  #
+  # @param reqdata [UserCreateData, Hash, nil] body data
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [User, Hash] the created User; raises FakeStoreError on failure
   def create(reqdata, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -128,6 +145,11 @@ class UserEntity
 
 
   
+  # Update an existing User.
+  #
+  # @param reqdata [UserUpdateData, Hash, nil] body data
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [User, Hash] the updated User; raises FakeStoreError on failure
   def update(reqdata, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -151,6 +173,11 @@ class UserEntity
 
 
   
+  # Remove an User matching the given criteria.
+  #
+  # @param reqmatch [UserRemoveMatch, Hash, nil] match criteria (id/query fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [User, Hash] the removed User; raises FakeStoreError on failure
   def remove(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({

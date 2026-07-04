@@ -5,6 +5,8 @@ import { LoginEntity } from './entity/LoginEntity'
 import { ProductEntity } from './entity/ProductEntity'
 import { UserEntity } from './entity/UserEntity'
 
+export type * from './FakeStoreTypes'
+
 
 import { inspect } from 'node:util'
 
@@ -205,24 +207,56 @@ class FakeStoreSDK {
 
 
 
+  _cart?: CartEntity
+
+  // Idiomatic facade: `client.cart.list()` / `client.cart.load({ id })`.
+  get cart(): CartEntity {
+    return (this._cart ??= new CartEntity(this, undefined))
+  }
+
+  /** @deprecated Use `client.cart` instead. */
   Cart(data?: any) {
     const self = this
     return new CartEntity(self,data)
   }
 
 
+  _login?: LoginEntity
+
+  // Idiomatic facade: `client.login.list()` / `client.login.load({ id })`.
+  get login(): LoginEntity {
+    return (this._login ??= new LoginEntity(this, undefined))
+  }
+
+  /** @deprecated Use `client.login` instead. */
   Login(data?: any) {
     const self = this
     return new LoginEntity(self,data)
   }
 
 
+  _product?: ProductEntity
+
+  // Idiomatic facade: `client.product.list()` / `client.product.load({ id })`.
+  get product(): ProductEntity {
+    return (this._product ??= new ProductEntity(this, undefined))
+  }
+
+  /** @deprecated Use `client.product` instead. */
   Product(data?: any) {
     const self = this
     return new ProductEntity(self,data)
   }
 
 
+  _user?: UserEntity
+
+  // Idiomatic facade: `client.user.list()` / `client.user.load({ id })`.
+  get user(): UserEntity {
+    return (this._user ??= new UserEntity(this, undefined))
+  }
+
+  /** @deprecated Use `client.user` instead. */
   User(data?: any) {
     const self = this
     return new UserEntity(self,data)

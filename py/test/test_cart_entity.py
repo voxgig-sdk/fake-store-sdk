@@ -44,17 +44,14 @@ class TestCartEntity:
         cart_ref01_data = helpers.to_map(vs.getprop(
             vs.getpath(setup["data"], "new.cart"), "cart_ref01"))
 
-        cart_ref01_data_result, err = cart_ref01_ent.create(cart_ref01_data, None)
-        assert err is None
-        cart_ref01_data = helpers.to_map(cart_ref01_data_result)
+        cart_ref01_data = helpers.to_map(cart_ref01_ent.create(cart_ref01_data, None))
         assert cart_ref01_data is not None
         assert cart_ref01_data["id"] is not None
 
         # LIST
         cart_ref01_match = {}
 
-        cart_ref01_list_result, err = cart_ref01_ent.list(cart_ref01_match, None)
-        assert err is None
+        cart_ref01_list_result = cart_ref01_ent.list(cart_ref01_match, None)
         assert isinstance(cart_ref01_list_result, list)
 
         found_item = vs.select(
@@ -67,9 +64,7 @@ class TestCartEntity:
             "id": cart_ref01_data["id"],
         }
 
-        cart_ref01_resdata_up0_result, err = cart_ref01_ent.update(cart_ref01_data_up0_up, None)
-        assert err is None
-        cart_ref01_resdata_up0 = helpers.to_map(cart_ref01_resdata_up0_result)
+        cart_ref01_resdata_up0 = helpers.to_map(cart_ref01_ent.update(cart_ref01_data_up0_up, None))
         assert cart_ref01_resdata_up0 is not None
         assert cart_ref01_resdata_up0["id"] == cart_ref01_data_up0_up["id"]
 
@@ -77,8 +72,7 @@ class TestCartEntity:
         cart_ref01_match_dt0 = {
             "id": cart_ref01_data["id"],
         }
-        cart_ref01_data_dt0_loaded, err = cart_ref01_ent.load(cart_ref01_match_dt0, None)
-        assert err is None
+        cart_ref01_data_dt0_loaded = cart_ref01_ent.load(cart_ref01_match_dt0, None)
         cart_ref01_data_dt0_load_result = helpers.to_map(cart_ref01_data_dt0_loaded)
         assert cart_ref01_data_dt0_load_result is not None
         assert cart_ref01_data_dt0_load_result["id"] == cart_ref01_data["id"]
@@ -87,14 +81,12 @@ class TestCartEntity:
         cart_ref01_match_rm0 = {
             "id": cart_ref01_data["id"],
         }
-        _, err = cart_ref01_ent.remove(cart_ref01_match_rm0, None)
-        assert err is None
+        cart_ref01_ent.remove(cart_ref01_match_rm0, None)
 
         # LIST
         cart_ref01_match_rt0 = {}
 
-        cart_ref01_list_rt0_result, err = cart_ref01_ent.list(cart_ref01_match_rt0, None)
-        assert err is None
+        cart_ref01_list_rt0_result = cart_ref01_ent.list(cart_ref01_match_rt0, None)
         assert isinstance(cart_ref01_list_rt0_result, list)
 
         not_found_item = vs.select(
@@ -140,7 +132,6 @@ def _cart_basic_setup(extra):
         "FAKESTORE_TEST_CART_ENTID": idmap,
         "FAKESTORE_TEST_LIVE": "FALSE",
         "FAKESTORE_TEST_EXPLAIN": "FALSE",
-        "FAKESTORE_APIKEY": "NONE",
     })
 
     idmap_resolved = helpers.to_map(
@@ -151,7 +142,6 @@ def _cart_basic_setup(extra):
     if env.get("FAKESTORE_TEST_LIVE") == "TRUE":
         merged_opts = vs.merge([
             {
-                "apikey": env.get("FAKESTORE_APIKEY"),
             },
             extra or {},
         ])

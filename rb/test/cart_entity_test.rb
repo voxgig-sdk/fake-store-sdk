@@ -36,8 +36,7 @@ class CartEntityTest < Minitest::Test
     cart_ref01_data = Helpers.to_map(Vs.getprop(
       Vs.getpath(setup[:data], "new.cart"), "cart_ref01"))
 
-    cart_ref01_data_result, err = cart_ref01_ent.create(cart_ref01_data, nil)
-    assert_nil err
+    cart_ref01_data_result = cart_ref01_ent.create(cart_ref01_data, nil)
     cart_ref01_data = Helpers.to_map(cart_ref01_data_result)
     assert !cart_ref01_data.nil?
     assert !cart_ref01_data["id"].nil?
@@ -45,8 +44,7 @@ class CartEntityTest < Minitest::Test
     # LIST
     cart_ref01_match = {}
 
-    cart_ref01_list_result, err = cart_ref01_ent.list(cart_ref01_match, nil)
-    assert_nil err
+    cart_ref01_list_result = cart_ref01_ent.list(cart_ref01_match, nil)
     assert cart_ref01_list_result.is_a?(Array)
 
     found_item = Vs.select(
@@ -59,8 +57,7 @@ class CartEntityTest < Minitest::Test
       "id" => cart_ref01_data["id"],
     }
 
-    cart_ref01_resdata_up0_result, err = cart_ref01_ent.update(cart_ref01_data_up0_up, nil)
-    assert_nil err
+    cart_ref01_resdata_up0_result = cart_ref01_ent.update(cart_ref01_data_up0_up, nil)
     cart_ref01_resdata_up0 = Helpers.to_map(cart_ref01_resdata_up0_result)
     assert !cart_ref01_resdata_up0.nil?
     assert_equal cart_ref01_resdata_up0["id"], cart_ref01_data_up0_up["id"]
@@ -69,8 +66,7 @@ class CartEntityTest < Minitest::Test
     cart_ref01_match_dt0 = {
       "id" => cart_ref01_data["id"],
     }
-    cart_ref01_data_dt0_loaded, err = cart_ref01_ent.load(cart_ref01_match_dt0, nil)
-    assert_nil err
+    cart_ref01_data_dt0_loaded = cart_ref01_ent.load(cart_ref01_match_dt0, nil)
     cart_ref01_data_dt0_load_result = Helpers.to_map(cart_ref01_data_dt0_loaded)
     assert !cart_ref01_data_dt0_load_result.nil?
     assert_equal cart_ref01_data_dt0_load_result["id"], cart_ref01_data["id"]
@@ -79,14 +75,12 @@ class CartEntityTest < Minitest::Test
     cart_ref01_match_rm0 = {
       "id" => cart_ref01_data["id"],
     }
-    _, err = cart_ref01_ent.remove(cart_ref01_match_rm0, nil)
-    assert_nil err
+    cart_ref01_ent.remove(cart_ref01_match_rm0, nil)
 
     # LIST
     cart_ref01_match_rt0 = {}
 
-    cart_ref01_list_rt0_result, err = cart_ref01_ent.list(cart_ref01_match_rt0, nil)
-    assert_nil err
+    cart_ref01_list_rt0_result = cart_ref01_ent.list(cart_ref01_match_rt0, nil)
     assert cart_ref01_list_rt0_result.is_a?(Array)
 
     not_found_item = Vs.select(
@@ -130,7 +124,6 @@ def cart_basic_setup(extra)
     "FAKESTORE_TEST_CART_ENTID" => idmap,
     "FAKESTORE_TEST_LIVE" => "FALSE",
     "FAKESTORE_TEST_EXPLAIN" => "FALSE",
-    "FAKESTORE_APIKEY" => "NONE",
   })
 
   idmap_resolved = Helpers.to_map(
@@ -142,7 +135,6 @@ def cart_basic_setup(extra)
   if env["FAKESTORE_TEST_LIVE"] == "TRUE"
     merged_opts = Vs.merge([
       {
-        "apikey" => env["FAKESTORE_APIKEY"],
       },
       extra || {},
     ])

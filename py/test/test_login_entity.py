@@ -44,9 +44,7 @@ class TestLoginEntity:
         login_ref01_data = helpers.to_map(vs.getprop(
             vs.getpath(setup["data"], "new.login"), "login_ref01"))
 
-        login_ref01_data_result, err = login_ref01_ent.create(login_ref01_data, None)
-        assert err is None
-        login_ref01_data = helpers.to_map(login_ref01_data_result)
+        login_ref01_data = helpers.to_map(login_ref01_ent.create(login_ref01_data, None))
         assert login_ref01_data is not None
 
 
@@ -87,7 +85,6 @@ def _login_basic_setup(extra):
         "FAKESTORE_TEST_LOGIN_ENTID": idmap,
         "FAKESTORE_TEST_LIVE": "FALSE",
         "FAKESTORE_TEST_EXPLAIN": "FALSE",
-        "FAKESTORE_APIKEY": "NONE",
     })
 
     idmap_resolved = helpers.to_map(
@@ -98,7 +95,6 @@ def _login_basic_setup(extra):
     if env.get("FAKESTORE_TEST_LIVE") == "TRUE":
         merged_opts = vs.merge([
             {
-                "apikey": env.get("FAKESTORE_APIKEY"),
             },
             extra or {},
         ])

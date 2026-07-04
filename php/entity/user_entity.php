@@ -55,6 +55,9 @@ class UserEntity
         return new UserEntity($this->_client, $opts);
     }
 
+    /**
+     * @param User|array $args User data (assoc-array) to store.
+     */
     public function data_set($args): void
     {
         if ($args) {
@@ -63,12 +66,18 @@ class UserEntity
         }
     }
 
+    /**
+     * @return User|array The current User data as an assoc-array.
+     */
     public function data_get()
     {
         ($this->_utility->feature_hook)($this->_entctx, "GetData");
         return Struct::clone($this->_data);
     }
 
+    /**
+     * @param array $args Match filter (any subset of User fields).
+     */
     public function match_set($args): void
     {
         if ($args) {
@@ -77,6 +86,9 @@ class UserEntity
         }
     }
 
+    /**
+     * @return array The current match filter (any subset of User fields).
+     */
     public function match_get()
     {
         ($this->_utility->feature_hook)($this->_entctx, "GetMatch");
@@ -84,7 +96,16 @@ class UserEntity
     }
 
     
-    public function load($reqmatch, $ctrl = null): array
+    /**
+     * Load a single User.
+     *
+     * @param UserLoadMatch|array|null $reqmatch Match criteria (id/query
+     *   fields) as an assoc-array; a typed UserLoadMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return User|array The loaded User as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function load(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -110,7 +131,16 @@ class UserEntity
 
 
     
-    public function list($reqmatch, $ctrl = null): array
+    /**
+     * List User items matching the given filter.
+     *
+     * @param UserListMatch|array|null $reqmatch Match filter (any subset
+     *   of User fields) as an assoc-array; UserListMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return User[]|array A list of User items as assoc-arrays at
+     *   the SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function list(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -133,7 +163,16 @@ class UserEntity
 
 
     
-    public function create($reqdata, $ctrl = null): array
+    /**
+     * Create a new User.
+     *
+     * @param UserCreateData|array|null $reqdata Body data as an assoc-array;
+     *   a typed UserCreateData names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return User|array The created User as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function create(?array $reqdata = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -156,7 +195,16 @@ class UserEntity
 
 
     
-    public function update($reqdata, $ctrl = null): array
+    /**
+     * Update an existing User.
+     *
+     * @param UserUpdateData|array|null $reqdata Body data as an assoc-array;
+     *   a typed UserUpdateData names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return User|array The updated User as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function update(?array $reqdata = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -182,7 +230,16 @@ class UserEntity
 
 
     
-    public function remove($reqmatch, $ctrl = null): array
+    /**
+     * Remove an User matching the given criteria.
+     *
+     * @param UserRemoveMatch|array|null $reqmatch Match criteria (id/query
+     *   fields) as an assoc-array; UserRemoveMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return User|array The removed User as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function remove(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -207,7 +264,7 @@ class UserEntity
 
 
 
-    private function _run_op($ctx, callable $post_done): array
+    private function _run_op($ctx, callable $post_done): mixed
     {
         $utility = $this->_utility;
 

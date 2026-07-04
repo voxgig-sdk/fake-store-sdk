@@ -9,9 +9,10 @@ The PHP SDK for the FakeStore API — an entity-oriented client using PHP conven
 
 
 ## Install
-```bash
-composer require voxgig-sdk/fake-store
-```
+This package is not yet published to Packagist. Install it from the
+GitHub release tag (`php/vX.Y.Z`):
+
+- Releases: [https://github.com/voxgig-sdk/fake-store-sdk/releases](https://github.com/voxgig-sdk/fake-store-sdk/releases)
 
 
 ## Tutorial: your first API call
@@ -25,44 +26,47 @@ loading a specific record.
 <?php
 require_once 'fakestore_sdk.php';
 
-$client = new FakeStoreSDK([
-    "apikey" => getenv("FAKE-STORE_APIKEY"),
-]);
+$client = new FakeStoreSDK();
 ```
 
 ### 2. List carts
 
 ```php
-[$result, $err] = $client->Cart()->list();
-if ($err) { throw new \Exception($err); }
-
-if (is_array($result)) {
-    foreach ($result as $item) {
-        $d = $item->data_get();
-        echo $d["id"] . " " . $d["name"] . "\n";
+try {
+    $result = $client->cart()->list();
+    if (is_array($result)) {
+        foreach ($result as $item) {
+            $d = $item->data_get();
+            echo $d["id"] . " " . $d["name"] . "\n";
+        }
     }
+} catch (\Exception $err) {
+    echo "Error: " . $err->getMessage();
 }
 ```
 
 ### 3. Load a cart
 
 ```php
-[$result, $err] = $client->Cart()->load(["id" => "example_id"]);
-if ($err) { throw new \Exception($err); }
-print_r($result);
+try {
+    $result = $client->cart()->load(["id" => "example_id"]);
+    print_r($result);
+} catch (\Exception $err) {
+    echo "Error: " . $err->getMessage();
+}
 ```
 
 ### 4. Create, update, and remove
 
 ```php
 // Create
-[$created, $_] = $client->Cart()->create(["name" => "Example"]);
+$created = $client->cart()->create(["name" => "Example"]);
 
 // Update
-$client->Cart()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
+$client->cart()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
 
 // Remove
-$client->Cart()->remove(["id" => $created["id"]]);
+$client->cart()->remove(["id" => $created["id"]]);
 ```
 
 
@@ -73,28 +77,31 @@ $client->Cart()->remove(["id" => $created["id"]]);
 For endpoints not covered by entity methods:
 
 ```php
-[$result, $err] = $client->direct([
+// direct() is the raw-HTTP escape hatch: it returns a result array
+// (it does not throw). Branch on $result["ok"].
+$result = $client->direct([
     "path" => "/api/resource/{id}",
     "method" => "GET",
     "params" => ["id" => "example"],
 ]);
-if ($err) { throw new \Exception($err); }
 
 if ($result["ok"]) {
     echo $result["status"];  // 200
     print_r($result["data"]);  // response body
+} else {
+    echo "Error: " . $result["err"]->getMessage();
 }
 ```
 
 ### Prepare a request without sending it
 
 ```php
-[$fetchdef, $err] = $client->prepare([
+// prepare() throws on error and returns the fetch definition.
+$fetchdef = $client->prepare([
     "path" => "/api/resource/{id}",
     "method" => "DELETE",
     "params" => ["id" => "example"],
 ]);
-if ($err) { throw new \Exception($err); }
 
 echo $fetchdef["url"];
 echo $fetchdef["method"];
@@ -108,7 +115,7 @@ Create a mock client for unit testing — no server required:
 ```php
 $client = FakeStoreSDK::test();
 
-[$result, $err] = $client->FakeStore()->load(["id" => "test01"]);
+$result = $client->cart()->load(["id" => "test01"]);
 // $result contains mock response data
 ```
 
@@ -142,8 +149,7 @@ $client = new FakeStoreSDK([
 Create a `.env.local` file at the project root:
 
 ```
-FAKE-STORE_TEST_LIVE=TRUE
-FAKE-STORE_APIKEY=<your-key>
+FAKE_STORE_TEST_LIVE=TRUE
 ```
 
 Then run:
@@ -166,7 +172,6 @@ Creates a new SDK client.
 
 | Option | Type | Description |
 | --- | --- | --- |
-| `apikey` | `string` | API key for authentication. |
 | `base` | `string` | Base URL of the API server. |
 | `prefix` | `string` | URL path prefix prepended to all requests. |
 | `suffix` | `string` | URL path suffix appended to all requests. |
@@ -215,8 +220,12 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return `[$result, $err]`. The first value is an
-`array` with these keys:
+Entity operations return the bare result data (an `array` for single-entity
+ops, a `list` for `list`) and throw on error. Wrap calls in
+`try`/`catch` to handle failures.
+
+The `direct()` escape hatch never throws — it returns a result `array`
+you branch on via `$result["ok"]`:
 
 | Key | Type | Description |
 | --- | --- | --- |
@@ -288,7 +297,7 @@ API path: `/users`
 
 ### Cart
 
-Create an instance: `const cart = client.Cart()`
+Create an instance: `const cart = client.cart`
 
 #### Operations
 
@@ -311,26 +320,26 @@ Create an instance: `const cart = client.Cart()`
 #### Example: Load
 
 ```ts
-const cart = await client.Cart().load({ id: 'cart_id' })
+const cart = await client.cart.load({ id: 'cart_id' })
 ```
 
 #### Example: List
 
 ```ts
-const carts = await client.Cart().list()
+const carts = await client.cart.list()
 ```
 
 #### Example: Create
 
 ```ts
-const cart = await client.Cart().create({
+const cart = await client.cart.create({
 })
 ```
 
 
 ### Login
 
-Create an instance: `const login = client.Login()`
+Create an instance: `const login = client.login`
 
 #### Operations
 
@@ -349,14 +358,14 @@ Create an instance: `const login = client.Login()`
 #### Example: Create
 
 ```ts
-const login = await client.Login().create({
+const login = await client.login.create({
 })
 ```
 
 
 ### Product
 
-Create an instance: `const product = client.Product()`
+Create an instance: `const product = client.product`
 
 #### Operations
 
@@ -382,26 +391,26 @@ Create an instance: `const product = client.Product()`
 #### Example: Load
 
 ```ts
-const product = await client.Product().load({ id: 'product_id' })
+const product = await client.product.load({ id: 'product_id' })
 ```
 
 #### Example: List
 
 ```ts
-const products = await client.Product().list()
+const products = await client.product.list()
 ```
 
 #### Example: Create
 
 ```ts
-const product = await client.Product().create({
+const product = await client.product.create({
 })
 ```
 
 
 ### User
 
-Create an instance: `const user = client.User()`
+Create an instance: `const user = client.user`
 
 #### Operations
 
@@ -425,19 +434,19 @@ Create an instance: `const user = client.User()`
 #### Example: Load
 
 ```ts
-const user = await client.User().load({ id: 'user_id' })
+const user = await client.user.load({ id: 'user_id' })
 ```
 
 #### Example: List
 
 ```ts
-const users = await client.User().list()
+const users = await client.user.list()
 ```
 
 #### Example: Create
 
 ```ts
-const user = await client.User().create({
+const user = await client.user.create({
 })
 ```
 
@@ -513,11 +522,11 @@ Entity instances are stateful. After a successful `load`, the entity
 stores the returned data and match criteria internally.
 
 ```php
-$moon = $client->Moon();
-[$result, $err] = $moon->load(["planet_id" => "earth", "id" => "luna"]);
+$cart = $client->cart();
+$cart->load(["id" => "example_id"]);
 
-// $moon->dataGet() now returns the loaded moon data
-// $moon->matchGet() returns the last match criteria
+// $cart->dataGet() now returns the loaded cart data
+// $cart->matchGet() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

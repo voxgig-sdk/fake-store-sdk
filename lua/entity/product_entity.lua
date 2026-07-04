@@ -79,6 +79,10 @@ end
 
 
 
+---@param reqmatch ProductLoadMatch
+---@param ctrl? table
+---@return Product
+---@return string? err
 function ProductEntity:load(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -104,6 +108,10 @@ end
 
 
 
+---@param reqmatch ProductListMatch
+---@param ctrl? table
+---@return Product[]
+---@return string? err
 function ProductEntity:list(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -126,6 +134,10 @@ end
 
 
 
+---@param reqdata ProductCreateData
+---@param ctrl? table
+---@return Product
+---@return string? err
 function ProductEntity:create(reqdata, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -148,6 +160,10 @@ end
 
 
 
+---@param reqdata ProductUpdateData
+---@param ctrl? table
+---@return Product
+---@return string? err
 function ProductEntity:update(reqdata, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -173,6 +189,10 @@ end
 
 
 
+---@param reqmatch ProductRemoveMatch
+---@param ctrl? table
+---@return Product
+---@return string? err
 function ProductEntity:remove(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({

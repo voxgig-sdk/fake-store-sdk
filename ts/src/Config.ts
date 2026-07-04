@@ -38,10 +38,6 @@ class Config {
   options = {
     base: 'https://fakestoreapi.com',
 
-    auth: {
-      prefix: 'Bearer',
-    },
-
     headers: {
       "content-type": "application/json"
     },
@@ -149,7 +145,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },
@@ -187,7 +184,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },
@@ -225,7 +223,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },
@@ -413,7 +412,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },
@@ -451,7 +451,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },
@@ -489,7 +490,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },
@@ -609,7 +611,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },
@@ -647,7 +650,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },
@@ -685,7 +689,8 @@ class Config {
                     "name": "id",
                     "orig": "id",
                     "reqd": true,
-                    "type": "`$INTEGER`"
+                    "type": "`$INTEGER`",
+                    "index$": 0
                   }
                 ]
               },

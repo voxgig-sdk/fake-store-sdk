@@ -144,16 +144,23 @@ class FakeStoreSDK:
 
         _, err = utility.prepare_auth(ctx)
         if err is not None:
-            return None, err
+            raise err
 
-        return utility.make_fetch_def(ctx)
+        fetchdef, err = utility.make_fetch_def(ctx)
+        if err is not None:
+            raise err
+
+        return fetchdef
 
     def direct(self, fetchargs=None):
         utility = self._utility
 
-        fetchdef, err = self.prepare(fetchargs)
-        if err is not None:
-            return {"ok": False, "err": err}, None
+        try:
+            fetchdef = self.prepare(fetchargs)
+        except Exception as err:
+            # direct() is the raw-HTTP escape hatch: it never raises, it
+            # returns a result object callers branch on via result["ok"].
+            return {"ok": False, "err": err}
 
         if fetchargs is None:
             fetchargs = {}
@@ -170,13 +177,13 @@ class FakeStoreSDK:
         fetched, fetch_err = utility.fetcher(ctx, url, fetchdef)
 
         if fetch_err is not None:
-            return {"ok": False, "err": fetch_err}, None
+            return {"ok": False, "err": fetch_err}
 
         if fetched is None:
             return {
                 "ok": False,
                 "err": ctx.make_error("direct_no_response", "response: undefined"),
-            }, None
+            }
 
         if isinstance(fetched, dict):
             status = helpers.to_int(vs.getprop(fetched, "status"))
@@ -205,30 +212,74 @@ class FakeStoreSDK:
                 "status": status,
                 "headers": headers,
                 "data": json_data,
-            }, None
+            }
 
         return {
             "ok": False,
             "err": ctx.make_error("direct_invalid", "invalid response type"),
-        }, None
+        }
 
+
+    @property
+    def cart(self):
+        """Idiomatic facade: client.cart.list() / client.cart.load({"id": ...})."""
+        from entity.cart_entity import CartEntity
+        cached = getattr(self, "_cart", None)
+        if cached is None:
+            cached = CartEntity(self, None)
+            self._cart = cached
+        return cached
 
     def Cart(self, data=None):
+        # Deprecated: use client.cart instead.
         from entity.cart_entity import CartEntity
         return CartEntity(self, data)
 
 
+    @property
+    def login(self):
+        """Idiomatic facade: client.login.list() / client.login.load({"id": ...})."""
+        from entity.login_entity import LoginEntity
+        cached = getattr(self, "_login", None)
+        if cached is None:
+            cached = LoginEntity(self, None)
+            self._login = cached
+        return cached
+
     def Login(self, data=None):
+        # Deprecated: use client.login instead.
         from entity.login_entity import LoginEntity
         return LoginEntity(self, data)
 
 
+    @property
+    def product(self):
+        """Idiomatic facade: client.product.list() / client.product.load({"id": ...})."""
+        from entity.product_entity import ProductEntity
+        cached = getattr(self, "_product", None)
+        if cached is None:
+            cached = ProductEntity(self, None)
+            self._product = cached
+        return cached
+
     def Product(self, data=None):
+        # Deprecated: use client.product instead.
         from entity.product_entity import ProductEntity
         return ProductEntity(self, data)
 
 
+    @property
+    def user(self):
+        """Idiomatic facade: client.user.list() / client.user.load({"id": ...})."""
+        from entity.user_entity import UserEntity
+        cached = getattr(self, "_user", None)
+        if cached is None:
+            cached = UserEntity(self, None)
+            self._user = cached
+        return cached
+
     def User(self, data=None):
+        # Deprecated: use client.user instead.
         from entity.user_entity import UserEntity
         return UserEntity(self, data)
 

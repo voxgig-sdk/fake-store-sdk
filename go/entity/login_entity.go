@@ -85,6 +85,27 @@ func (e *LoginEntity) Match(args ...any) any {
 	return out
 }
 
+// DataTyped is the statically-typed accessor for this entity's data. With no
+// argument it returns the current data as an Login; with an argument it
+// sets the data and returns the stored value. It delegates to the untyped Data
+// (identical runtime) and converts at the typed boundary.
+func (e *LoginEntity) DataTyped(data ...Login) Login {
+	if len(data) > 0 {
+		return typedFrom[Login](e.Data(asMap(data[0])))
+	}
+	return typedFrom[Login](e.Data())
+}
+
+// MatchTyped mirrors DataTyped for the entity's match filter. The match is a
+// partial of the entity, so it round-trips through Login (all fields
+// optional at the wire level).
+func (e *LoginEntity) MatchTyped(match ...Login) Login {
+	if len(match) > 0 {
+		return typedFrom[Login](e.Match(asMap(match[0])))
+	}
+	return typedFrom[Login](e.Match())
+}
+
 func (e *LoginEntity) Load(_ map[string]any, _ map[string]any) (any, error) {
 	return core.UnsupportedOp("load", e.name)
 }
@@ -116,6 +137,17 @@ func (e *LoginEntity) Create(reqdata map[string]any, ctrl map[string]any) (any, 
 			}
 		}
 	})
+}
+
+// CreateTyped is the statically-typed variant of Create: it takes an
+// LoginCreateData and returns an Login. It delegates to the untyped
+// Create (identical runtime) and converts at the typed boundary.
+func (e *LoginEntity) CreateTyped(reqdata LoginCreateData, ctrl map[string]any) (Login, error) {
+	res, err := e.Create(asMap(reqdata), ctrl)
+	if err != nil {
+		return Login{}, err
+	}
+	return typedFrom[Login](res), nil
 }
 
 

@@ -44,17 +44,14 @@ class TestUserEntity:
         user_ref01_data = helpers.to_map(vs.getprop(
             vs.getpath(setup["data"], "new.user"), "user_ref01"))
 
-        user_ref01_data_result, err = user_ref01_ent.create(user_ref01_data, None)
-        assert err is None
-        user_ref01_data = helpers.to_map(user_ref01_data_result)
+        user_ref01_data = helpers.to_map(user_ref01_ent.create(user_ref01_data, None))
         assert user_ref01_data is not None
         assert user_ref01_data["id"] is not None
 
         # LIST
         user_ref01_match = {}
 
-        user_ref01_list_result, err = user_ref01_ent.list(user_ref01_match, None)
-        assert err is None
+        user_ref01_list_result = user_ref01_ent.list(user_ref01_match, None)
         assert isinstance(user_ref01_list_result, list)
 
         found_item = vs.select(
@@ -71,9 +68,7 @@ class TestUserEntity:
         user_ref01_markdef_up0_value = "Mark01-user_ref01_" + str(setup["now"])
         user_ref01_data_up0_up[user_ref01_markdef_up0_name] = user_ref01_markdef_up0_value
 
-        user_ref01_resdata_up0_result, err = user_ref01_ent.update(user_ref01_data_up0_up, None)
-        assert err is None
-        user_ref01_resdata_up0 = helpers.to_map(user_ref01_resdata_up0_result)
+        user_ref01_resdata_up0 = helpers.to_map(user_ref01_ent.update(user_ref01_data_up0_up, None))
         assert user_ref01_resdata_up0 is not None
         assert user_ref01_resdata_up0["id"] == user_ref01_data_up0_up["id"]
         assert user_ref01_resdata_up0[user_ref01_markdef_up0_name] == user_ref01_markdef_up0_value
@@ -82,8 +77,7 @@ class TestUserEntity:
         user_ref01_match_dt0 = {
             "id": user_ref01_data["id"],
         }
-        user_ref01_data_dt0_loaded, err = user_ref01_ent.load(user_ref01_match_dt0, None)
-        assert err is None
+        user_ref01_data_dt0_loaded = user_ref01_ent.load(user_ref01_match_dt0, None)
         user_ref01_data_dt0_load_result = helpers.to_map(user_ref01_data_dt0_loaded)
         assert user_ref01_data_dt0_load_result is not None
         assert user_ref01_data_dt0_load_result["id"] == user_ref01_data["id"]
@@ -92,14 +86,12 @@ class TestUserEntity:
         user_ref01_match_rm0 = {
             "id": user_ref01_data["id"],
         }
-        _, err = user_ref01_ent.remove(user_ref01_match_rm0, None)
-        assert err is None
+        user_ref01_ent.remove(user_ref01_match_rm0, None)
 
         # LIST
         user_ref01_match_rt0 = {}
 
-        user_ref01_list_rt0_result, err = user_ref01_ent.list(user_ref01_match_rt0, None)
-        assert err is None
+        user_ref01_list_rt0_result = user_ref01_ent.list(user_ref01_match_rt0, None)
         assert isinstance(user_ref01_list_rt0_result, list)
 
         not_found_item = vs.select(
@@ -145,7 +137,6 @@ def _user_basic_setup(extra):
         "FAKESTORE_TEST_USER_ENTID": idmap,
         "FAKESTORE_TEST_LIVE": "FALSE",
         "FAKESTORE_TEST_EXPLAIN": "FALSE",
-        "FAKESTORE_APIKEY": "NONE",
     })
 
     idmap_resolved = helpers.to_map(
@@ -156,7 +147,6 @@ def _user_basic_setup(extra):
     if env.get("FAKESTORE_TEST_LIVE") == "TRUE":
         merged_opts = vs.merge([
             {
-                "apikey": env.get("FAKESTORE_APIKEY"),
             },
             extra or {},
         ])

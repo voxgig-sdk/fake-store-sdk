@@ -14,9 +14,17 @@ import type {
   Control,
 } from '../types'
 
+import type {
+  Product,
+  ProductLoadMatch,
+  ProductListMatch,
+  ProductCreateData,
+  ProductUpdateData,
+  ProductRemoveMatch,
+} from '../FakeStoreTypes'
 
 // TODO: needs Entity superclass
-class ProductEntity extends FakeStoreEntityBase {
+class ProductEntity extends FakeStoreEntityBase<Product> {
 
   constructor(client: FakeStoreSDK, entopts: any) {
     super(client, entopts)
@@ -32,7 +40,7 @@ class ProductEntity extends FakeStoreEntityBase {
 
 
 
-  async load(this: any, reqmatch?: any, ctrl?: Control) {
+  async load(this: any, reqmatch?: ProductLoadMatch, ctrl?: Control): Promise<Product> {
 
     const utility = this._utility
 
@@ -136,14 +144,16 @@ class ProductEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Product> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async list(this: any, reqmatch?: any, ctrl?: Control) {
+  async list(this: any, reqmatch?: ProductListMatch, ctrl?: Control): Promise<Product[]> {
 
     const utility = this._utility
 
@@ -243,14 +253,16 @@ class ProductEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Product[]> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async create(this: any, reqdata?: any, ctrl?: Control) {
+  async create(this: any, reqdata?: ProductCreateData, ctrl?: Control): Promise<Product> {
 
     const utility = this._utility
     const {
@@ -349,14 +361,16 @@ class ProductEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Product> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async update(this: any, reqdata?: any, ctrl?: Control) {
+  async update(this: any, reqdata?: ProductUpdateData, ctrl?: Control): Promise<Product> {
 
     const utility = this._utility
 
@@ -461,14 +475,16 @@ class ProductEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Product> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async remove(this: any, reqmatch?: any, ctrl?: Control) {
+  async remove(this: any, reqmatch?: ProductRemoveMatch, ctrl?: Control): Promise<Product> {
 
     const utility = this._utility
 
@@ -573,7 +589,9 @@ class ProductEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Product> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }

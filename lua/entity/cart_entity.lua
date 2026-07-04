@@ -79,6 +79,10 @@ end
 
 
 
+---@param reqmatch CartLoadMatch
+---@param ctrl? table
+---@return Cart
+---@return string? err
 function CartEntity:load(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -104,6 +108,10 @@ end
 
 
 
+---@param reqmatch CartListMatch
+---@param ctrl? table
+---@return Cart[]
+---@return string? err
 function CartEntity:list(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -126,6 +134,10 @@ end
 
 
 
+---@param reqdata CartCreateData
+---@param ctrl? table
+---@return Cart
+---@return string? err
 function CartEntity:create(reqdata, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -148,6 +160,10 @@ end
 
 
 
+---@param reqdata CartUpdateData
+---@param ctrl? table
+---@return Cart
+---@return string? err
 function CartEntity:update(reqdata, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -173,6 +189,10 @@ end
 
 
 
+---@param reqmatch CartRemoveMatch
+---@param ctrl? table
+---@return Cart
+---@return string? err
 function CartEntity:remove(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({

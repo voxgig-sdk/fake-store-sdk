@@ -36,8 +36,7 @@ class UserEntityTest < Minitest::Test
     user_ref01_data = Helpers.to_map(Vs.getprop(
       Vs.getpath(setup[:data], "new.user"), "user_ref01"))
 
-    user_ref01_data_result, err = user_ref01_ent.create(user_ref01_data, nil)
-    assert_nil err
+    user_ref01_data_result = user_ref01_ent.create(user_ref01_data, nil)
     user_ref01_data = Helpers.to_map(user_ref01_data_result)
     assert !user_ref01_data.nil?
     assert !user_ref01_data["id"].nil?
@@ -45,8 +44,7 @@ class UserEntityTest < Minitest::Test
     # LIST
     user_ref01_match = {}
 
-    user_ref01_list_result, err = user_ref01_ent.list(user_ref01_match, nil)
-    assert_nil err
+    user_ref01_list_result = user_ref01_ent.list(user_ref01_match, nil)
     assert user_ref01_list_result.is_a?(Array)
 
     found_item = Vs.select(
@@ -63,8 +61,7 @@ class UserEntityTest < Minitest::Test
     user_ref01_markdef_up0_value = "Mark01-user_ref01_#{setup[:now]}"
     user_ref01_data_up0_up[user_ref01_markdef_up0_name] = user_ref01_markdef_up0_value
 
-    user_ref01_resdata_up0_result, err = user_ref01_ent.update(user_ref01_data_up0_up, nil)
-    assert_nil err
+    user_ref01_resdata_up0_result = user_ref01_ent.update(user_ref01_data_up0_up, nil)
     user_ref01_resdata_up0 = Helpers.to_map(user_ref01_resdata_up0_result)
     assert !user_ref01_resdata_up0.nil?
     assert_equal user_ref01_resdata_up0["id"], user_ref01_data_up0_up["id"]
@@ -74,8 +71,7 @@ class UserEntityTest < Minitest::Test
     user_ref01_match_dt0 = {
       "id" => user_ref01_data["id"],
     }
-    user_ref01_data_dt0_loaded, err = user_ref01_ent.load(user_ref01_match_dt0, nil)
-    assert_nil err
+    user_ref01_data_dt0_loaded = user_ref01_ent.load(user_ref01_match_dt0, nil)
     user_ref01_data_dt0_load_result = Helpers.to_map(user_ref01_data_dt0_loaded)
     assert !user_ref01_data_dt0_load_result.nil?
     assert_equal user_ref01_data_dt0_load_result["id"], user_ref01_data["id"]
@@ -84,14 +80,12 @@ class UserEntityTest < Minitest::Test
     user_ref01_match_rm0 = {
       "id" => user_ref01_data["id"],
     }
-    _, err = user_ref01_ent.remove(user_ref01_match_rm0, nil)
-    assert_nil err
+    user_ref01_ent.remove(user_ref01_match_rm0, nil)
 
     # LIST
     user_ref01_match_rt0 = {}
 
-    user_ref01_list_rt0_result, err = user_ref01_ent.list(user_ref01_match_rt0, nil)
-    assert_nil err
+    user_ref01_list_rt0_result = user_ref01_ent.list(user_ref01_match_rt0, nil)
     assert user_ref01_list_rt0_result.is_a?(Array)
 
     not_found_item = Vs.select(
@@ -135,7 +129,6 @@ def user_basic_setup(extra)
     "FAKESTORE_TEST_USER_ENTID" => idmap,
     "FAKESTORE_TEST_LIVE" => "FALSE",
     "FAKESTORE_TEST_EXPLAIN" => "FALSE",
-    "FAKESTORE_APIKEY" => "NONE",
   })
 
   idmap_resolved = Helpers.to_map(
@@ -147,7 +140,6 @@ def user_basic_setup(extra)
   if env["FAKESTORE_TEST_LIVE"] == "TRUE"
     merged_opts = Vs.merge([
       {
-        "apikey" => env["FAKESTORE_APIKEY"],
       },
       extra || {},
     ])

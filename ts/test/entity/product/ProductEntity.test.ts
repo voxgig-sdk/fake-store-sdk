@@ -154,7 +154,6 @@ function basicSetup(extra?: any) {
     'FAKE_STORE_TEST_PRODUCT_ENTID': idmap,
     'FAKE_STORE_TEST_LIVE': 'FALSE',
     'FAKE_STORE_TEST_EXPLAIN': 'FALSE',
-    'FAKE_STORE_APIKEY': 'NONE',
   })
 
   idmap = env['FAKE_STORE_TEST_PRODUCT_ENTID']
@@ -164,7 +163,6 @@ function basicSetup(extra?: any) {
   if (live) {
     client = new FakeStoreSDK(merge([
       {
-        apikey: env.FAKE_STORE_APIKEY,
       },
       extra
     ]))

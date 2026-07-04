@@ -45,6 +45,7 @@ class CartEntity
     end
   end
 
+  # @return [Cart, Hash] the current Cart data
   def data_get
     @_utility.feature_hook.call(@_entctx, "GetData")
     VoxgigStruct.clone(@_data)
@@ -57,12 +58,18 @@ class CartEntity
     end
   end
 
+  # @return [Hash] the current match filter (any subset of Cart fields)
   def match_get
     @_utility.feature_hook.call(@_entctx, "GetMatch")
     VoxgigStruct.clone(@_match)
   end
 
   
+  # Load a single Cart.
+  #
+  # @param reqmatch [CartLoadMatch, Hash, nil] match criteria (id/query fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Cart, Hash] the loaded Cart; raises FakeStoreError on failure
   def load(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -86,6 +93,11 @@ class CartEntity
 
 
   
+  # List Cart items matching the given filter.
+  #
+  # @param reqmatch [CartListMatch, Hash, nil] match filter (any subset of Cart fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Array<Cart>, Array] the matching Cart items; raises FakeStoreError on failure
   def list(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -106,6 +118,11 @@ class CartEntity
 
 
   
+  # Create a new Cart.
+  #
+  # @param reqdata [CartCreateData, Hash, nil] body data
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Cart, Hash] the created Cart; raises FakeStoreError on failure
   def create(reqdata, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -128,6 +145,11 @@ class CartEntity
 
 
   
+  # Update an existing Cart.
+  #
+  # @param reqdata [CartUpdateData, Hash, nil] body data
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Cart, Hash] the updated Cart; raises FakeStoreError on failure
   def update(reqdata, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -151,6 +173,11 @@ class CartEntity
 
 
   
+  # Remove an Cart matching the given criteria.
+  #
+  # @param reqmatch [CartRemoveMatch, Hash, nil] match criteria (id/query fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Cart, Hash] the removed Cart; raises FakeStoreError on failure
   def remove(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({

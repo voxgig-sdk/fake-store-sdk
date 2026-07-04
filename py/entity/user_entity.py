@@ -1,7 +1,17 @@
 # FakeStore SDK User entity
 
+from __future__ import annotations
+
 from utility.voxgig_struct import voxgig_struct as vs
 from core import helpers
+from fakestore_types import (
+    User,
+    UserLoadMatch,
+    UserListMatch,
+    UserCreateData,
+    UserUpdateData,
+    UserRemoveMatch,
+)
 
 
 class UserEntity:
@@ -44,7 +54,7 @@ class UserEntity:
             self._data = helpers.to_map(vs.clone(args)) or {}
             self._utility.feature_hook(self._entctx, "SetData")
 
-    def data_get(self):
+    def data_get(self) -> User:
         self._utility.feature_hook(self._entctx, "GetData")
         return vs.clone(self._data)
 
@@ -53,12 +63,12 @@ class UserEntity:
             self._match = helpers.to_map(vs.clone(args)) or {}
             self._utility.feature_hook(self._entctx, "SetMatch")
 
-    def match_get(self):
+    def match_get(self) -> User:
         self._utility.feature_hook(self._entctx, "GetMatch")
         return vs.clone(self._match)
 
     
-    def load(self, reqmatch, ctrl=None):
+    def load(self, reqmatch: UserLoadMatch, ctrl=None) -> User:
         utility = self._utility
         ctx = utility.make_context({
             "opname": "load",
@@ -80,7 +90,7 @@ class UserEntity:
 
 
     
-    def list(self, reqmatch, ctrl=None):
+    def list(self, reqmatch: UserListMatch, ctrl=None) -> list[User]:
         utility = self._utility
         ctx = utility.make_context({
             "opname": "list",
@@ -100,7 +110,7 @@ class UserEntity:
 
 
     
-    def create(self, reqdata, ctrl=None):
+    def create(self, reqdata: UserCreateData, ctrl=None) -> User:
         utility = self._utility
         ctx = utility.make_context({
             "opname": "create",
@@ -120,7 +130,7 @@ class UserEntity:
 
 
     
-    def update(self, reqdata, ctrl=None):
+    def update(self, reqdata: UserUpdateData, ctrl=None) -> User:
         utility = self._utility
         ctx = utility.make_context({
             "opname": "update",
@@ -142,7 +152,7 @@ class UserEntity:
 
 
     
-    def remove(self, reqmatch, ctrl=None):
+    def remove(self, reqmatch: UserRemoveMatch, ctrl=None) -> User:
         utility = self._utility
         ctx = utility.make_context({
             "opname": "remove",

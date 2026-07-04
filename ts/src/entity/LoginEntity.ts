@@ -14,9 +14,13 @@ import type {
   Control,
 } from '../types'
 
+import type {
+  Login,
+  LoginCreateData,
+} from '../FakeStoreTypes'
 
 // TODO: needs Entity superclass
-class LoginEntity extends FakeStoreEntityBase {
+class LoginEntity extends FakeStoreEntityBase<Login> {
 
   constructor(client: FakeStoreSDK, entopts: any) {
     super(client, entopts)
@@ -34,7 +38,7 @@ class LoginEntity extends FakeStoreEntityBase {
 
 
 
-  async create(this: any, reqdata?: any, ctrl?: Control) {
+  async create(this: any, reqdata?: LoginCreateData, ctrl?: Control): Promise<Login> {
 
     const utility = this._utility
     const {
@@ -133,7 +137,9 @@ class LoginEntity extends FakeStoreEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Login> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }

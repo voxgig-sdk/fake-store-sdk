@@ -43,8 +43,7 @@ class CartEntityTest extends TestCase
         $cart_ref01_data = Helpers::to_map(Vs::getprop(
             Vs::getpath($setup["data"], "new.cart"), "cart_ref01"));
 
-        [$cart_ref01_data_result, $err] = $cart_ref01_ent->create($cart_ref01_data, null);
-        $this->assertNull($err);
+        $cart_ref01_data_result = $cart_ref01_ent->create($cart_ref01_data, null);
         $cart_ref01_data = Helpers::to_map($cart_ref01_data_result);
         $this->assertNotNull($cart_ref01_data);
         $this->assertNotNull($cart_ref01_data["id"]);
@@ -52,8 +51,7 @@ class CartEntityTest extends TestCase
         // LIST
         $cart_ref01_match = [];
 
-        [$cart_ref01_list_result, $err] = $cart_ref01_ent->list($cart_ref01_match, null);
-        $this->assertNull($err);
+        $cart_ref01_list_result = $cart_ref01_ent->list($cart_ref01_match, null);
         $this->assertIsArray($cart_ref01_list_result);
 
         $found_item = sdk_select(
@@ -66,8 +64,7 @@ class CartEntityTest extends TestCase
             "id" => $cart_ref01_data["id"],
         ];
 
-        [$cart_ref01_resdata_up0_result, $err] = $cart_ref01_ent->update($cart_ref01_data_up0_up, null);
-        $this->assertNull($err);
+        $cart_ref01_resdata_up0_result = $cart_ref01_ent->update($cart_ref01_data_up0_up, null);
         $cart_ref01_resdata_up0 = Helpers::to_map($cart_ref01_resdata_up0_result);
         $this->assertNotNull($cart_ref01_resdata_up0);
         $this->assertEquals($cart_ref01_resdata_up0["id"], $cart_ref01_data_up0_up["id"]);
@@ -76,8 +73,7 @@ class CartEntityTest extends TestCase
         $cart_ref01_match_dt0 = [
             "id" => $cart_ref01_data["id"],
         ];
-        [$cart_ref01_data_dt0_loaded, $err] = $cart_ref01_ent->load($cart_ref01_match_dt0, null);
-        $this->assertNull($err);
+        $cart_ref01_data_dt0_loaded = $cart_ref01_ent->load($cart_ref01_match_dt0, null);
         $cart_ref01_data_dt0_load_result = Helpers::to_map($cart_ref01_data_dt0_loaded);
         $this->assertNotNull($cart_ref01_data_dt0_load_result);
         $this->assertEquals($cart_ref01_data_dt0_load_result["id"], $cart_ref01_data["id"]);
@@ -86,14 +82,12 @@ class CartEntityTest extends TestCase
         $cart_ref01_match_rm0 = [
             "id" => $cart_ref01_data["id"],
         ];
-        [$_, $err] = $cart_ref01_ent->remove($cart_ref01_match_rm0, null);
-        $this->assertNull($err);
+        $cart_ref01_ent->remove($cart_ref01_match_rm0, null);
 
         // LIST
         $cart_ref01_match_rt0 = [];
 
-        [$cart_ref01_list_rt0_result, $err] = $cart_ref01_ent->list($cart_ref01_match_rt0, null);
-        $this->assertNull($err);
+        $cart_ref01_list_rt0_result = $cart_ref01_ent->list($cart_ref01_match_rt0, null);
         $this->assertIsArray($cart_ref01_list_rt0_result);
 
         $not_found_item = sdk_select(
@@ -133,7 +127,6 @@ function cart_basic_setup($extra)
         "FAKESTORE_TEST_CART_ENTID" => $idmap,
         "FAKESTORE_TEST_LIVE" => "FALSE",
         "FAKESTORE_TEST_EXPLAIN" => "FALSE",
-        "FAKESTORE_APIKEY" => "NONE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
@@ -145,7 +138,6 @@ function cart_basic_setup($extra)
     if ($env["FAKESTORE_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
-                "apikey" => $env["FAKESTORE_APIKEY"],
             ],
             $extra ?? [],
         ]);

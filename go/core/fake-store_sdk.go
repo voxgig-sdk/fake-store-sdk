@@ -245,21 +245,33 @@ func (sdk *FakeStoreSDK) Direct(fetchargs map[string]any) (map[string]any, error
 }
 
 
+// Cart returns a Cart entity bound to this client.
+// Idiomatic usage: client.Cart(nil).List(nil, nil) or
+// client.Cart(nil).Load(map[string]any{"id": ...}, nil).
 func (sdk *FakeStoreSDK) Cart(data map[string]any) FakeStoreEntity {
 	return NewCartEntityFunc(sdk, data)
 }
 
 
+// Login returns a Login entity bound to this client.
+// Idiomatic usage: client.Login(nil).List(nil, nil) or
+// client.Login(nil).Load(map[string]any{"id": ...}, nil).
 func (sdk *FakeStoreSDK) Login(data map[string]any) FakeStoreEntity {
 	return NewLoginEntityFunc(sdk, data)
 }
 
 
+// Product returns a Product entity bound to this client.
+// Idiomatic usage: client.Product(nil).List(nil, nil) or
+// client.Product(nil).Load(map[string]any{"id": ...}, nil).
 func (sdk *FakeStoreSDK) Product(data map[string]any) FakeStoreEntity {
 	return NewProductEntityFunc(sdk, data)
 }
 
 
+// User returns a User entity bound to this client.
+// Idiomatic usage: client.User(nil).List(nil, nil) or
+// client.User(nil).Load(map[string]any{"id": ...}, nil).
 func (sdk *FakeStoreSDK) User(data map[string]any) FakeStoreEntity {
 	return NewUserEntityFunc(sdk, data)
 }

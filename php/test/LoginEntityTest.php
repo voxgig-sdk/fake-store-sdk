@@ -43,8 +43,7 @@ class LoginEntityTest extends TestCase
         $login_ref01_data = Helpers::to_map(Vs::getprop(
             Vs::getpath($setup["data"], "new.login"), "login_ref01"));
 
-        [$login_ref01_data_result, $err] = $login_ref01_ent->create($login_ref01_data, null);
-        $this->assertNull($err);
+        $login_ref01_data_result = $login_ref01_ent->create($login_ref01_data, null);
         $login_ref01_data = Helpers::to_map($login_ref01_data_result);
         $this->assertNotNull($login_ref01_data);
 
@@ -80,7 +79,6 @@ function login_basic_setup($extra)
         "FAKESTORE_TEST_LOGIN_ENTID" => $idmap,
         "FAKESTORE_TEST_LIVE" => "FALSE",
         "FAKESTORE_TEST_EXPLAIN" => "FALSE",
-        "FAKESTORE_APIKEY" => "NONE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
@@ -92,7 +90,6 @@ function login_basic_setup($extra)
     if ($env["FAKESTORE_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
-                "apikey" => $env["FAKESTORE_APIKEY"],
             ],
             $extra ?? [],
         ]);

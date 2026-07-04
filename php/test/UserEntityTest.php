@@ -43,8 +43,7 @@ class UserEntityTest extends TestCase
         $user_ref01_data = Helpers::to_map(Vs::getprop(
             Vs::getpath($setup["data"], "new.user"), "user_ref01"));
 
-        [$user_ref01_data_result, $err] = $user_ref01_ent->create($user_ref01_data, null);
-        $this->assertNull($err);
+        $user_ref01_data_result = $user_ref01_ent->create($user_ref01_data, null);
         $user_ref01_data = Helpers::to_map($user_ref01_data_result);
         $this->assertNotNull($user_ref01_data);
         $this->assertNotNull($user_ref01_data["id"]);
@@ -52,8 +51,7 @@ class UserEntityTest extends TestCase
         // LIST
         $user_ref01_match = [];
 
-        [$user_ref01_list_result, $err] = $user_ref01_ent->list($user_ref01_match, null);
-        $this->assertNull($err);
+        $user_ref01_list_result = $user_ref01_ent->list($user_ref01_match, null);
         $this->assertIsArray($user_ref01_list_result);
 
         $found_item = sdk_select(
@@ -70,8 +68,7 @@ class UserEntityTest extends TestCase
         $user_ref01_markdef_up0_value = "Mark01-user_ref01_" . $setup["now"];
         $user_ref01_data_up0_up[$user_ref01_markdef_up0_name] = $user_ref01_markdef_up0_value;
 
-        [$user_ref01_resdata_up0_result, $err] = $user_ref01_ent->update($user_ref01_data_up0_up, null);
-        $this->assertNull($err);
+        $user_ref01_resdata_up0_result = $user_ref01_ent->update($user_ref01_data_up0_up, null);
         $user_ref01_resdata_up0 = Helpers::to_map($user_ref01_resdata_up0_result);
         $this->assertNotNull($user_ref01_resdata_up0);
         $this->assertEquals($user_ref01_resdata_up0["id"], $user_ref01_data_up0_up["id"]);
@@ -81,8 +78,7 @@ class UserEntityTest extends TestCase
         $user_ref01_match_dt0 = [
             "id" => $user_ref01_data["id"],
         ];
-        [$user_ref01_data_dt0_loaded, $err] = $user_ref01_ent->load($user_ref01_match_dt0, null);
-        $this->assertNull($err);
+        $user_ref01_data_dt0_loaded = $user_ref01_ent->load($user_ref01_match_dt0, null);
         $user_ref01_data_dt0_load_result = Helpers::to_map($user_ref01_data_dt0_loaded);
         $this->assertNotNull($user_ref01_data_dt0_load_result);
         $this->assertEquals($user_ref01_data_dt0_load_result["id"], $user_ref01_data["id"]);
@@ -91,14 +87,12 @@ class UserEntityTest extends TestCase
         $user_ref01_match_rm0 = [
             "id" => $user_ref01_data["id"],
         ];
-        [$_, $err] = $user_ref01_ent->remove($user_ref01_match_rm0, null);
-        $this->assertNull($err);
+        $user_ref01_ent->remove($user_ref01_match_rm0, null);
 
         // LIST
         $user_ref01_match_rt0 = [];
 
-        [$user_ref01_list_rt0_result, $err] = $user_ref01_ent->list($user_ref01_match_rt0, null);
-        $this->assertNull($err);
+        $user_ref01_list_rt0_result = $user_ref01_ent->list($user_ref01_match_rt0, null);
         $this->assertIsArray($user_ref01_list_rt0_result);
 
         $not_found_item = sdk_select(
@@ -138,7 +132,6 @@ function user_basic_setup($extra)
         "FAKESTORE_TEST_USER_ENTID" => $idmap,
         "FAKESTORE_TEST_LIVE" => "FALSE",
         "FAKESTORE_TEST_EXPLAIN" => "FALSE",
-        "FAKESTORE_APIKEY" => "NONE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
@@ -150,7 +143,6 @@ function user_basic_setup($extra)
     if ($env["FAKESTORE_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
-                "apikey" => $env["FAKESTORE_APIKEY"],
             ],
             $extra ?? [],
         ]);

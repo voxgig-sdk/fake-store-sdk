@@ -55,6 +55,9 @@ class ProductEntity
         return new ProductEntity($this->_client, $opts);
     }
 
+    /**
+     * @param Product|array $args Product data (assoc-array) to store.
+     */
     public function data_set($args): void
     {
         if ($args) {
@@ -63,12 +66,18 @@ class ProductEntity
         }
     }
 
+    /**
+     * @return Product|array The current Product data as an assoc-array.
+     */
     public function data_get()
     {
         ($this->_utility->feature_hook)($this->_entctx, "GetData");
         return Struct::clone($this->_data);
     }
 
+    /**
+     * @param array $args Match filter (any subset of Product fields).
+     */
     public function match_set($args): void
     {
         if ($args) {
@@ -77,6 +86,9 @@ class ProductEntity
         }
     }
 
+    /**
+     * @return array The current match filter (any subset of Product fields).
+     */
     public function match_get()
     {
         ($this->_utility->feature_hook)($this->_entctx, "GetMatch");
@@ -84,7 +96,16 @@ class ProductEntity
     }
 
     
-    public function load($reqmatch, $ctrl = null): array
+    /**
+     * Load a single Product.
+     *
+     * @param ProductLoadMatch|array|null $reqmatch Match criteria (id/query
+     *   fields) as an assoc-array; a typed ProductLoadMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Product|array The loaded Product as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function load(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -110,7 +131,16 @@ class ProductEntity
 
 
     
-    public function list($reqmatch, $ctrl = null): array
+    /**
+     * List Product items matching the given filter.
+     *
+     * @param ProductListMatch|array|null $reqmatch Match filter (any subset
+     *   of Product fields) as an assoc-array; ProductListMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Product[]|array A list of Product items as assoc-arrays at
+     *   the SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function list(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -133,7 +163,16 @@ class ProductEntity
 
 
     
-    public function create($reqdata, $ctrl = null): array
+    /**
+     * Create a new Product.
+     *
+     * @param ProductCreateData|array|null $reqdata Body data as an assoc-array;
+     *   a typed ProductCreateData names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Product|array The created Product as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function create(?array $reqdata = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -156,7 +195,16 @@ class ProductEntity
 
 
     
-    public function update($reqdata, $ctrl = null): array
+    /**
+     * Update an existing Product.
+     *
+     * @param ProductUpdateData|array|null $reqdata Body data as an assoc-array;
+     *   a typed ProductUpdateData names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Product|array The updated Product as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function update(?array $reqdata = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -182,7 +230,16 @@ class ProductEntity
 
 
     
-    public function remove($reqmatch, $ctrl = null): array
+    /**
+     * Remove an Product matching the given criteria.
+     *
+     * @param ProductRemoveMatch|array|null $reqmatch Match criteria (id/query
+     *   fields) as an assoc-array; ProductRemoveMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Product|array The removed Product as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function remove(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -207,7 +264,7 @@ class ProductEntity
 
 
 
-    private function _run_op($ctx, callable $post_done): array
+    private function _run_op($ctx, callable $post_done): mixed
     {
         $utility = $this->_utility;
 

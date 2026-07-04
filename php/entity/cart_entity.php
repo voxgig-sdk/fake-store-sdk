@@ -55,6 +55,9 @@ class CartEntity
         return new CartEntity($this->_client, $opts);
     }
 
+    /**
+     * @param Cart|array $args Cart data (assoc-array) to store.
+     */
     public function data_set($args): void
     {
         if ($args) {
@@ -63,12 +66,18 @@ class CartEntity
         }
     }
 
+    /**
+     * @return Cart|array The current Cart data as an assoc-array.
+     */
     public function data_get()
     {
         ($this->_utility->feature_hook)($this->_entctx, "GetData");
         return Struct::clone($this->_data);
     }
 
+    /**
+     * @param array $args Match filter (any subset of Cart fields).
+     */
     public function match_set($args): void
     {
         if ($args) {
@@ -77,6 +86,9 @@ class CartEntity
         }
     }
 
+    /**
+     * @return array The current match filter (any subset of Cart fields).
+     */
     public function match_get()
     {
         ($this->_utility->feature_hook)($this->_entctx, "GetMatch");
@@ -84,7 +96,16 @@ class CartEntity
     }
 
     
-    public function load($reqmatch, $ctrl = null): array
+    /**
+     * Load a single Cart.
+     *
+     * @param CartLoadMatch|array|null $reqmatch Match criteria (id/query
+     *   fields) as an assoc-array; a typed CartLoadMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Cart|array The loaded Cart as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function load(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -110,7 +131,16 @@ class CartEntity
 
 
     
-    public function list($reqmatch, $ctrl = null): array
+    /**
+     * List Cart items matching the given filter.
+     *
+     * @param CartListMatch|array|null $reqmatch Match filter (any subset
+     *   of Cart fields) as an assoc-array; CartListMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Cart[]|array A list of Cart items as assoc-arrays at
+     *   the SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function list(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -133,7 +163,16 @@ class CartEntity
 
 
     
-    public function create($reqdata, $ctrl = null): array
+    /**
+     * Create a new Cart.
+     *
+     * @param CartCreateData|array|null $reqdata Body data as an assoc-array;
+     *   a typed CartCreateData names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Cart|array The created Cart as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function create(?array $reqdata = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -156,7 +195,16 @@ class CartEntity
 
 
     
-    public function update($reqdata, $ctrl = null): array
+    /**
+     * Update an existing Cart.
+     *
+     * @param CartUpdateData|array|null $reqdata Body data as an assoc-array;
+     *   a typed CartUpdateData names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Cart|array The updated Cart as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function update(?array $reqdata = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -182,7 +230,16 @@ class CartEntity
 
 
     
-    public function remove($reqmatch, $ctrl = null): array
+    /**
+     * Remove an Cart matching the given criteria.
+     *
+     * @param CartRemoveMatch|array|null $reqmatch Match criteria (id/query
+     *   fields) as an assoc-array; CartRemoveMatch names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return Cart|array The removed Cart as an assoc-array at the
+     *   SDK boundary; throws FakeStoreError on failure (item-5 convention).
+     */
+    public function remove(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
@@ -207,7 +264,7 @@ class CartEntity
 
 
 
-    private function _run_op($ctx, callable $post_done): array
+    private function _run_op($ctx, callable $post_done): mixed
     {
         $utility = $this->_utility;
 

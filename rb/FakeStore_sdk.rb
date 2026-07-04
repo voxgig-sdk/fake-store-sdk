@@ -13,6 +13,9 @@ require_relative 'config'
 require_relative 'feature/base_feature'
 require_relative 'features'
 
+# Load typed models (Struct value objects).
+require_relative 'FakeStore_types'
+
 
 class FakeStoreSDK
   attr_accessor :mode, :features, :options
@@ -131,7 +134,7 @@ class FakeStoreSDK
     end
 
     _, err = utility.prepare_auth.call(ctx)
-    return nil, err if err
+    raise err if err
 
     utility.make_fetch_def.call(ctx)
   end
@@ -139,8 +142,14 @@ class FakeStoreSDK
   def direct(fetchargs = {})
     utility = @_utility
 
-    fetchdef, err = prepare(fetchargs)
-    return { "ok" => false, "err" => err }, nil if err
+    # direct() is the raw-HTTP escape hatch: it always returns a result hash
+    # ({ "ok" => ..., ... }) and never raises. prepare() raises on error, so
+    # trap that and surface it in the hash.
+    begin
+      fetchdef = prepare(fetchargs)
+    rescue FakeStoreError => err
+      return { "ok" => false, "err" => err }
+    end
 
     fetchargs ||= {}
     ctrl = FakeStoreHelpers.to_map(VoxgigStruct.getprop(fetchargs, "ctrl")) || {}
@@ -153,13 +162,13 @@ class FakeStoreSDK
     url = fetchdef["url"] || ""
     fetched, fetch_err = utility.fetcher.call(ctx, url, fetchdef)
 
-    return { "ok" => false, "err" => fetch_err }, nil if fetch_err
+    return { "ok" => false, "err" => fetch_err } if fetch_err
 
     if fetched.nil?
       return {
         "ok" => false,
         "err" => ctx.make_error("direct_no_response", "response: undefined"),
-      }, nil
+      }
     end
 
     if fetched.is_a?(Hash)
@@ -189,34 +198,62 @@ class FakeStoreSDK
         "status" => status,
         "headers" => headers,
         "data" => json_data,
-      }, nil
+      }
     end
 
     return {
       "ok" => false,
       "err" => ctx.make_error("direct_invalid", "invalid response type"),
-    }, nil
+    }
   end
 
 
+  # Idiomatic facade: client.cart.list / client.cart.load({ "id" => ... })
+  def cart
+    require_relative 'entity/cart_entity'
+    @cart ||= CartEntity.new(self, nil)
+  end
+
+  # Deprecated: use client.cart instead.
   def Cart(data = nil)
     require_relative 'entity/cart_entity'
     CartEntity.new(self, data)
   end
 
 
+  # Idiomatic facade: client.login.list / client.login.load({ "id" => ... })
+  def login
+    require_relative 'entity/login_entity'
+    @login ||= LoginEntity.new(self, nil)
+  end
+
+  # Deprecated: use client.login instead.
   def Login(data = nil)
     require_relative 'entity/login_entity'
     LoginEntity.new(self, data)
   end
 
 
+  # Idiomatic facade: client.product.list / client.product.load({ "id" => ... })
+  def product
+    require_relative 'entity/product_entity'
+    @product ||= ProductEntity.new(self, nil)
+  end
+
+  # Deprecated: use client.product instead.
   def Product(data = nil)
     require_relative 'entity/product_entity'
     ProductEntity.new(self, data)
   end
 
 
+  # Idiomatic facade: client.user.list / client.user.load({ "id" => ... })
+  def user
+    require_relative 'entity/user_entity'
+    @user ||= UserEntity.new(self, nil)
+  end
+
+  # Deprecated: use client.user instead.
   def User(data = nil)
     require_relative 'entity/user_entity'
     UserEntity.new(self, data)
