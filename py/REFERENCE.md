@@ -8,7 +8,7 @@ Complete API reference for the FakeStore Python SDK.
 ### Constructor
 
 ```python
-from fake-store_sdk import FakeStoreSDK
+from fakestore_sdk import FakeStoreSDK
 
 client = FakeStoreSDK(options)
 ```
@@ -99,9 +99,9 @@ cart = client.Cart()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | ``$INTEGER`` | No |  |
-| `product` | ``$ARRAY`` | No |  |
-| `user_id` | ``$INTEGER`` | No |  |
+| `id` | `int` | No |  |
+| `product` | `list` | No |  |
+| `user_id` | `int` | No |  |
 
 ### Operations
 
@@ -114,12 +114,12 @@ result = client.Cart().create({
 })
 ```
 
-#### `list(reqmatch, ctrl=None) -> list`
+#### `list(reqmatch=None, ctrl=None) -> list`
 
-List entities matching the given criteria. Returns a list and raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
 
 ```python
-results = client.Cart().list({})
+results = client.Cart().list()
 for cart in results:
     print(cart)
 ```
@@ -190,9 +190,9 @@ login = client.Login()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | ``$STRING`` | No |  |
-| `token` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `password` | `str` | No |  |
+| `token` | `str` | No |  |
+| `username` | `str` | No |  |
 
 ### Operations
 
@@ -244,12 +244,12 @@ product = client.Product()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `category` | ``$STRING`` | No |  |
-| `description` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `image` | ``$STRING`` | No |  |
-| `price` | ``$NUMBER`` | No |  |
-| `title` | ``$STRING`` | No |  |
+| `category` | `str` | No |  |
+| `description` | `str` | No |  |
+| `id` | `int` | No |  |
+| `image` | `str` | No |  |
+| `price` | `float` | No |  |
+| `title` | `str` | No |  |
 
 ### Operations
 
@@ -262,12 +262,12 @@ result = client.Product().create({
 })
 ```
 
-#### `list(reqmatch, ctrl=None) -> list`
+#### `list(reqmatch=None, ctrl=None) -> list`
 
-List entities matching the given criteria. Returns a list and raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
 
 ```python
-results = client.Product().list({})
+results = client.Product().list()
 for product in results:
     print(product)
 ```
@@ -338,10 +338,10 @@ user = client.User()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `email` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `password` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `email` | `str` | No |  |
+| `id` | `int` | No |  |
+| `password` | `str` | No |  |
+| `username` | `str` | No |  |
 
 ### Operations
 
@@ -354,12 +354,12 @@ result = client.User().create({
 })
 ```
 
-#### `list(reqmatch, ctrl=None) -> list`
+#### `list(reqmatch=None, ctrl=None) -> list`
 
-List entities matching the given criteria. Returns a list and raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
 
 ```python
-results = client.User().list({})
+results = client.User().list()
 for user in results:
     print(user)
 ```

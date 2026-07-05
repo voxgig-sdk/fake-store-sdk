@@ -4,6 +4,11 @@
 
 The TypeScript SDK for the FakeStore API — a type-safe, entity-oriented client with full async/await support.
 
+The API is exposed as capitalised, semantic **Entities** — e.g.
+`client.Cart()` — each with a small set of operations (`list`, `load`, `create`, `update`, `remove`)
+instead of raw URL paths and query parameters. This keeps the surface
+predictable and low-friction for both humans and AI agents.
+
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
 
@@ -46,7 +51,7 @@ for (const cart of carts) {
 
 ```ts
 try {
-  const cart = await client.Cart().load({ id: 'example_id' })
+  const cart = await client.Cart().load({ id: 1 })
   console.log(cart)
 } catch (err) {
   console.error('load failed:', err)
@@ -58,19 +63,48 @@ try {
 ```ts
 // Create — returns the created Cart
 const created = await client.Cart().create({
-  name: 'Example',
+  product: [],
+  user_id: 1,
 })
 
 // Update — the id comes straight off the returned entity
 const updated = await client.Cart().update({
-  id: created.id,
-  name: 'Example-Renamed',
+  id: created.id!,
 })
 
 // Remove
 await client.Cart().remove({
-  id: created.id,
+  id: created.id!,
 })
+```
+
+
+## Error handling
+
+Entity operations reject on failure, so wrap them in `try` / `catch`:
+
+```ts
+try {
+  const carts = await client.Cart().list()
+  console.log(carts)
+} catch (err) {
+  console.error('list failed:', err)
+}
+```
+
+The low-level `direct()` method does **not** throw — it returns the
+value or an `Error`, so check the result before using it:
+
+```ts
+const result = await client.direct({
+  path: '/api/resource/{id}',
+  method: 'GET',
+  params: { id: 'example_id' },
+})
+
+if (result instanceof Error) {
+  throw result
+}
 ```
 
 
@@ -118,7 +152,7 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = FakeStoreSDK.test()
 
-const cart = await client.Cart().load({ id: 'test01' })
+const cart = await client.Cart().list()
 // cart is a bare entity populated with mock response data
 console.log(cart)
 ```
@@ -137,12 +171,12 @@ Entity instances remember their last match and data:
 ```ts
 const entity = client.Cart()
 
-// First call sets internal match
-await entity.load({ id: 'example' })
+// First call runs the operation and stores its result
+await entity.list()
 
-// Subsequent calls reuse the stored match
+// Subsequent calls reuse the stored state
 const data = entity.data()
-console.log(data.id) // 'example'
+console.log(data.id)
 ```
 
 ### Add custom middleware
@@ -238,8 +272,8 @@ All entities share the same interface.
 | `create` | `create(reqdata?, ctrl?): Promise<Entity>` | Create a new entity. |
 | `update` | `update(reqdata?, ctrl?): Promise<Entity>` | Update an existing entity. |
 | `remove` | `remove(reqmatch?, ctrl?): Promise<void>` | Remove an entity. |
-| `data` | `data(data?): any` | Get or set entity data. |
-| `match` | `match(match?): any` | Get or set entity match criteria. |
+| `data` | `data(data?: Partial<Entity>): Entity` | Get or set entity data. |
+| `match` | `match(match?: Partial<Entity>): Partial<Entity>` | Get or set entity match criteria. |
 | `make` | `make(): Entity` | Create a new instance with the same options. |
 | `client` | `client(): FakeStoreSDK` | Return the parent SDK client. |
 | `entopts` | `entopts(): object` | Return a copy of the entity options. |
@@ -363,14 +397,14 @@ Create an instance: `const cart = client.Cart()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | ``$INTEGER`` |  |
-| `product` | ``$ARRAY`` |  |
-| `user_id` | ``$INTEGER`` |  |
+| `id` | `number` |  |
+| `product` | `any[]` |  |
+| `user_id` | `number` |  |
 
 #### Example: Load
 
 ```ts
-const cart = await client.Cart().load({ id: 'cart_id' })
+const cart = await client.Cart().load({ id: 1 })
 ```
 
 #### Example: List
@@ -401,9 +435,9 @@ Create an instance: `const login = client.Login()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `password` | ``$STRING`` |  |
-| `token` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `password` | `string` |  |
+| `token` | `string` |  |
+| `username` | `string` |  |
 
 #### Example: Create
 
@@ -431,17 +465,17 @@ Create an instance: `const product = client.Product()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `category` | ``$STRING`` |  |
-| `description` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `image` | ``$STRING`` |  |
-| `price` | ``$NUMBER`` |  |
-| `title` | ``$STRING`` |  |
+| `category` | `string` |  |
+| `description` | `string` |  |
+| `id` | `number` |  |
+| `image` | `string` |  |
+| `price` | `number` |  |
+| `title` | `string` |  |
 
 #### Example: Load
 
 ```ts
-const product = await client.Product().load({ id: 'product_id' })
+const product = await client.Product().load({ id: 1 })
 ```
 
 #### Example: List
@@ -476,15 +510,15 @@ Create an instance: `const user = client.User()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `email` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `password` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `email` | `string` |  |
+| `id` | `number` |  |
+| `password` | `string` |  |
+| `username` | `string` |  |
 
 #### Example: Load
 
 ```ts
-const user = await client.User().load({ id: 'user_id' })
+const user = await client.User().load({ id: 1 })
 ```
 
 #### Example: List
@@ -501,12 +535,16 @@ const user = await client.User().create({
 ```
 
 
-## Explanation
+## Advanced
+
+> The sections above cover everyday use. The material below explains the
+> SDK's internals — useful when extending it with custom features, but not
+> needed for normal use.
 
 ### The operation pipeline
 
-Every entity operation (load, list, create, update, remove) follows a
-six-stage pipeline. Each stage fires a feature hook before executing:
+Every entity operation follows a six-stage pipeline. Each stage fires a
+feature hook before executing:
 
 ```
 PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
@@ -523,11 +561,9 @@ PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
 - **PreDone**: Final stage before returning to the caller. Entity
   state (match, data) is updated here.
 
-If any stage returns an error, the pipeline short-circuits and the
-error is returned to the caller.
-
-An unexpected exception triggers the `PreUnexpected` hook before
-propagating.
+If any stage errors, the pipeline short-circuits and the error surfaces
+to the caller — see [Error handling](#error-handling) for how that looks
+in this language.
 
 ### Features and hooks
 
@@ -563,16 +599,16 @@ import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
 
 ### Entity state
 
-Entity instances are stateful. After a successful `load`, the entity
+Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally. Subsequent
 calls on the same instance can rely on this state.
 
 ```ts
 const cart = client.Cart()
-await cart.load({ id: "example_id" })
+await cart.list()
 
-// cart.data() now returns the loaded cart data
-// cart.match() returns { id: "example_id" }
+// cart.data() now returns the cart data from the last `list`
+// cart.match() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

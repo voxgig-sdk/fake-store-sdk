@@ -4,6 +4,8 @@
 
 The Lua SDK for the FakeStore API — an entity-oriented client using Lua conventions.
 
+It exposes the API as capitalised, semantic **Entities** — e.g. `client:Cart()` — each with the same small set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
+
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
 
@@ -41,7 +43,7 @@ local carts, err = client:Cart():list()
 if err then error(err) end
 
 for _, item in ipairs(carts) do
-  print(item["id"], item["name"])
+  print(item["id"], item["product"])
 end
 ```
 
@@ -57,14 +59,36 @@ print(cart)
 
 ```lua
 -- Create
-local created, err = client:Cart():create({ name = "Example" })
+local created, err = client:Cart():create({ product = {}, user_id = 1 })
 if err then error(err) end
 
 -- Update
-client:Cart():update({ id = created["id"], name = "Example-Renamed" })
+client:Cart():update({ id = created["id"] })
 
 -- Remove
 client:Cart():remove({ id = created["id"] })
+```
+
+
+## Error handling
+
+Entity operations return `(value, err)`. Check `err` before using
+the value:
+
+```lua
+local carts, err = client:Cart():list()
+if err then error(err) end
+```
+
+`direct` follows the same `(value, err)` convention:
+
+```lua
+local result, err = client:direct({
+  path = "/api/resource/{id}",
+  method = "GET",
+  params = { id = "example_id" },
+})
+if err then error(err) end
 ```
 
 
@@ -110,8 +134,8 @@ Create a mock client for unit testing — no server required:
 ```lua
 local client = sdk.test()
 
-local result, err = client:Cart():load({ id = "test01" })
--- result is the loaded data; err is set on failure
+local result, err = client:Cart():list()
+-- result is the returned data; err is set on failure
 ```
 
 ### Use a custom fetch function
@@ -308,9 +332,9 @@ Create an instance: `local cart = client:Cart(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | ``$INTEGER`` |  |
-| `product` | ``$ARRAY`` |  |
-| `user_id` | ``$INTEGER`` |  |
+| `id` | `number` |  |
+| `product` | `table` |  |
+| `user_id` | `number` |  |
 
 #### Example: Load
 
@@ -346,9 +370,9 @@ Create an instance: `local login = client:Login(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `password` | ``$STRING`` |  |
-| `token` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `password` | `string` |  |
+| `token` | `string` |  |
+| `username` | `string` |  |
 
 #### Example: Create
 
@@ -376,12 +400,12 @@ Create an instance: `local product = client:Product(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `category` | ``$STRING`` |  |
-| `description` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `image` | ``$STRING`` |  |
-| `price` | ``$NUMBER`` |  |
-| `title` | ``$STRING`` |  |
+| `category` | `string` |  |
+| `description` | `string` |  |
+| `id` | `number` |  |
+| `image` | `string` |  |
+| `price` | `number` |  |
+| `title` | `string` |  |
 
 #### Example: Load
 
@@ -421,10 +445,10 @@ Create an instance: `local user = client:User(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `email` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `password` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `email` | `string` |  |
+| `id` | `number` |  |
+| `password` | `string` |  |
+| `username` | `string` |  |
 
 #### Example: Load
 
@@ -446,12 +470,16 @@ local user, err = client:User():create({
 ```
 
 
-## Explanation
+## Advanced
+
+> The sections above cover everyday use. The material below explains the
+> SDK's internals — useful when extending it with custom features, but not
+> needed for normal use.
 
 ### The operation pipeline
 
-Every entity operation (load, list, create, update, remove) follows a
-six-stage pipeline. Each stage fires a feature hook before executing:
+Every entity operation follows a six-stage pipeline. Each stage fires a
+feature hook before executing:
 
 ```
 PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
@@ -468,8 +496,9 @@ PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
 - **PreDone**: Final stage before returning to the caller. Entity
   state (match, data) is updated here.
 
-If any stage returns an error, the pipeline short-circuits and the
-error is returned to the caller as a second return value.
+If any stage errors, the pipeline short-circuits and the error surfaces
+to the caller — see [Error handling](#error-handling) for how that looks
+in this language.
 
 ### Features and hooks
 
@@ -513,14 +542,14 @@ when needed.
 
 ### Entity state
 
-Entity instances are stateful. After a successful `load`, the entity
+Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```lua
 local cart = client:Cart()
-cart:load({ id = "example_id" })
+cart:list()
 
--- cart:data_get() now returns the loaded cart data
+-- cart:data_get() now returns the cart data from the last list
 -- cart:match_get() returns the last match criteria
 ```
 

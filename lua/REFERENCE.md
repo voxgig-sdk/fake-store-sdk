@@ -102,9 +102,9 @@ local cart = client:Cart(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | ``$INTEGER`` | No |  |
-| `product` | ``$ARRAY`` | No |  |
-| `user_id` | ``$INTEGER`` | No |  |
+| `id` | `number` | No |  |
+| `product` | `table` | No |  |
+| `user_id` | `number` | No |  |
 
 ### Operations
 
@@ -192,9 +192,9 @@ local login = client:Login(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | ``$STRING`` | No |  |
-| `token` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `password` | `string` | No |  |
+| `token` | `string` | No |  |
+| `username` | `string` | No |  |
 
 ### Operations
 
@@ -247,12 +247,12 @@ local product = client:Product(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `category` | ``$STRING`` | No |  |
-| `description` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `image` | ``$STRING`` | No |  |
-| `price` | ``$NUMBER`` | No |  |
-| `title` | ``$STRING`` | No |  |
+| `category` | `string` | No |  |
+| `description` | `string` | No |  |
+| `id` | `number` | No |  |
+| `image` | `string` | No |  |
+| `price` | `number` | No |  |
+| `title` | `string` | No |  |
 
 ### Operations
 
@@ -340,10 +340,10 @@ local user = client:User(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `email` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `password` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `email` | `string` | No |  |
+| `id` | `number` | No |  |
+| `password` | `string` | No |  |
+| `username` | `string` | No |  |
 
 ### Operations
 

@@ -109,9 +109,9 @@ cart := client.Cart(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | ``$INTEGER`` | No |  |
-| `product` | ``$ARRAY`` | No |  |
-| `user_id` | ``$INTEGER`` | No |  |
+| `id` | `int` | No |  |
+| `product` | `[]any` | No |  |
+| `user_id` | `int` | No |  |
 
 ### Operations
 
@@ -193,9 +193,9 @@ login := client.Login(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | ``$STRING`` | No |  |
-| `token` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `password` | `string` | No |  |
+| `token` | `string` | No |  |
+| `username` | `string` | No |  |
 
 ### Operations
 
@@ -242,12 +242,12 @@ product := client.Product(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `category` | ``$STRING`` | No |  |
-| `description` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `image` | ``$STRING`` | No |  |
-| `price` | ``$NUMBER`` | No |  |
-| `title` | ``$STRING`` | No |  |
+| `category` | `string` | No |  |
+| `description` | `string` | No |  |
+| `id` | `int` | No |  |
+| `image` | `string` | No |  |
+| `price` | `float64` | No |  |
+| `title` | `string` | No |  |
 
 ### Operations
 
@@ -329,10 +329,10 @@ user := client.User(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `email` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `password` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `email` | `string` | No |  |
+| `id` | `int` | No |  |
+| `password` | `string` | No |  |
+| `username` | `string` | No |  |
 
 ### Operations
 

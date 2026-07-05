@@ -4,6 +4,8 @@
 
 The Golang SDK for the FakeStore API — an entity-oriented client using standard Go conventions. No generics required; data flows as `map[string]any`.
 
+It exposes the API as capitalised, semantic **Entities** — e.g. `client.Cart(nil)` — each with the same small set of operations (`List`, `Load`, `Create`, `Update`, `Remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
+
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
 
@@ -58,33 +60,62 @@ func main() {
     }
 
     // Load a single cart — the value is the loaded record.
-    cart, err := client.Cart(nil).Load(map[string]any{"id": "example_id"}, nil)
+    cart, err := client.Cart(nil).Load(map[string]any{"id": 1}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(cart)
 
     // Create a cart.
-    created, err := client.Cart(nil).Create(map[string]any{"name": "Example"}, nil)
+    created, err := client.Cart(nil).Create(map[string]any{"product": []any{}, "user_id": 1}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(created)
 
     // Update a cart.
-    updated, err := client.Cart(nil).Update(map[string]any{"id": "example_id", "name": "Renamed"}, nil)
+    updated, err := client.Cart(nil).Update(map[string]any{"id": 1}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(updated)
 
     // Remove a cart.
-    removed, err := client.Cart(nil).Remove(map[string]any{"id": "example_id"}, nil)
+    removed, err := client.Cart(nil).Remove(map[string]any{"id": 1}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(removed)
 }
+```
+
+
+## Error handling
+
+Every entity operation returns `(value, error)`. Check `err` before
+using the value — there is no exception to catch:
+
+```go
+carts, err := client.Cart(nil).List(nil, nil)
+if err != nil {
+    // handle err
+    return
+}
+_ = carts
+```
+
+`Direct` follows the same `(value, error)` convention:
+
+```go
+result, err := client.Direct(map[string]any{
+    "path":   "/api/resource/{id}",
+    "method": "GET",
+    "params": map[string]any{"id": "example_id"},
+})
+if err != nil {
+    // handle err
+}
+_ = result
 ```
 
 
@@ -134,13 +165,13 @@ Create a mock client for unit testing — no server required:
 ```go
 client := sdk.Test()
 
-cart, err := client.Cart(nil).Load(
-    map[string]any{"id": "test01"}, nil,
+cart, err := client.Cart(nil).List(
+    nil, nil,
 )
 if err != nil {
     panic(err)
 }
-fmt.Println(cart) // the loaded mock data
+fmt.Println(cart) // the returned mock data
 ```
 
 ### Use a custom fetch function
@@ -252,9 +283,9 @@ Check `err` first, then use the value directly (or the typed
 `...Typed` variants, which return the entity's model struct and a typed
 slice):
 
-    cart, err := client.Cart(nil).Load(map[string]any{"id": "example_id"}, nil)
+    cart, err := client.Cart(nil).List(map[string]any{/* fields */}, nil)
     if err != nil { /* handle */ }
-    // cart is the loaded record
+    // cart is the returned record
 
 Only `Direct()` returns a response envelope — a `map[string]any` with
 `"ok"`, `"status"`, `"headers"`, and `"data"` keys.
@@ -336,9 +367,9 @@ Create an instance: `cart := client.Cart(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | ``$INTEGER`` |  |
-| `product` | ``$ARRAY`` |  |
-| `user_id` | ``$INTEGER`` |  |
+| `id` | `int` |  |
+| `product` | `[]any` |  |
+| `user_id` | `int` |  |
 
 #### Example: Load
 
@@ -382,9 +413,9 @@ Create an instance: `login := client.Login(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `password` | ``$STRING`` |  |
-| `token` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `password` | `string` |  |
+| `token` | `string` |  |
+| `username` | `string` |  |
 
 #### Example: Create
 
@@ -412,12 +443,12 @@ Create an instance: `product := client.Product(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `category` | ``$STRING`` |  |
-| `description` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `image` | ``$STRING`` |  |
-| `price` | ``$NUMBER`` |  |
-| `title` | ``$STRING`` |  |
+| `category` | `string` |  |
+| `description` | `string` |  |
+| `id` | `int` |  |
+| `image` | `string` |  |
+| `price` | `float64` |  |
+| `title` | `string` |  |
 
 #### Example: Load
 
@@ -465,10 +496,10 @@ Create an instance: `user := client.User(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `email` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `password` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `email` | `string` |  |
+| `id` | `int` |  |
+| `password` | `string` |  |
+| `username` | `string` |  |
 
 #### Example: Load
 
@@ -498,12 +529,16 @@ result, err := client.User(nil).Create(map[string]any{
 ```
 
 
-## Explanation
+## Advanced
+
+> The sections above cover everyday use. The material below explains the
+> SDK's internals — useful when extending it with custom features, but not
+> needed for normal use.
 
 ### The operation pipeline
 
-Every entity operation (load, list, create, update, remove) follows a
-six-stage pipeline. Each stage fires a feature hook before executing:
+Every entity operation follows a six-stage pipeline. Each stage fires a
+feature hook before executing:
 
 ```
 PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
@@ -520,9 +555,9 @@ PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
 - **PreDone**: Final stage before returning to the caller. Entity
   state (match, data) is updated here.
 
-If any stage returns an error, the pipeline short-circuits and the
-error is returned to the caller. An unexpected panic triggers the
-`PreUnexpected` hook.
+If any stage errors, the pipeline short-circuits and the error surfaces
+to the caller — see [Error handling](#error-handling) for how that looks
+in this language.
 
 ### Features and hooks
 
@@ -563,14 +598,14 @@ like `core.ToMapAny`.
 
 ### Entity state
 
-Entity instances are stateful. After a successful `Load`, the entity
+Entity instances are stateful. After a successful `List`, the entity
 stores the returned data and match criteria internally.
 
 ```go
 cart := client.Cart(nil)
-cart.Load(map[string]any{"id": "example_id"}, nil)
+cart.List(nil, nil)
 
-// cart.Data() now returns the loaded cart data
+// cart.Data() now returns the cart data from the last list
 // cart.Match() returns the last match criteria
 ```
 

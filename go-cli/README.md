@@ -19,6 +19,7 @@ go build -o fake-store-cli ./...
 ./fake-store-cli list cart
 ./fake-store-cli load 1 cart
 ./fake-store-cli load '{id:1}' cart
+./fake-store-cli update '{id:1}' cart
 
 # REPL
 ./fake-store-cli

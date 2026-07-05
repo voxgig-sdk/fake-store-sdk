@@ -4,6 +4,8 @@
 
 The Ruby SDK for the FakeStore API — an entity-oriented client using idiomatic Ruby conventions.
 
+The SDK exposes the API as capitalised, semantic **Entities** — for example `client.Cart` — with named operations (`list`/`load`/`create`/`update`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
+
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
 
@@ -35,7 +37,7 @@ begin
   # list returns an Array of Cart records — iterate directly.
   carts = client.Cart.list
   carts.each do |item|
-    puts "#{item["id"]} #{item["name"]}"
+    puts "#{item["id"]} #{item["product"]}"
   end
 rescue => err
   warn "list failed: #{err}"
@@ -58,13 +60,40 @@ end
 
 ```ruby
 # create returns the bare created Cart record.
-created = client.Cart.create({ "name" => "Example" })
+created = client.Cart.create({ "product" => [], "user_id" => 1 })
 
 # Update — index the bare record directly (created["id"]).
-client.Cart.update({ "id" => created["id"], "name" => "Example-Renamed" })
+client.Cart.update({ "id" => created["id"] })
 
 # Remove
 client.Cart.remove({ "id" => created["id"] })
+```
+
+
+## Error handling
+
+Entity operations raise on failure, so rescue them:
+
+```ruby
+begin
+  carts = client.Cart.list()
+rescue => err
+  warn "list failed: #{err}"
+end
+```
+
+`direct` does **not** raise — it returns the result hash. Branch on
+`ok`; on failure `status` holds the HTTP status (for error responses) and
+`err` holds a transport error, so read both defensively:
+
+```ruby
+result = client.direct({
+  "path" => "/api/resource/{id}",
+  "method" => "GET",
+  "params" => { "id" => "example_id" },
+})
+
+warn "request failed: #{result["err"] || "HTTP #{result["status"]}"}" unless result["ok"]
 ```
 
 
@@ -85,7 +114,9 @@ if result["ok"]
   puts result["status"]  # 200
   puts result["data"]    # response body
 else
-  warn result["err"]
+  # On an HTTP error status there is no err (only a transport failure sets
+  # it), so fall back to the status code.
+  warn(result["err"] || "HTTP #{result["status"]}")
 end
 ```
 
@@ -116,8 +147,8 @@ client = FakeStoreSDK.test({
   "entity" => { "cart" => { "test01" => { "id" => "test01" } } },
 })
 
-# load returns the bare mock record (raises on error).
-cart = client.Cart.load({ "id" => "test01" })
+# Entity ops return the bare mock record (raises on error).
+cart = client.Cart.list()
 puts cart
 ```
 
@@ -206,7 +237,7 @@ All entities share the same interface.
 | Method | Signature | Description |
 | --- | --- | --- |
 | `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria. Raises on error. |
-| `list` | `(reqmatch, ctrl) -> Array` | List entities matching the criteria. Raises on error. |
+| `list` | `(reqmatch = nil, ctrl) -> Array` | List entities matching the criteria (call with no argument to list all). Raises on error. |
 | `create` | `(reqdata, ctrl) -> any` | Create a new entity. Raises on error. |
 | `update` | `(reqdata, ctrl) -> any` | Update an existing entity. Raises on error. |
 | `remove` | `(reqmatch, ctrl) -> any` | Remove an entity. Raises on error. |
@@ -311,9 +342,9 @@ Create an instance: `cart = client.Cart`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | ``$INTEGER`` |  |
-| `product` | ``$ARRAY`` |  |
-| `user_id` | ``$INTEGER`` |  |
+| `id` | `Integer` |  |
+| `product` | `Array` |  |
+| `user_id` | `Integer` |  |
 
 #### Example: Load
 
@@ -351,9 +382,9 @@ Create an instance: `login = client.Login`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `password` | ``$STRING`` |  |
-| `token` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `password` | `String` |  |
+| `token` | `String` |  |
+| `username` | `String` |  |
 
 #### Example: Create
 
@@ -381,12 +412,12 @@ Create an instance: `product = client.Product`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `category` | ``$STRING`` |  |
-| `description` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `image` | ``$STRING`` |  |
-| `price` | ``$NUMBER`` |  |
-| `title` | ``$STRING`` |  |
+| `category` | `String` |  |
+| `description` | `String` |  |
+| `id` | `Integer` |  |
+| `image` | `String` |  |
+| `price` | `Float` |  |
+| `title` | `String` |  |
 
 #### Example: Load
 
@@ -428,10 +459,10 @@ Create an instance: `user = client.User`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `email` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `password` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `email` | `String` |  |
+| `id` | `Integer` |  |
+| `password` | `String` |  |
+| `username` | `String` |  |
 
 #### Example: Load
 
@@ -455,12 +486,16 @@ user = client.User.create({
 ```
 
 
-## Explanation
+## Advanced
+
+> The sections above cover everyday use. The material below explains the
+> SDK's internals — useful when extending it with custom features, but not
+> needed for normal use.
 
 ### The operation pipeline
 
-Every entity operation (load, list, create, update, remove) follows a
-six-stage pipeline. Each stage fires a feature hook before executing:
+Every entity operation follows a six-stage pipeline. Each stage fires a
+feature hook before executing:
 
 ```
 PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
@@ -477,8 +512,9 @@ PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
 - **PreDone**: Final stage before returning to the caller. Entity
   state (match, data) is updated here.
 
-If any stage returns an error, the pipeline short-circuits and the
-error is returned to the caller as a second return value.
+If any stage errors, the pipeline short-circuits and the error surfaces
+to the caller — see [Error handling](#error-handling) for how that looks
+in this language.
 
 ### Features and hooks
 
@@ -522,14 +558,14 @@ when needed.
 
 ### Entity state
 
-Entity instances are stateful. After a successful `load`, the entity
+Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```ruby
 cart = client.Cart
-cart.load({ "id" => "example_id" })
+cart.list()
 
-# cart.data_get now returns the loaded cart data
+# cart.data_get now returns the cart data from the last list
 # cart.match_get returns the last match criteria
 ```
 

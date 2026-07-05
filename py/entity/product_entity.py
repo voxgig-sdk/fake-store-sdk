@@ -68,8 +68,13 @@ class ProductEntity:
         return vs.clone(self._match)
 
     
-    def load(self, reqmatch: ProductLoadMatch, ctrl=None) -> Product:
+    def load(self, reqmatch=None, ctrl=None) -> Product:
         utility = self._utility
+        # reqmatch is optional: an entity with no id-like key loads with no
+        # match. Treat None as an empty match so client.Product().load()
+        # works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "load",
             "ctrl": ctrl,
@@ -90,8 +95,12 @@ class ProductEntity:
 
 
     
-    def list(self, reqmatch: ProductListMatch, ctrl=None) -> list[Product]:
+    def list(self, reqmatch=None, ctrl=None) -> list[Product]:
         utility = self._utility
+        # reqmatch is optional: an omitted match lists all records. Treat None
+        # as an empty match so client.Product().list() works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "list",
             "ctrl": ctrl,
@@ -152,8 +161,13 @@ class ProductEntity:
 
 
     
-    def remove(self, reqmatch: ProductRemoveMatch, ctrl=None) -> Product:
+    def remove(self, reqmatch=None, ctrl=None) -> Product:
         utility = self._utility
+        # reqmatch is optional: an entity with no id-like key removes with no
+        # match. Treat None as an empty match so client.Product().remove()
+        # works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "remove",
             "ctrl": ctrl,

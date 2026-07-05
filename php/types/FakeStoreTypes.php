@@ -26,7 +26,7 @@ class CartLoadMatch
     public int $id;
 }
 
-/** Match filter for Cart#list (any subset of Cart fields). */
+/** Request payload for Cart#list. */
 class CartListMatch
 {
     public ?int $id = null;
@@ -34,7 +34,7 @@ class CartListMatch
     public ?int $user_id = null;
 }
 
-/** Match filter for Cart#create (any subset of Cart fields). */
+/** Request payload for Cart#create. */
 class CartCreateData
 {
     public ?int $id = null;
@@ -62,7 +62,7 @@ class Login
     public ?string $username = null;
 }
 
-/** Match filter for Login#create (any subset of Login fields). */
+/** Request payload for Login#create. */
 class LoginCreateData
 {
     public ?string $password = null;
@@ -87,7 +87,7 @@ class ProductLoadMatch
     public int $id;
 }
 
-/** Match filter for Product#list (any subset of Product fields). */
+/** Request payload for Product#list. */
 class ProductListMatch
 {
     public ?string $category = null;
@@ -98,7 +98,7 @@ class ProductListMatch
     public ?string $title = null;
 }
 
-/** Match filter for Product#create (any subset of Product fields). */
+/** Request payload for Product#create. */
 class ProductCreateData
 {
     public ?string $category = null;
@@ -136,7 +136,7 @@ class UserLoadMatch
     public int $id;
 }
 
-/** Match filter for User#list (any subset of User fields). */
+/** Request payload for User#list. */
 class UserListMatch
 {
     public ?string $email = null;
@@ -145,7 +145,7 @@ class UserListMatch
     public ?string $username = null;
 }
 
-/** Match filter for User#create (any subset of User fields). */
+/** Request payload for User#create. */
 class UserCreateData
 {
     public ?string $email = null;

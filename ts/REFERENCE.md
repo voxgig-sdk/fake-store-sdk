@@ -152,9 +152,9 @@ const cart = client.Cart()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | ``$INTEGER`` | No |  |
-| `product` | ``$ARRAY`` | No |  |
-| `user_id` | ``$INTEGER`` | No |  |
+| `id` | `number` | No |  |
+| `product` | `any[]` | No |  |
+| `user_id` | `number` | No |  |
 
 ### Operations
 
@@ -180,7 +180,7 @@ const results = await client.Cart().list()
 Load a single entity matching the given criteria.
 
 ```ts
-const result = await client.Cart().load({ id: 'cart_id' })
+const result = await client.Cart().load({ id: 1 })
 ```
 
 #### `remove(match: object, ctrl?: object)`
@@ -188,7 +188,7 @@ const result = await client.Cart().load({ id: 'cart_id' })
 Remove the entity matching the given criteria.
 
 ```ts
-const result = await client.Cart().remove({ id: 'cart_id' })
+const result = await client.Cart().remove({ id: 1 })
 ```
 
 #### `update(data: object, ctrl?: object)`
@@ -197,7 +197,7 @@ Update an existing entity. The data must include the entity `id`.
 
 ```ts
 const result = await client.Cart().update({
-  id: 'cart_id',
+  id: 1,
   // Fields to update
 })
 ```
@@ -240,9 +240,9 @@ const login = client.Login()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | ``$STRING`` | No |  |
-| `token` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `password` | `string` | No |  |
+| `token` | `string` | No |  |
+| `username` | `string` | No |  |
 
 ### Operations
 
@@ -293,12 +293,12 @@ const product = client.Product()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `category` | ``$STRING`` | No |  |
-| `description` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `image` | ``$STRING`` | No |  |
-| `price` | ``$NUMBER`` | No |  |
-| `title` | ``$STRING`` | No |  |
+| `category` | `string` | No |  |
+| `description` | `string` | No |  |
+| `id` | `number` | No |  |
+| `image` | `string` | No |  |
+| `price` | `number` | No |  |
+| `title` | `string` | No |  |
 
 ### Operations
 
@@ -324,7 +324,7 @@ const results = await client.Product().list()
 Load a single entity matching the given criteria.
 
 ```ts
-const result = await client.Product().load({ id: 'product_id' })
+const result = await client.Product().load({ id: 1 })
 ```
 
 #### `remove(match: object, ctrl?: object)`
@@ -332,7 +332,7 @@ const result = await client.Product().load({ id: 'product_id' })
 Remove the entity matching the given criteria.
 
 ```ts
-const result = await client.Product().remove({ id: 'product_id' })
+const result = await client.Product().remove({ id: 1 })
 ```
 
 #### `update(data: object, ctrl?: object)`
@@ -341,7 +341,7 @@ Update an existing entity. The data must include the entity `id`.
 
 ```ts
 const result = await client.Product().update({
-  id: 'product_id',
+  id: 1,
   // Fields to update
 })
 ```
@@ -384,10 +384,10 @@ const user = client.User()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `email` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `password` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `email` | `string` | No |  |
+| `id` | `number` | No |  |
+| `password` | `string` | No |  |
+| `username` | `string` | No |  |
 
 ### Operations
 
@@ -413,7 +413,7 @@ const results = await client.User().list()
 Load a single entity matching the given criteria.
 
 ```ts
-const result = await client.User().load({ id: 'user_id' })
+const result = await client.User().load({ id: 1 })
 ```
 
 #### `remove(match: object, ctrl?: object)`
@@ -421,7 +421,7 @@ const result = await client.User().load({ id: 'user_id' })
 Remove the entity matching the given criteria.
 
 ```ts
-const result = await client.User().remove({ id: 'user_id' })
+const result = await client.User().remove({ id: 1 })
 ```
 
 #### `update(data: object, ctrl?: object)`
@@ -430,7 +430,7 @@ Update an existing entity. The data must include the entity `id`.
 
 ```ts
 const result = await client.User().update({
-  id: 'user_id',
+  id: 1,
   // Fields to update
 })
 ```

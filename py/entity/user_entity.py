@@ -68,8 +68,13 @@ class UserEntity:
         return vs.clone(self._match)
 
     
-    def load(self, reqmatch: UserLoadMatch, ctrl=None) -> User:
+    def load(self, reqmatch=None, ctrl=None) -> User:
         utility = self._utility
+        # reqmatch is optional: an entity with no id-like key loads with no
+        # match. Treat None as an empty match so client.User().load()
+        # works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "load",
             "ctrl": ctrl,
@@ -90,8 +95,12 @@ class UserEntity:
 
 
     
-    def list(self, reqmatch: UserListMatch, ctrl=None) -> list[User]:
+    def list(self, reqmatch=None, ctrl=None) -> list[User]:
         utility = self._utility
+        # reqmatch is optional: an omitted match lists all records. Treat None
+        # as an empty match so client.User().list() works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "list",
             "ctrl": ctrl,
@@ -152,8 +161,13 @@ class UserEntity:
 
 
     
-    def remove(self, reqmatch: UserRemoveMatch, ctrl=None) -> User:
+    def remove(self, reqmatch=None, ctrl=None) -> User:
         utility = self._utility
+        # reqmatch is optional: an entity with no id-like key removes with no
+        # match. Treat None as an empty match so client.User().remove()
+        # works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "remove",
             "ctrl": ctrl,

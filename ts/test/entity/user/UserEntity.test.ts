@@ -79,12 +79,12 @@ describe('UserEntity', async () => {
     user_ref01_data_up0.id = user_ref01_data.id
 
     const user_ref01_markdef_up0 = { name: 'email', value: 'Mark01-user_ref01_' + setup.now }
-    user_ref01_data_up0 [user_ref01_markdef_up0.name] = user_ref01_markdef_up0.value
+    ;(user_ref01_data_up0 as any)[user_ref01_markdef_up0.name] = user_ref01_markdef_up0.value
 
     const user_ref01_resdata_up0 = await user_ref01_ent.update(user_ref01_data_up0)
     assert(user_ref01_resdata_up0.id === user_ref01_data_up0.id)
 
-    assert(user_ref01_resdata_up0[user_ref01_markdef_up0.name] === user_ref01_markdef_up0.value)
+    assert((user_ref01_resdata_up0 as any)[user_ref01_markdef_up0.name] === user_ref01_markdef_up0.value)
 
 
     // LOAD

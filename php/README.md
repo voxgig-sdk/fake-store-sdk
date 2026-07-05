@@ -4,6 +4,8 @@
 
 The PHP SDK for the FakeStore API — an entity-oriented client using PHP conventions.
 
+The SDK exposes the API as capitalised, semantic **Entities** — for example `$client->Cart()` — with named operations (`list`/`load`/`create`/`update`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
+
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
 
@@ -36,7 +38,7 @@ try {
     // list() returns an array of Cart records — iterate directly.
     $carts = $client->Cart()->list();
     foreach ($carts as $item) {
-        echo $item["id"] . " " . $item["name"] . "\n";
+        echo $item["id"] . " " . $item["product"] . "\n";
     }
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
@@ -59,13 +61,44 @@ try {
 
 ```php
 // create() returns the bare created Cart record.
-$created = $client->Cart()->create(["name" => "Example"]);
+$created = $client->Cart()->create(["product" => [], "user_id" => 1]);
 
 // Update — index the bare record directly ($created["id"]).
-$client->Cart()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
+$client->Cart()->update(["id" => $created["id"]]);
 
 // Remove
 $client->Cart()->remove(["id" => $created["id"]]);
+```
+
+
+## Error handling
+
+Entity operations throw a `\Throwable` on failure, so wrap them in
+`try` / `catch`:
+
+```php
+try {
+    $carts = $client->Cart()->list();
+} catch (\Throwable $err) {
+    echo "Error: " . $err->getMessage();
+}
+```
+
+`direct()` does **not** throw — it returns the result array. Branch on
+`ok`; on failure `status` holds the HTTP status (for error responses) and
+`err` holds a transport error, so read both defensively:
+
+```php
+$result = $client->direct([
+    "path" => "/api/resource/{id}",
+    "method" => "GET",
+    "params" => ["id" => "example_id"],
+]);
+
+if (! $result["ok"]) {
+    $err = $result["err"] ?? null;
+    echo "request failed: " . ($err ? $err->getMessage() : "HTTP " . $result["status"]);
+}
 ```
 
 
@@ -88,7 +121,10 @@ if ($result["ok"]) {
     echo $result["status"];  // 200
     print_r($result["data"]);  // response body
 } else {
-    echo "Error: " . $result["err"]->getMessage();
+    // On an HTTP error status there is no err (only a transport failure sets
+    // it), so fall back to the status code.
+    $err = $result["err"] ?? null;
+    echo "Error: " . ($err ? $err->getMessage() : "HTTP " . $result["status"]);
 }
 ```
 
@@ -117,8 +153,8 @@ $client = FakeStoreSDK::test([
     "entity" => ["cart" => ["test01" => ["id" => "test01"]]],
 ]);
 
-// load() returns the bare mock record (throws on error).
-$cart = $client->Cart()->load(["id" => "test01"]);
+// Entity ops return the bare mock record (throws on error).
+$cart = $client->Cart()->list();
 print_r($cart);
 ```
 
@@ -210,7 +246,7 @@ All entities share the same interface.
 | Method | Signature | Description |
 | --- | --- | --- |
 | `load` | `($reqmatch, $ctrl): array` | Load a single entity by match criteria. |
-| `list` | `($reqmatch, $ctrl): array` | List entities matching the criteria. |
+| `list` | `(?array $reqmatch = null, $ctrl): array` | List entities matching the criteria (call with no argument to list all). |
 | `create` | `($reqdata, $ctrl): array` | Create a new entity. |
 | `update` | `($reqdata, $ctrl): array` | Update an existing entity. |
 | `remove` | `($reqmatch, $ctrl): array` | Remove an entity. |
@@ -316,9 +352,9 @@ Create an instance: `$cart = $client->Cart();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | ``$INTEGER`` |  |
-| `product` | ``$ARRAY`` |  |
-| `user_id` | ``$INTEGER`` |  |
+| `id` | `int` |  |
+| `product` | `array` |  |
+| `user_id` | `int` |  |
 
 #### Example: Load
 
@@ -356,9 +392,9 @@ Create an instance: `$login = $client->Login();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `password` | ``$STRING`` |  |
-| `token` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `password` | `string` |  |
+| `token` | `string` |  |
+| `username` | `string` |  |
 
 #### Example: Create
 
@@ -386,12 +422,12 @@ Create an instance: `$product = $client->Product();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `category` | ``$STRING`` |  |
-| `description` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `image` | ``$STRING`` |  |
-| `price` | ``$NUMBER`` |  |
-| `title` | ``$STRING`` |  |
+| `category` | `string` |  |
+| `description` | `string` |  |
+| `id` | `int` |  |
+| `image` | `string` |  |
+| `price` | `float` |  |
+| `title` | `string` |  |
 
 #### Example: Load
 
@@ -433,10 +469,10 @@ Create an instance: `$user = $client->User();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `email` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `password` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `email` | `string` |  |
+| `id` | `int` |  |
+| `password` | `string` |  |
+| `username` | `string` |  |
 
 #### Example: Load
 
@@ -460,12 +496,16 @@ $user = $client->User()->create([
 ```
 
 
-## Explanation
+## Advanced
+
+> The sections above cover everyday use. The material below explains the
+> SDK's internals — useful when extending it with custom features, but not
+> needed for normal use.
 
 ### The operation pipeline
 
-Every entity operation (load, list, create, update, remove) follows a
-six-stage pipeline. Each stage fires a feature hook before executing:
+Every entity operation follows a six-stage pipeline. Each stage fires a
+feature hook before executing:
 
 ```
 PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
@@ -482,8 +522,9 @@ PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
 - **PreDone**: Final stage before returning to the caller. Entity
   state (match, data) is updated here.
 
-If any stage returns an error, the pipeline short-circuits and the
-error is returned to the caller as the second element in the return array.
+If any stage errors, the pipeline short-circuits and the error surfaces
+to the caller — see [Error handling](#error-handling) for how that looks
+in this language.
 
 ### Features and hooks
 
@@ -527,15 +568,15 @@ when needed.
 
 ### Entity state
 
-Entity instances are stateful. After a successful `load`, the entity
+Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```php
 $cart = $client->Cart();
-$cart->load(["id" => "example_id"]);
+$cart->list();
 
-// $cart->dataGet() now returns the loaded cart data
-// $cart->matchGet() returns the last match criteria
+// $cart->data_get() now returns the cart data from the last list
+// $cart->match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

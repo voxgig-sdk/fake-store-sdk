@@ -15,9 +15,17 @@ export interface CartLoadMatch {
   id: number
 }
 
-export type CartListMatch = Partial<Cart>
+export interface CartListMatch {
+  id?: number
+  product?: any[]
+  user_id?: number
+}
 
-export type CartCreateData = Partial<Cart>
+export interface CartCreateData {
+  id?: number
+  product?: any[]
+  user_id?: number
+}
 
 export interface CartUpdateData {
   id: number
@@ -33,7 +41,11 @@ export interface Login {
   username?: string
 }
 
-export type LoginCreateData = Partial<Login>
+export interface LoginCreateData {
+  password?: string
+  token?: string
+  username?: string
+}
 
 export interface Product {
   category?: string
@@ -48,9 +60,23 @@ export interface ProductLoadMatch {
   id: number
 }
 
-export type ProductListMatch = Partial<Product>
+export interface ProductListMatch {
+  category?: string
+  description?: string
+  id?: number
+  image?: string
+  price?: number
+  title?: string
+}
 
-export type ProductCreateData = Partial<Product>
+export interface ProductCreateData {
+  category?: string
+  description?: string
+  id?: number
+  image?: string
+  price?: number
+  title?: string
+}
 
 export interface ProductUpdateData {
   id: number
@@ -71,9 +97,19 @@ export interface UserLoadMatch {
   id: number
 }
 
-export type UserListMatch = Partial<User>
+export interface UserListMatch {
+  email?: string
+  id?: number
+  password?: string
+  username?: string
+}
 
-export type UserCreateData = Partial<User>
+export interface UserCreateData {
+  email?: string
+  id?: number
+  password?: string
+  username?: string
+}
 
 export interface UserUpdateData {
   id: number

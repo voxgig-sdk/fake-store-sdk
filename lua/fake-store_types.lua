@@ -15,8 +15,14 @@
 ---@field id number
 
 ---@class CartListMatch
+---@field id? number
+---@field product? table
+---@field user_id? number
 
 ---@class CartCreateData
+---@field id? number
+---@field product? table
+---@field user_id? number
 
 ---@class CartUpdateData
 ---@field id number
@@ -30,6 +36,9 @@
 ---@field username? string
 
 ---@class LoginCreateData
+---@field password? string
+---@field token? string
+---@field username? string
 
 ---@class Product
 ---@field category? string
@@ -43,8 +52,20 @@
 ---@field id number
 
 ---@class ProductListMatch
+---@field category? string
+---@field description? string
+---@field id? number
+---@field image? string
+---@field price? number
+---@field title? string
 
 ---@class ProductCreateData
+---@field category? string
+---@field description? string
+---@field id? number
+---@field image? string
+---@field price? number
+---@field title? string
 
 ---@class ProductUpdateData
 ---@field id number
@@ -62,8 +83,16 @@
 ---@field id number
 
 ---@class UserListMatch
+---@field email? string
+---@field id? number
+---@field password? string
+---@field username? string
 
 ---@class UserCreateData
+---@field email? string
+---@field id? number
+---@field password? string
+---@field username? string
 
 ---@class UserUpdateData
 ---@field id number

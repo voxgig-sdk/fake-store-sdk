@@ -8,7 +8,7 @@ Complete API reference for the FakeStore Ruby SDK.
 ### Constructor
 
 ```ruby
-require_relative 'fake-store_sdk'
+require_relative 'FakeStore_sdk'
 
 client = FakeStoreSDK.new(options)
 ```
@@ -105,9 +105,9 @@ cart = client.Cart
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | ``$INTEGER`` | No |  |
-| `product` | ``$ARRAY`` | No |  |
-| `user_id` | ``$INTEGER`` | No |  |
+| `id` | `Integer` | No |  |
+| `product` | `Array` | No |  |
+| `user_id` | `Integer` | No |  |
 
 ### Operations
 
@@ -120,12 +120,12 @@ result = client.Cart.create({
 })
 ```
 
-#### `list(reqmatch, ctrl = nil) -> Array`
+#### `list(reqmatch = nil, ctrl = nil) -> Array`
 
-List entities matching the given criteria. Returns an array. Raises on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array. Raises on error.
 
 ```ruby
-results = client.Cart.list(nil)
+results = client.Cart.list
 ```
 
 #### `load(reqmatch, ctrl = nil) -> result`
@@ -195,9 +195,9 @@ login = client.Login
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | ``$STRING`` | No |  |
-| `token` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `password` | `String` | No |  |
+| `token` | `String` | No |  |
+| `username` | `String` | No |  |
 
 ### Operations
 
@@ -250,12 +250,12 @@ product = client.Product
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `category` | ``$STRING`` | No |  |
-| `description` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `image` | ``$STRING`` | No |  |
-| `price` | ``$NUMBER`` | No |  |
-| `title` | ``$STRING`` | No |  |
+| `category` | `String` | No |  |
+| `description` | `String` | No |  |
+| `id` | `Integer` | No |  |
+| `image` | `String` | No |  |
+| `price` | `Float` | No |  |
+| `title` | `String` | No |  |
 
 ### Operations
 
@@ -268,12 +268,12 @@ result = client.Product.create({
 })
 ```
 
-#### `list(reqmatch, ctrl = nil) -> Array`
+#### `list(reqmatch = nil, ctrl = nil) -> Array`
 
-List entities matching the given criteria. Returns an array. Raises on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array. Raises on error.
 
 ```ruby
-results = client.Product.list(nil)
+results = client.Product.list
 ```
 
 #### `load(reqmatch, ctrl = nil) -> result`
@@ -343,10 +343,10 @@ user = client.User
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `email` | ``$STRING`` | No |  |
-| `id` | ``$INTEGER`` | No |  |
-| `password` | ``$STRING`` | No |  |
-| `username` | ``$STRING`` | No |  |
+| `email` | `String` | No |  |
+| `id` | `Integer` | No |  |
+| `password` | `String` | No |  |
+| `username` | `String` | No |  |
 
 ### Operations
 
@@ -359,12 +359,12 @@ result = client.User.create({
 })
 ```
 
-#### `list(reqmatch, ctrl = nil) -> Array`
+#### `list(reqmatch = nil, ctrl = nil) -> Array`
 
-List entities matching the given criteria. Returns an array. Raises on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array. Raises on error.
 
 ```ruby
-results = client.User.list(nil)
+results = client.User.list
 ```
 
 #### `load(reqmatch, ctrl = nil) -> result`

@@ -34,7 +34,7 @@ CartLoadMatch = Struct.new(
   keyword_init: true
 )
 
-# Match filter for Cart#list (any subset of Cart fields).
+# Request payload for Cart#list.
 #
 # @!attribute [rw] id
 #   @return [Integer, nil]
@@ -51,7 +51,7 @@ CartListMatch = Struct.new(
   keyword_init: true
 )
 
-# Match filter for Cart#create (any subset of Cart fields).
+# Request payload for Cart#create.
 #
 # @!attribute [rw] id
 #   @return [Integer, nil]
@@ -103,7 +103,7 @@ Login = Struct.new(
   keyword_init: true
 )
 
-# Match filter for Login#create (any subset of Login fields).
+# Request payload for Login#create.
 #
 # @!attribute [rw] password
 #   @return [String, nil]
@@ -158,7 +158,7 @@ ProductLoadMatch = Struct.new(
   keyword_init: true
 )
 
-# Match filter for Product#list (any subset of Product fields).
+# Request payload for Product#list.
 #
 # @!attribute [rw] category
 #   @return [String, nil]
@@ -187,7 +187,7 @@ ProductListMatch = Struct.new(
   keyword_init: true
 )
 
-# Match filter for Product#create (any subset of Product fields).
+# Request payload for Product#create.
 #
 # @!attribute [rw] category
 #   @return [String, nil]
@@ -264,7 +264,7 @@ UserLoadMatch = Struct.new(
   keyword_init: true
 )
 
-# Match filter for User#list (any subset of User fields).
+# Request payload for User#list.
 #
 # @!attribute [rw] email
 #   @return [String, nil]
@@ -285,7 +285,7 @@ UserListMatch = Struct.new(
   keyword_init: true
 )
 
-# Match filter for User#create (any subset of User fields).
+# Request payload for User#create.
 #
 # @!attribute [rw] email
 #   @return [String, nil]

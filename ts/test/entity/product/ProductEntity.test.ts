@@ -79,12 +79,12 @@ describe('ProductEntity', async () => {
     product_ref01_data_up0.id = product_ref01_data.id
 
     const product_ref01_markdef_up0 = { name: 'category', value: 'Mark01-product_ref01_' + setup.now }
-    product_ref01_data_up0 [product_ref01_markdef_up0.name] = product_ref01_markdef_up0.value
+    ;(product_ref01_data_up0 as any)[product_ref01_markdef_up0.name] = product_ref01_markdef_up0.value
 
     const product_ref01_resdata_up0 = await product_ref01_ent.update(product_ref01_data_up0)
     assert(product_ref01_resdata_up0.id === product_ref01_data_up0.id)
 
-    assert(product_ref01_resdata_up0[product_ref01_markdef_up0.name] === product_ref01_markdef_up0.value)
+    assert((product_ref01_resdata_up0 as any)[product_ref01_markdef_up0.name] === product_ref01_markdef_up0.value)
 
 
     // LOAD

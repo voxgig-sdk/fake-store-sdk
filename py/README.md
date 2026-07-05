@@ -4,6 +4,11 @@
 
 The Python SDK for the FakeStore API — an entity-oriented client following Pythonic conventions.
 
+The SDK exposes the API as capitalised, semantic **Entities** — for example `client.Cart()` — each
+carrying a small, uniform set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL
+paths and query strings. You work with named resources and verbs, which
+keeps the cognitive load low.
+
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
 
@@ -38,7 +43,7 @@ error — iterate it directly.
 
 ```python
 try:
-    carts = client.Cart().list({})
+    carts = client.Cart().list()
     for cart in carts:
         print(cart)
 except Exception as err:
@@ -61,13 +66,41 @@ except Exception as err:
 
 ```python
 # Create — returns the bare created record (a dict)
-created = client.Cart().create({"name": "Example"})
+created = client.Cart().create({"product": [], "user_id": 1})
 
 # Update — the created record's id is a plain dict key
-client.Cart().update({"id": created["id"], "name": "Example-Renamed"})
+client.Cart().update({"id": created["id"]})
 
 # Remove
 client.Cart().remove({"id": created["id"]})
+```
+
+
+## Error handling
+
+Entity operations raise on failure, so wrap them in `try` / `except`:
+
+```python
+try:
+    carts = client.Cart().list()
+    print(carts)
+except Exception as err:
+    print(f"list failed: {err}")
+```
+
+`direct()` does **not** raise — it returns the result envelope. Branch
+on `ok`; on failure `status` holds the HTTP status (for error responses)
+and `err` holds a transport error, so read both defensively:
+
+```python
+result = client.direct({
+    "path": "/api/resource/{id}",
+    "method": "GET",
+    "params": {"id": "example_id"},
+})
+
+if not result["ok"]:
+    print("request failed:", result.get("status"), result.get("err"))
 ```
 
 
@@ -88,7 +121,10 @@ if result["ok"]:
     print(result["status"])  # 200
     print(result["data"])    # response body
 else:
-    print(result["err"])     # error value
+    # A non-2xx response carries status + data (the error body); a
+    # transport-level failure carries err instead. Only one is present, so
+    # read both with .get() rather than indexing a key that may be absent.
+    print(result.get("status"), result.get("err"))
 ```
 
 ### Prepare a request without sending it
@@ -114,7 +150,7 @@ Create a mock client for unit testing — no server required:
 client = FakeStoreSDK.test()
 
 # Entity ops return the bare record and raise on error.
-cart = client.Cart().load({"id": "test01"})
+cart = client.Cart().list()
 # cart contains the mock response record
 ```
 
@@ -300,7 +336,7 @@ Create an instance: `cart = client.Cart()`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
-| `list(match)` | List entities matching the criteria. |
+| `list()` | List entities, optionally matching the given criteria. |
 | `load(match)` | Load a single entity by match criteria. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
@@ -309,9 +345,9 @@ Create an instance: `cart = client.Cart()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | ``$INTEGER`` |  |
-| `product` | ``$ARRAY`` |  |
-| `user_id` | ``$INTEGER`` |  |
+| `id` | `int` |  |
+| `product` | `list` |  |
+| `user_id` | `int` |  |
 
 #### Example: Load
 
@@ -322,7 +358,7 @@ cart = client.Cart().load({"id": "cart_id"})
 #### Example: List
 
 ```python
-carts = client.Cart().list({})
+carts = client.Cart().list()
 ```
 
 #### Example: Create
@@ -347,9 +383,9 @@ Create an instance: `login = client.Login()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `password` | ``$STRING`` |  |
-| `token` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `password` | `str` |  |
+| `token` | `str` |  |
+| `username` | `str` |  |
 
 #### Example: Create
 
@@ -368,7 +404,7 @@ Create an instance: `product = client.Product()`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
-| `list(match)` | List entities matching the criteria. |
+| `list()` | List entities, optionally matching the given criteria. |
 | `load(match)` | Load a single entity by match criteria. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
@@ -377,12 +413,12 @@ Create an instance: `product = client.Product()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `category` | ``$STRING`` |  |
-| `description` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `image` | ``$STRING`` |  |
-| `price` | ``$NUMBER`` |  |
-| `title` | ``$STRING`` |  |
+| `category` | `str` |  |
+| `description` | `str` |  |
+| `id` | `int` |  |
+| `image` | `str` |  |
+| `price` | `float` |  |
+| `title` | `str` |  |
 
 #### Example: Load
 
@@ -393,7 +429,7 @@ product = client.Product().load({"id": "product_id"})
 #### Example: List
 
 ```python
-products = client.Product().list({})
+products = client.Product().list()
 ```
 
 #### Example: Create
@@ -413,7 +449,7 @@ Create an instance: `user = client.User()`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
-| `list(match)` | List entities matching the criteria. |
+| `list()` | List entities, optionally matching the given criteria. |
 | `load(match)` | Load a single entity by match criteria. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
@@ -422,10 +458,10 @@ Create an instance: `user = client.User()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `email` | ``$STRING`` |  |
-| `id` | ``$INTEGER`` |  |
-| `password` | ``$STRING`` |  |
-| `username` | ``$STRING`` |  |
+| `email` | `str` |  |
+| `id` | `int` |  |
+| `password` | `str` |  |
+| `username` | `str` |  |
 
 #### Example: Load
 
@@ -436,7 +472,7 @@ user = client.User().load({"id": "user_id"})
 #### Example: List
 
 ```python
-users = client.User().list({})
+users = client.User().list()
 ```
 
 #### Example: Create
@@ -447,12 +483,16 @@ user = client.User().create({
 ```
 
 
-## Explanation
+## Advanced
+
+> The sections above cover everyday use. The material below explains the
+> SDK's internals — useful when extending it with custom features, but not
+> needed for normal use.
 
 ### The operation pipeline
 
-Every entity operation (load, list, create, update, remove) follows a
-six-stage pipeline. Each stage fires a feature hook before executing:
+Every entity operation follows a six-stage pipeline. Each stage fires a
+feature hook before executing:
 
 ```
 PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
@@ -469,8 +509,9 @@ PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
 - **PreDone**: Final stage before returning to the caller. Entity
   state (match, data) is updated here.
 
-If any stage returns an error, the pipeline short-circuits and the
-error is returned to the caller as the second element in the return tuple.
+If any stage errors, the pipeline short-circuits and the error surfaces
+to the caller — see [Error handling](#error-handling) for how that looks
+in this language.
 
 ### Features and hooks
 
@@ -513,14 +554,14 @@ Import entity or utility modules directly only when needed.
 
 ### Entity state
 
-Entity instances are stateful. After a successful `load`, the entity
+Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```python
 cart = client.Cart()
-cart.load({"id": "example_id"})
+cart.list()
 
-# cart.data_get() now returns the loaded cart data
+# cart.data_get() now returns the cart data from the last list
 # cart.match_get() returns the last match criteria
 ```
 

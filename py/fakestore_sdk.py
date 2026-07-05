@@ -221,25 +221,25 @@ class FakeStoreSDK:
 
 
     def Cart(self, data=None) -> "CartEntity":
-        """Entity factory: client.Cart().list({}) / client.Cart().load({"id": ...})."""
+        """Entity factory: client.Cart().list() / client.Cart().load({"id": ...})."""
         from entity.cart_entity import CartEntity
         return CartEntity(self, data)
 
 
     def Login(self, data=None) -> "LoginEntity":
-        """Entity factory: client.Login().list({}) / client.Login().load({"id": ...})."""
+        """Entity factory: client.Login().list() / client.Login().load({"id": ...})."""
         from entity.login_entity import LoginEntity
         return LoginEntity(self, data)
 
 
     def Product(self, data=None) -> "ProductEntity":
-        """Entity factory: client.Product().list({}) / client.Product().load({"id": ...})."""
+        """Entity factory: client.Product().list() / client.Product().load({"id": ...})."""
         from entity.product_entity import ProductEntity
         return ProductEntity(self, data)
 
 
     def User(self, data=None) -> "UserEntity":
-        """Entity factory: client.User().list({}) / client.User().load({"id": ...})."""
+        """Entity factory: client.User().list() / client.User().load({"id": ...})."""
         from entity.user_entity import UserEntity
         return UserEntity(self, data)
 
