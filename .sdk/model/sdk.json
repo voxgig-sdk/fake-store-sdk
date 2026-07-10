@@ -6,9 +6,6 @@
     },
     "kit": {
       "config": {
-        "auth": {
-          "prefix": "Bearer"
-        },
         "docs_order": [
           "ts",
           "py",
@@ -1110,13 +1107,16 @@
           "url": "https://fakestoreapi.com/docs"
         },
         "description": "A free fake API for testing and prototyping e-commerce applications.",
+        "meta_source": "https://www.freepublicapis.com",
         "servers": [
           {
             "url": "https://fakestoreapi.com"
           }
         ],
+        "summary": "A free fake API for testing and prototyping e-commerce applications.",
         "title": "FakeStoreAPI",
         "version": "v2.1.11",
+        "website": "https://fakestoreapi.com",
         "x-logo": {
           "href": "/",
           "url": "/icons/logo.png"
@@ -1173,6 +1173,9 @@
           },
           "name": "go-cli",
           "phase": {
+            "agentguide": {
+              "active": false
+            },
             "entity": {
               "active": false
             },
@@ -1223,6 +1226,9 @@
           },
           "name": "go-mcp",
           "phase": {
+            "agentguide": {
+              "active": false
+            },
             "entity": {
               "active": false
             },

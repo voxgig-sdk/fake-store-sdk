@@ -129,7 +129,7 @@ for cart in results:
 Load a single entity matching the given criteria. Returns the entity data and raises on error.
 
 ```python
-result = client.Cart().load({"id": "cart_id"})
+result = client.Cart().load({"id": 1})
 ```
 
 #### `remove(reqmatch, ctrl=None) -> dict`
@@ -137,7 +137,7 @@ result = client.Cart().load({"id": "cart_id"})
 Remove the entity matching the given criteria. Raises on error.
 
 ```python
-result = client.Cart().remove({"id": "cart_id"})
+result = client.Cart().remove({"id": 1})
 ```
 
 #### `update(reqdata, ctrl=None) -> dict`
@@ -146,7 +146,7 @@ Update an existing entity. The data must include the entity `id`. Returns the up
 
 ```python
 result = client.Cart().update({
-    "id": "cart_id",
+    "id": 1,
     # Fields to update
 })
 ```
@@ -277,7 +277,7 @@ for product in results:
 Load a single entity matching the given criteria. Returns the entity data and raises on error.
 
 ```python
-result = client.Product().load({"id": "product_id"})
+result = client.Product().load({"id": 1})
 ```
 
 #### `remove(reqmatch, ctrl=None) -> dict`
@@ -285,7 +285,7 @@ result = client.Product().load({"id": "product_id"})
 Remove the entity matching the given criteria. Raises on error.
 
 ```python
-result = client.Product().remove({"id": "product_id"})
+result = client.Product().remove({"id": 1})
 ```
 
 #### `update(reqdata, ctrl=None) -> dict`
@@ -294,7 +294,7 @@ Update an existing entity. The data must include the entity `id`. Returns the up
 
 ```python
 result = client.Product().update({
-    "id": "product_id",
+    "id": 1,
     # Fields to update
 })
 ```
@@ -369,7 +369,7 @@ for user in results:
 Load a single entity matching the given criteria. Returns the entity data and raises on error.
 
 ```python
-result = client.User().load({"id": "user_id"})
+result = client.User().load({"id": 1})
 ```
 
 #### `remove(reqmatch, ctrl=None) -> dict`
@@ -377,7 +377,7 @@ result = client.User().load({"id": "user_id"})
 Remove the entity matching the given criteria. Raises on error.
 
 ```python
-result = client.User().remove({"id": "user_id"})
+result = client.User().remove({"id": 1})
 ```
 
 #### `update(reqdata, ctrl=None) -> dict`
@@ -386,7 +386,7 @@ Update an existing entity. The data must include the entity `id`. Returns the up
 
 ```python
 result = client.User().update({
-    "id": "user_id",
+    "id": 1,
     # Fields to update
 })
 ```

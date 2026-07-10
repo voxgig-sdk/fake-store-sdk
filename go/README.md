@@ -357,11 +357,11 @@ Create an instance: `cart := client.Cart(nil)`
 
 | Method | Description |
 | --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
 | `List(match, ctrl)` | List entities matching the criteria. |
 | `Load(match, ctrl)` | Load a single entity by match criteria. |
-| `Remove(match, ctrl)` | Remove the matching entity. |
+| `Create(data, ctrl)` | Create a new entity with the given data. |
 | `Update(data, ctrl)` | Update an existing entity. |
+| `Remove(match, ctrl)` | Remove the matching entity. |
 
 #### Fields
 
@@ -374,7 +374,7 @@ Create an instance: `cart := client.Cart(nil)`
 #### Example: Load
 
 ```go
-cart, err := client.Cart(nil).Load(map[string]any{"id": "cart_id"}, nil)
+cart, err := client.Cart(nil).Load(map[string]any{"id": 1}, nil)
 if err != nil {
     panic(err)
 }
@@ -396,6 +396,10 @@ fmt.Println(carts) // the array of records
 ```go
 result, err := client.Cart(nil).Create(map[string]any{
 }, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(result)
 ```
 
 
@@ -422,6 +426,10 @@ Create an instance: `login := client.Login(nil)`
 ```go
 result, err := client.Login(nil).Create(map[string]any{
 }, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(result)
 ```
 
 
@@ -433,11 +441,11 @@ Create an instance: `product := client.Product(nil)`
 
 | Method | Description |
 | --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
 | `List(match, ctrl)` | List entities matching the criteria. |
 | `Load(match, ctrl)` | Load a single entity by match criteria. |
-| `Remove(match, ctrl)` | Remove the matching entity. |
+| `Create(data, ctrl)` | Create a new entity with the given data. |
 | `Update(data, ctrl)` | Update an existing entity. |
+| `Remove(match, ctrl)` | Remove the matching entity. |
 
 #### Fields
 
@@ -453,7 +461,7 @@ Create an instance: `product := client.Product(nil)`
 #### Example: Load
 
 ```go
-product, err := client.Product(nil).Load(map[string]any{"id": "product_id"}, nil)
+product, err := client.Product(nil).Load(map[string]any{"id": 1}, nil)
 if err != nil {
     panic(err)
 }
@@ -475,6 +483,10 @@ fmt.Println(products) // the array of records
 ```go
 result, err := client.Product(nil).Create(map[string]any{
 }, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(result)
 ```
 
 
@@ -486,11 +498,11 @@ Create an instance: `user := client.User(nil)`
 
 | Method | Description |
 | --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
 | `List(match, ctrl)` | List entities matching the criteria. |
 | `Load(match, ctrl)` | Load a single entity by match criteria. |
-| `Remove(match, ctrl)` | Remove the matching entity. |
+| `Create(data, ctrl)` | Create a new entity with the given data. |
 | `Update(data, ctrl)` | Update an existing entity. |
+| `Remove(match, ctrl)` | Remove the matching entity. |
 
 #### Fields
 
@@ -504,7 +516,7 @@ Create an instance: `user := client.User(nil)`
 #### Example: Load
 
 ```go
-user, err := client.User(nil).Load(map[string]any{"id": "user_id"}, nil)
+user, err := client.User(nil).Load(map[string]any{"id": 1}, nil)
 if err != nil {
     panic(err)
 }
@@ -526,6 +538,10 @@ fmt.Println(users) // the array of records
 ```go
 result, err := client.User(nil).Create(map[string]any{
 }, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(result)
 ```
 
 

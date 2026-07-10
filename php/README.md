@@ -50,7 +50,7 @@ try {
 ```php
 try {
     // load() returns the bare Cart record (throws on error).
-    $cart = $client->Cart()->load(["id" => "example_id"]);
+    $cart = $client->Cart()->load(["id" => 1]);
     print_r($cart);
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
@@ -360,7 +360,7 @@ Create an instance: `$cart = $client->Cart();`
 
 ```php
 // load() returns the bare Cart record (throws on error).
-$cart = $client->Cart()->load(["id" => "cart_id"]);
+$cart = $client->Cart()->load(["id" => 1]);
 ```
 
 #### Example: List
@@ -433,7 +433,7 @@ Create an instance: `$product = $client->Product();`
 
 ```php
 // load() returns the bare Product record (throws on error).
-$product = $client->Product()->load(["id" => "product_id"]);
+$product = $client->Product()->load(["id" => 1]);
 ```
 
 #### Example: List
@@ -478,7 +478,7 @@ Create an instance: `$user = $client->User();`
 
 ```php
 // load() returns the bare User record (throws on error).
-$user = $client->User()->load(["id" => "user_id"]);
+$user = $client->User()->load(["id" => 1]);
 ```
 
 #### Example: List

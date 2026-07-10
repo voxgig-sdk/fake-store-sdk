@@ -15,13 +15,13 @@ main: {
           url: "https://fakestoreapi.com"
         }
       ]
+      summary: "A free fake API for testing and prototyping e-commerce applications."
       title: "FakeStoreAPI"
       version: "v2.1.11"
+      website: "https://fakestoreapi.com"
       "x-logo": {
         href: "/"
         url: "/icons/logo.png"
       }
     }
   }
-}
-
