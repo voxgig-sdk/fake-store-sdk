@@ -1,4 +1,4 @@
--- ProjectName SDK exists test
+-- FakeStore SDK exists test
 
 local sdk = require("fake-store_sdk")
 
