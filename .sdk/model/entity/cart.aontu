@@ -11,12 +11,12 @@ main: kit: entity: cart: {
       type: "`$INTEGER`"
     }
     {
-      name: "product"
+      name: "products"
       req: false
       type: "`$ARRAY`"
     }
     {
-      name: "user_id"
+      name: "userId"
       req: false
       type: "`$INTEGER`"
     }

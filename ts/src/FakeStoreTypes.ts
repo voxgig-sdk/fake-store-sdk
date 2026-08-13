@@ -7,8 +7,8 @@
 
 export interface Cart {
   id?: number
-  product?: any[]
-  user_id?: number
+  products?: any[]
+  userId?: number
 }
 
 export interface CartLoadMatch {
@@ -17,18 +17,20 @@ export interface CartLoadMatch {
 
 export interface CartListMatch {
   id?: number
-  product?: any[]
-  user_id?: number
+  products?: any[]
+  userId?: number
 }
 
 export interface CartCreateData {
   id?: number
-  product?: any[]
-  user_id?: number
+  products?: any[]
+  userId?: number
 }
 
 export interface CartUpdateData {
   id: number
+  products?: any[]
+  userId?: number
 }
 
 export interface CartRemoveMatch {
@@ -80,6 +82,11 @@ export interface ProductCreateData {
 
 export interface ProductUpdateData {
   id: number
+  category?: string
+  description?: string
+  image?: string
+  price?: number
+  title?: string
 }
 
 export interface ProductRemoveMatch {
@@ -113,6 +120,9 @@ export interface UserCreateData {
 
 export interface UserUpdateData {
   id: number
+  email?: string
+  password?: string
+  username?: string
 }
 
 export interface UserRemoveMatch {

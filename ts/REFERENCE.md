@@ -153,8 +153,8 @@ const cart = client.Cart()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `number` | No |  |
-| `product` | `any[]` | No |  |
-| `user_id` | `number` | No |  |
+| `products` | `any[]` | No |  |
+| `userId` | `number` | No |  |
 
 ### Operations
 

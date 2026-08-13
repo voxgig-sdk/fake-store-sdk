@@ -38,7 +38,7 @@ try {
     // list() returns an array of Cart records — iterate directly.
     $carts = $client->Cart()->list();
     foreach ($carts as $item) {
-        echo $item["id"] . " " . $item["product"] . "\n";
+        echo $item["id"] . " " . $item["products"] . "\n";
     }
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
@@ -49,7 +49,7 @@ try {
 
 ```php
 try {
-    // load() returns the bare Cart record (throws on error).
+    // load() returns the ENTITY — call data_get() for the Cart record (throws on error).
     $cart = $client->Cart()->load(["id" => 1]);
     print_r($cart);
 } catch (\Throwable $err) {
@@ -60,14 +60,14 @@ try {
 ### 4. Create, update, and remove
 
 ```php
-// create() returns the bare created Cart record.
-$created = $client->Cart()->create(["product" => [], "user_id" => 1]);
+// create() returns the ENTITY — call data_get() for the created Cart record.
+$created = $client->Cart()->create(["products" => [], "userId" => 1]);
 
-// Update — index the bare record directly ($created["id"]).
-$client->Cart()->update(["id" => $created["id"]]);
+// Update — index the record via data_get() ($created->data_get()["id"]).
+$client->Cart()->update(["id" => $created->data_get()["id"], "products" => [], "userId" => 1]);
 
 // Remove
-$client->Cart()->remove(["id" => $created["id"]]);
+$client->Cart()->remove(["id" => $created->data_get()["id"]]);
 ```
 
 
@@ -78,7 +78,7 @@ Entity operations throw a `\Throwable` on failure, so wrap them in
 
 ```php
 try {
-    $carts = $client->Cart()->list();
+    $users = $client->User()->list();
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
@@ -150,12 +150,13 @@ data via the `entity` option so offline calls resolve without a live server:
 
 ```php
 $client = FakeStoreSDK::test([
-    "entity" => ["cart" => ["test01" => ["id" => "test01"]]],
+    "entity" => ["user" => ["test01" => ["id" => "test01"]]],
 ]);
 
-// Entity ops return the bare mock record (throws on error).
-$cart = $client->Cart()->list();
-print_r($cart);
+// Entity ops return the ENTITY (throws on error);
+// call data_get() for the mock record.
+$user = $client->User()->list();
+print_r($user);
 ```
 
 ### Use a custom fetch function
@@ -259,7 +260,7 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the bare result data (an `array` for single-entity
+Entity operations return the ENTITY (call data_get() for the record) (an `array` for single-entity
 ops, a `list` for `list`) and throw on error. Wrap calls in
 `try`/`catch` to handle failures.
 
@@ -282,8 +283,8 @@ On error, `ok` is `false` and `$err` contains the error value.
 | Field | Description |
 | --- | --- |
 | `id` |  |
-| `product` |  |
-| `user_id` |  |
+| `products` |  |
+| `userId` |  |
 
 Operations: Create, List, Load, Remove, Update.
 
@@ -353,13 +354,13 @@ Create an instance: `$cart = $client->Cart();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `int` |  |
-| `product` | `array` |  |
-| `user_id` | `int` |  |
+| `products` | `array` |  |
+| `userId` | `int` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare Cart record (throws on error).
+// load() returns the ENTITY — call data_get() for the Cart record (throws on error).
 $cart = $client->Cart()->load(["id" => 1]);
 ```
 
@@ -432,7 +433,7 @@ Create an instance: `$product = $client->Product();`
 #### Example: Load
 
 ```php
-// load() returns the bare Product record (throws on error).
+// load() returns the ENTITY — call data_get() for the Product record (throws on error).
 $product = $client->Product()->load(["id" => 1]);
 ```
 
@@ -477,7 +478,7 @@ Create an instance: `$user = $client->User();`
 #### Example: Load
 
 ```php
-// load() returns the bare User record (throws on error).
+// load() returns the ENTITY — call data_get() for the User record (throws on error).
 $user = $client->User()->load(["id" => 1]);
 ```
 
@@ -572,11 +573,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```php
-$cart = $client->Cart();
-$cart->list();
+$user = $client->User();
+$user->list();
 
-// $cart->data_get() now returns the cart data from the last list
-// $cart->match_get() returns the last match criteria
+// $user->data_get() now returns the user data from the last list
+// $user->match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

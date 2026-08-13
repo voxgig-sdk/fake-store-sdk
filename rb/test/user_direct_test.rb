@@ -114,11 +114,11 @@ def user_direct_setup(mockres)
   calls = []
 
   env = Runner.env_override({
-    "FAKESTORE_TEST_USER_ENTID" => {},
-    "FAKESTORE_TEST_LIVE" => "FALSE",
+    "FAKE_STORE_TEST_USER_ENTID" => {},
+    "FAKE_STORE_TEST_LIVE" => "FALSE",
   })
 
-  live = env["FAKESTORE_TEST_LIVE"] == "TRUE"
+  live = env["FAKE_STORE_TEST_LIVE"] == "TRUE"
 
   if live
     merged_opts = {

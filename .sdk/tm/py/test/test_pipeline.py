@@ -16,11 +16,11 @@
 import pytest
 
 from projectname_sdk import FakeStoreSDK
-from core.error import FakeStoreError
-from core.result import FakeStoreResult
-from core.response import FakeStoreResponse
-from core.spec import FakeStoreSpec
-from feature.base_feature import FakeStoreBaseFeature
+from projectname_sdk.core.error import FakeStoreError
+from projectname_sdk.core.result import FakeStoreResult
+from projectname_sdk.core.response import FakeStoreResponse
+from projectname_sdk.core.spec import FakeStoreSpec
+from projectname_sdk.feature.base_feature import FakeStoreBaseFeature
 
 
 def _client():

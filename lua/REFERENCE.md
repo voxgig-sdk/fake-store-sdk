@@ -103,8 +103,8 @@ local cart = client:Cart(nil)
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `number` | No |  |
-| `product` | `table` | No |  |
-| `user_id` | `number` | No |  |
+| `products` | `table` | No |  |
+| `userId` | `number` | No |  |
 
 ### Operations
 

@@ -26,8 +26,8 @@ import {
 describe('LoginEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when FAKESTORE_TEST_LIVE=TRUE.
-  afterEach(liveDelay('FAKESTORE_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when FAKE_STORE_TEST_LIVE=TRUE.
+  afterEach(liveDelay('FAKE_STORE_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = FakeStoreSDK.test()
@@ -62,7 +62,7 @@ describe('LoginEntity', async () => {
     const login_ref01_ent = client.Login()
     let login_ref01_data = setup.data.new.login['login_ref01']
 
-    login_ref01_data = await login_ref01_ent.create(login_ref01_data)
+    login_ref01_data = (await login_ref01_ent.create(login_ref01_data)).data()
     assert(null != login_ref01_data)
 
 

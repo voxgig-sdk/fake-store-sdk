@@ -16,8 +16,8 @@ declare(strict_types=1);
 class Cart
 {
     public ?int $id = null;
-    public ?array $product = null;
-    public ?int $user_id = null;
+    public ?array $products = null;
+    public ?int $userId = null;
 }
 
 /** Request payload for Cart#load. */
@@ -30,22 +30,24 @@ class CartLoadMatch
 class CartListMatch
 {
     public ?int $id = null;
-    public ?array $product = null;
-    public ?int $user_id = null;
+    public ?array $products = null;
+    public ?int $userId = null;
 }
 
 /** Request payload for Cart#create. */
 class CartCreateData
 {
     public ?int $id = null;
-    public ?array $product = null;
-    public ?int $user_id = null;
+    public ?array $products = null;
+    public ?int $userId = null;
 }
 
 /** Request payload for Cart#update. */
 class CartUpdateData
 {
     public int $id;
+    public ?array $products = null;
+    public ?int $userId = null;
 }
 
 /** Request payload for Cart#remove. */
@@ -113,6 +115,11 @@ class ProductCreateData
 class ProductUpdateData
 {
     public int $id;
+    public ?string $category = null;
+    public ?string $description = null;
+    public ?string $image = null;
+    public ?float $price = null;
+    public ?string $title = null;
 }
 
 /** Request payload for Product#remove. */
@@ -158,6 +165,9 @@ class UserCreateData
 class UserUpdateData
 {
     public int $id;
+    public ?string $email = null;
+    public ?string $password = null;
+    public ?string $username = null;
 }
 
 /** Request payload for User#remove. */

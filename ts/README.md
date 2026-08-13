@@ -35,7 +35,9 @@ const client = new FakeStoreSDK()
 
 ### 2. List cart records
 
-`list()` resolves to an array of Cart objects — iterate it directly:
+`list()` resolves to an array of Cart ENTITIES — every operation
+resolves to entities, not raw records. Iterate them directly, and call
+`.data()` on one for the record it holds:
 
 ```ts
 const carts = await client.Cart().list()
@@ -61,20 +63,22 @@ try {
 ### 4. Create, update, and remove
 
 ```ts
-// Create — returns the created Cart
+// Create — returns the created Cart ENTITY (.data() for the record)
 const created = await client.Cart().create({
-  product: [],
-  user_id: 1,
+  products: [],
+  userId: 1,
 })
 
-// Update — the id comes straight off the returned entity
+// Update — the id comes off the returned entity's data()
 const updated = await client.Cart().update({
-  id: created.id!,
+  id: created.data().id!,
+  products: [],
+  userId: 1,
 })
 
 // Remove
 await client.Cart().remove({
-  id: created.id!,
+  id: created.data().id!,
 })
 ```
 
@@ -85,8 +89,8 @@ Entity operations reject on failure, so wrap them in `try` / `catch`:
 
 ```ts
 try {
-  const carts = await client.Cart().list()
-  console.log(carts)
+  const users = await client.User().list()
+  console.log(users)
 } catch (err) {
   console.error('list failed:', err)
 }
@@ -152,9 +156,10 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = FakeStoreSDK.test()
 
-const cart = await client.Cart().list()
-// cart is a bare entity populated with mock response data
-console.log(cart)
+const user = await client.User().list()
+// user is the entity, populated with mock response data
+// — call user.data() for the record itself
+console.log(user)
 ```
 
 You can also use the instance method:
@@ -169,7 +174,7 @@ const testClient = client.tester()
 Entity instances remember their last match and data:
 
 ```ts
-const entity = client.Cart()
+const entity = client.User()
 
 // First call runs the operation and stores its result
 await entity.list()
@@ -327,8 +332,8 @@ The `prepare()` method returns:
 | Field | Description |
 | --- | --- |
 | `id` |  |
-| `product` |  |
-| `user_id` |  |
+| `products` |  |
+| `userId` |  |
 
 Operations: create, list, load, remove, update.
 
@@ -398,8 +403,8 @@ Create an instance: `const cart = client.Cart()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `number` |  |
-| `product` | `any[]` |  |
-| `user_id` | `number` |  |
+| `products` | `any[]` |  |
+| `userId` | `number` |  |
 
 #### Example: Load
 
@@ -604,11 +609,11 @@ stores the returned data and match criteria internally. Subsequent
 calls on the same instance can rely on this state.
 
 ```ts
-const cart = client.Cart()
-await cart.list()
+const user = client.User()
+await user.list()
 
-// cart.data() now returns the cart data from the last `list`
-// cart.match() returns the last match criteria
+// user.data() now returns the user data from the last `list`
+// user.match() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

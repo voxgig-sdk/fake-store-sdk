@@ -106,8 +106,8 @@ cart = client.Cart
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `Integer` | No |  |
-| `product` | `Array` | No |  |
-| `user_id` | `Integer` | No |  |
+| `products` | `Array` | No |  |
+| `userId` | `Integer` | No |  |
 
 ### Operations
 

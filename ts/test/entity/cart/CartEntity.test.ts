@@ -26,8 +26,8 @@ import {
 describe('CartEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when FAKESTORE_TEST_LIVE=TRUE.
-  afterEach(liveDelay('FAKESTORE_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when FAKE_STORE_TEST_LIVE=TRUE.
+  afterEach(liveDelay('FAKE_STORE_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = FakeStoreSDK.test()
@@ -62,14 +62,14 @@ describe('CartEntity', async () => {
     const cart_ref01_ent = client.Cart()
     let cart_ref01_data = setup.data.new.cart['cart_ref01']
 
-    cart_ref01_data = await cart_ref01_ent.create(cart_ref01_data)
+    cart_ref01_data = (await cart_ref01_ent.create(cart_ref01_data)).data()
     assert(null != cart_ref01_data.id)
 
 
     // LIST
     const cart_ref01_match: any = {}
 
-    const cart_ref01_list = await cart_ref01_ent.list(cart_ref01_match)
+    const cart_ref01_list = (await cart_ref01_ent.list(cart_ref01_match)).map((e: any) => e.data())
 
     assert(!isempty(select(cart_ref01_list, { id: cart_ref01_data.id })))
 
@@ -78,14 +78,14 @@ describe('CartEntity', async () => {
     const cart_ref01_data_up0: any = {}
     cart_ref01_data_up0.id = cart_ref01_data.id
 
-    const cart_ref01_resdata_up0 = await cart_ref01_ent.update(cart_ref01_data_up0)
+    const cart_ref01_resdata_up0 = (await cart_ref01_ent.update(cart_ref01_data_up0)).data()
     assert(cart_ref01_resdata_up0.id === cart_ref01_data_up0.id)
 
 
     // LOAD
     const cart_ref01_match_dt0: any = {}
     cart_ref01_match_dt0.id = cart_ref01_data.id
-    const cart_ref01_data_dt0 = await cart_ref01_ent.load(cart_ref01_match_dt0)
+    const cart_ref01_data_dt0 = (await cart_ref01_ent.load(cart_ref01_match_dt0)).data()
     assert(cart_ref01_data_dt0.id === cart_ref01_data.id)
 
 
@@ -97,7 +97,7 @@ describe('CartEntity', async () => {
     // LIST
     const cart_ref01_match_rt0: any = {}
 
-    const cart_ref01_list_rt0 = await cart_ref01_ent.list(cart_ref01_match_rt0)
+    const cart_ref01_list_rt0 = (await cart_ref01_ent.list(cart_ref01_match_rt0)).map((e: any) => e.data())
 
     assert(isempty(select(cart_ref01_list_rt0, { id: cart_ref01_data.id })))
 

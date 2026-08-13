@@ -3,26 +3,26 @@
     "cart": {
       "CART00": {
         "id": "CART00",
-        "product": [],
-        "user_id": "USER01"
+        "products": [],
+        "userId": "s20"
       },
       "CART01": {
         "id": "CART01",
-        "product": [],
-        "user_id": "USER01"
+        "products": [],
+        "userId": "s3e"
       },
       "CART02": {
         "id": "CART02",
-        "product": [],
-        "user_id": "USER01"
+        "products": [],
+        "userId": "s5c"
       }
     }
   },
   "new": {
     "cart": {
       "cart_ref01": {
-        "product": [],
-        "user_id": "USER01"
+        "products": [],
+        "userId": "s7a"
       }
     }
   }

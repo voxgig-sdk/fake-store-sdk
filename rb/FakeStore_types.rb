@@ -13,15 +13,15 @@
 # @!attribute [rw] id
 #   @return [Integer, nil]
 #
-# @!attribute [rw] product
+# @!attribute [rw] products
 #   @return [Array, nil]
 #
-# @!attribute [rw] user_id
+# @!attribute [rw] userId
 #   @return [Integer, nil]
 Cart = Struct.new(
   :id,
-  :product,
-  :user_id,
+  :products,
+  :userId,
   keyword_init: true
 )
 
@@ -39,15 +39,15 @@ CartLoadMatch = Struct.new(
 # @!attribute [rw] id
 #   @return [Integer, nil]
 #
-# @!attribute [rw] product
+# @!attribute [rw] products
 #   @return [Array, nil]
 #
-# @!attribute [rw] user_id
+# @!attribute [rw] userId
 #   @return [Integer, nil]
 CartListMatch = Struct.new(
   :id,
-  :product,
-  :user_id,
+  :products,
+  :userId,
   keyword_init: true
 )
 
@@ -56,15 +56,15 @@ CartListMatch = Struct.new(
 # @!attribute [rw] id
 #   @return [Integer, nil]
 #
-# @!attribute [rw] product
+# @!attribute [rw] products
 #   @return [Array, nil]
 #
-# @!attribute [rw] user_id
+# @!attribute [rw] userId
 #   @return [Integer, nil]
 CartCreateData = Struct.new(
   :id,
-  :product,
-  :user_id,
+  :products,
+  :userId,
   keyword_init: true
 )
 
@@ -72,8 +72,16 @@ CartCreateData = Struct.new(
 #
 # @!attribute [rw] id
 #   @return [Integer]
+#
+# @!attribute [rw] products
+#   @return [Array, nil]
+#
+# @!attribute [rw] userId
+#   @return [Integer, nil]
 CartUpdateData = Struct.new(
   :id,
+  :products,
+  :userId,
   keyword_init: true
 )
 
@@ -220,8 +228,28 @@ ProductCreateData = Struct.new(
 #
 # @!attribute [rw] id
 #   @return [Integer]
+#
+# @!attribute [rw] category
+#   @return [String, nil]
+#
+# @!attribute [rw] description
+#   @return [String, nil]
+#
+# @!attribute [rw] image
+#   @return [String, nil]
+#
+# @!attribute [rw] price
+#   @return [Float, nil]
+#
+# @!attribute [rw] title
+#   @return [String, nil]
 ProductUpdateData = Struct.new(
   :id,
+  :category,
+  :description,
+  :image,
+  :price,
+  :title,
   keyword_init: true
 )
 
@@ -310,8 +338,20 @@ UserCreateData = Struct.new(
 #
 # @!attribute [rw] id
 #   @return [Integer]
+#
+# @!attribute [rw] email
+#   @return [String, nil]
+#
+# @!attribute [rw] password
+#   @return [String, nil]
+#
+# @!attribute [rw] username
+#   @return [String, nil]
 UserUpdateData = Struct.new(
   :id,
+  :email,
+  :password,
+  :username,
   keyword_init: true
 )
 

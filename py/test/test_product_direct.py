@@ -3,9 +3,9 @@
 import json
 import pytest
 
-from utility.voxgig_struct import voxgig_struct as vs
+from fakestore_sdk.utility.voxgig_struct import voxgig_struct as vs
 from fakestore_sdk import FakeStoreSDK
-from core import helpers
+from fakestore_sdk.core import helpers
 from test import runner
 
 
@@ -105,11 +105,11 @@ def _product_direct_setup(mockres):
     calls = []
 
     env = runner.env_override({
-        "FAKESTORE_TEST_PRODUCT_ENTID": {},
-        "FAKESTORE_TEST_LIVE": "FALSE",
+        "FAKE_STORE_TEST_PRODUCT_ENTID": {},
+        "FAKE_STORE_TEST_LIVE": "FALSE",
     })
 
-    live = env.get("FAKESTORE_TEST_LIVE") == "TRUE"
+    live = env.get("FAKE_STORE_TEST_LIVE") == "TRUE"
 
     if live:
         merged_opts = {

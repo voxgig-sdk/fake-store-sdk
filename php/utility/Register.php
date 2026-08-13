@@ -23,6 +23,7 @@ require_once __DIR__ . '/MakeUrl.php';
 require_once __DIR__ . '/Param.php';
 require_once __DIR__ . '/PrepareAuth.php';
 require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/Graphql.php';
 require_once __DIR__ . '/PrepareHeaders.php';
 require_once __DIR__ . '/PrepareMethod.php';
 require_once __DIR__ . '/PrepareParams.php';
@@ -59,6 +60,8 @@ FakeStoreUtility::setRegistrar(function (FakeStoreUtility $u): void {
     $u->prepare_params = [FakeStorePrepareParams::class, 'call'];
     $u->prepare_path = [FakeStorePreparePath::class, 'call'];
     $u->prepare_query = [FakeStorePrepareQuery::class, 'call'];
+    $u->graphql_body = [FakeStoreGraphql::class, 'body'];
+    $u->graphql_errors = [FakeStoreGraphql::class, 'errors'];
     $u->result_basic = [FakeStoreResultBasic::class, 'call'];
     $u->result_body = [FakeStoreResultBody::class, 'call'];
     $u->result_headers = [FakeStoreResultHeaders::class, 'call'];

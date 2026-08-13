@@ -1,4 +1,4 @@
-# ProjectName SDK exists test
+# FakeStore SDK exists test
 
 import pytest
 from fakestore_sdk import FakeStoreSDK

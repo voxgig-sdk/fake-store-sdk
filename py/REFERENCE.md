@@ -100,8 +100,8 @@ cart = client.Cart()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `int` | No |  |
-| `product` | `list` | No |  |
-| `user_id` | `int` | No |  |
+| `products` | `list` | No |  |
+| `userId` | `int` | No |  |
 
 ### Operations
 

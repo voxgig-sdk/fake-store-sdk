@@ -121,11 +121,11 @@ function product_direct_setup($mockres)
     $calls = new \ArrayObject();
 
     $env = Runner::env_override([
-        "FAKESTORE_TEST_PRODUCT_ENTID" => [],
-        "FAKESTORE_TEST_LIVE" => "FALSE",
+        "FAKE_STORE_TEST_PRODUCT_ENTID" => [],
+        "FAKE_STORE_TEST_LIVE" => "FALSE",
     ]);
 
-    $live = $env["FAKESTORE_TEST_LIVE"] === "TRUE";
+    $live = $env["FAKE_STORE_TEST_LIVE"] === "TRUE";
 
     if ($live) {
         $merged_opts = [

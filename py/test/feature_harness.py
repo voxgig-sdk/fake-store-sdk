@@ -14,12 +14,12 @@ from __future__ import annotations
 
 from urllib.parse import quote
 
-from config import make_config
-from features import _make_feature
-from core.control import FakeStoreControl
-from core.error import FakeStoreError
-from core.result import FakeStoreResult
-from core.spec import FakeStoreSpec
+from fakestore_sdk.config import make_config
+from fakestore_sdk.features import _make_feature
+from fakestore_sdk.core.control import FakeStoreControl
+from fakestore_sdk.core.error import FakeStoreError
+from fakestore_sdk.core.result import FakeStoreResult
+from fakestore_sdk.core.spec import FakeStoreSpec
 
 
 # True when this SDK was generated with the named feature.

@@ -26,8 +26,8 @@ import {
 describe('ProductEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when FAKESTORE_TEST_LIVE=TRUE.
-  afterEach(liveDelay('FAKESTORE_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when FAKE_STORE_TEST_LIVE=TRUE.
+  afterEach(liveDelay('FAKE_STORE_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = FakeStoreSDK.test()
@@ -62,14 +62,14 @@ describe('ProductEntity', async () => {
     const product_ref01_ent = client.Product()
     let product_ref01_data = setup.data.new.product['product_ref01']
 
-    product_ref01_data = await product_ref01_ent.create(product_ref01_data)
+    product_ref01_data = (await product_ref01_ent.create(product_ref01_data)).data()
     assert(null != product_ref01_data.id)
 
 
     // LIST
     const product_ref01_match: any = {}
 
-    const product_ref01_list = await product_ref01_ent.list(product_ref01_match)
+    const product_ref01_list = (await product_ref01_ent.list(product_ref01_match)).map((e: any) => e.data())
 
     assert(!isempty(select(product_ref01_list, { id: product_ref01_data.id })))
 
@@ -81,7 +81,7 @@ describe('ProductEntity', async () => {
     const product_ref01_markdef_up0 = { name: 'category', value: 'Mark01-product_ref01_' + setup.now }
     ;(product_ref01_data_up0 as any)[product_ref01_markdef_up0.name] = product_ref01_markdef_up0.value
 
-    const product_ref01_resdata_up0 = await product_ref01_ent.update(product_ref01_data_up0)
+    const product_ref01_resdata_up0 = (await product_ref01_ent.update(product_ref01_data_up0)).data()
     assert(product_ref01_resdata_up0.id === product_ref01_data_up0.id)
 
     assert((product_ref01_resdata_up0 as any)[product_ref01_markdef_up0.name] === product_ref01_markdef_up0.value)
@@ -90,7 +90,7 @@ describe('ProductEntity', async () => {
     // LOAD
     const product_ref01_match_dt0: any = {}
     product_ref01_match_dt0.id = product_ref01_data.id
-    const product_ref01_data_dt0 = await product_ref01_ent.load(product_ref01_match_dt0)
+    const product_ref01_data_dt0 = (await product_ref01_ent.load(product_ref01_match_dt0)).data()
     assert(product_ref01_data_dt0.id === product_ref01_data.id)
 
 
@@ -102,7 +102,7 @@ describe('ProductEntity', async () => {
     // LIST
     const product_ref01_match_rt0: any = {}
 
-    const product_ref01_list_rt0 = await product_ref01_ent.list(product_ref01_match_rt0)
+    const product_ref01_list_rt0 = (await product_ref01_ent.list(product_ref01_match_rt0)).map((e: any) => e.data())
 
     assert(isempty(select(product_ref01_list_rt0, { id: product_ref01_data.id })))
 

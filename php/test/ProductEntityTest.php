@@ -72,7 +72,7 @@ class ProductEntityTest extends TestCase
         // The basic flow consumes synthetic IDs from the fixture. In live mode
         // without an *_ENTID env override, those IDs hit the live API and 4xx.
         if (!empty($setup["synthetic_only"])) {
-            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set FAKESTORE_TEST_PRODUCT_ENTID JSON to run live");
+            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set FAKE_STORE_TEST_PRODUCT_ENTID JSON to run live");
             return;
         }
         $client = $setup["client"];
@@ -83,7 +83,7 @@ class ProductEntityTest extends TestCase
             Vs::getpath($setup["data"], "new.product"), "product_ref01"));
 
         $product_ref01_data_result = $product_ref01_ent->create($product_ref01_data, null);
-        $product_ref01_data = Helpers::to_map($product_ref01_data_result);
+        $product_ref01_data = Helpers::to_map(is_object($product_ref01_data_result) && method_exists($product_ref01_data_result, 'data_get') ? $product_ref01_data_result->data_get() : $product_ref01_data_result);
         $this->assertNotNull($product_ref01_data);
         $this->assertNotNull($product_ref01_data["id"]);
 
@@ -108,7 +108,7 @@ class ProductEntityTest extends TestCase
         $product_ref01_data_up0_up[$product_ref01_markdef_up0_name] = $product_ref01_markdef_up0_value;
 
         $product_ref01_resdata_up0_result = $product_ref01_ent->update($product_ref01_data_up0_up, null);
-        $product_ref01_resdata_up0 = Helpers::to_map($product_ref01_resdata_up0_result);
+        $product_ref01_resdata_up0 = Helpers::to_map(is_object($product_ref01_resdata_up0_result) && method_exists($product_ref01_resdata_up0_result, 'data_get') ? $product_ref01_resdata_up0_result->data_get() : $product_ref01_resdata_up0_result);
         $this->assertNotNull($product_ref01_resdata_up0);
         $this->assertEquals($product_ref01_resdata_up0["id"], $product_ref01_data_up0_up["id"]);
         $this->assertEquals($product_ref01_resdata_up0[$product_ref01_markdef_up0_name], $product_ref01_markdef_up0_value);
@@ -118,7 +118,7 @@ class ProductEntityTest extends TestCase
             "id" => $product_ref01_data["id"],
         ];
         $product_ref01_data_dt0_loaded = $product_ref01_ent->load($product_ref01_match_dt0, null);
-        $product_ref01_data_dt0_load_result = Helpers::to_map($product_ref01_data_dt0_loaded);
+        $product_ref01_data_dt0_load_result = Helpers::to_map(is_object($product_ref01_data_dt0_loaded) && method_exists($product_ref01_data_dt0_loaded, 'data_get') ? $product_ref01_data_dt0_loaded->data_get() : $product_ref01_data_dt0_loaded);
         $this->assertNotNull($product_ref01_data_dt0_load_result);
         $this->assertEquals($product_ref01_data_dt0_load_result["id"], $product_ref01_data["id"]);
 
@@ -164,22 +164,22 @@ function product_basic_setup($extra)
     // Detect ENTID env override before envOverride consumes it. When live
     // mode is on without a real override, the basic test runs against synthetic
     // IDs from the fixture and 4xx's. Surface this so the test can skip.
-    $entid_env_raw = getenv("FAKESTORE_TEST_PRODUCT_ENTID");
+    $entid_env_raw = getenv("FAKE_STORE_TEST_PRODUCT_ENTID");
     $idmap_overridden = $entid_env_raw !== false && str_starts_with(trim($entid_env_raw), "{");
 
     $env = Runner::env_override([
-        "FAKESTORE_TEST_PRODUCT_ENTID" => $idmap,
-        "FAKESTORE_TEST_LIVE" => "FALSE",
-        "FAKESTORE_TEST_EXPLAIN" => "FALSE",
+        "FAKE_STORE_TEST_PRODUCT_ENTID" => $idmap,
+        "FAKE_STORE_TEST_LIVE" => "FALSE",
+        "FAKE_STORE_TEST_EXPLAIN" => "FALSE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
-        $env["FAKESTORE_TEST_PRODUCT_ENTID"]);
+        $env["FAKE_STORE_TEST_PRODUCT_ENTID"]);
     if ($idmap_resolved === null) {
         $idmap_resolved = Helpers::to_map($idmap);
     }
 
-    if ($env["FAKESTORE_TEST_LIVE"] === "TRUE") {
+    if ($env["FAKE_STORE_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
             ],
@@ -188,13 +188,13 @@ function product_basic_setup($extra)
         $client = new FakeStoreSDK(Helpers::to_map($merged_opts));
     }
 
-    $live = $env["FAKESTORE_TEST_LIVE"] === "TRUE";
+    $live = $env["FAKE_STORE_TEST_LIVE"] === "TRUE";
     return [
         "client" => $client,
         "data" => $entity_data,
         "idmap" => $idmap_resolved,
         "env" => $env,
-        "explain" => $env["FAKESTORE_TEST_EXPLAIN"] === "TRUE",
+        "explain" => $env["FAKE_STORE_TEST_EXPLAIN"] === "TRUE",
         "live" => $live,
         "synthetic_only" => $live && !$idmap_overridden,
         "now" => (int)(microtime(true) * 1000),

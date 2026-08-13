@@ -43,7 +43,7 @@ local carts, err = client:Cart():list()
 if err then error(err) end
 
 for _, item in ipairs(carts) do
-  print(item["id"], item["product"])
+  print(item["id"], item["products"])
 end
 ```
 
@@ -59,14 +59,14 @@ print(cart)
 
 ```lua
 -- Create
-local created, err = client:Cart():create({ product = {}, user_id = 1 })
+local created, err = client:Cart():create({ products = {}, userId = 1 })
 if err then error(err) end
 
 -- Update
-client:Cart():update({ id = created["id"] })
+client:Cart():update({ id = created:data_get()["id"], products = {}, userId = 1 })
 
 -- Remove
-client:Cart():remove({ id = created["id"] })
+client:Cart():remove({ id = created:data_get()["id"] })
 ```
 
 
@@ -76,7 +76,7 @@ Entity operations return `(value, err)`. Check `err` before using
 the value:
 
 ```lua
-local carts, err = client:Cart():list()
+local users, err = client:User():list()
 if err then error(err) end
 ```
 
@@ -134,7 +134,7 @@ Create a mock client for unit testing — no server required:
 ```lua
 local client = sdk.test()
 
-local result, err = client:Cart():list()
+local result, err = client:User():list()
 -- result is the returned data; err is set on failure
 ```
 
@@ -262,8 +262,8 @@ Only `direct()` returns a response envelope — a `table` with `ok`,
 | Field | Description |
 | --- | --- |
 | `id` |  |
-| `product` |  |
-| `user_id` |  |
+| `products` |  |
+| `userId` |  |
 
 Operations: Create, List, Load, Remove, Update.
 
@@ -333,8 +333,8 @@ Create an instance: `local cart = client:Cart(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `number` |  |
-| `product` | `table` |  |
-| `user_id` | `number` |  |
+| `products` | `table` |  |
+| `userId` | `number` |  |
 
 #### Example: Load
 
@@ -546,11 +546,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```lua
-local cart = client:Cart()
-cart:list()
+local user = client:User()
+user:list()
 
--- cart:data_get() now returns the cart data from the last list
--- cart:match_get() returns the last match criteria
+-- user:data_get() now returns the user data from the last list
+-- user:match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

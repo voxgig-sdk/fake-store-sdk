@@ -8,24 +8,26 @@
 
 ---@class Cart
 ---@field id? number
----@field product? table
----@field user_id? number
+---@field products? table
+---@field userId? number
 
 ---@class CartLoadMatch
 ---@field id number
 
 ---@class CartListMatch
 ---@field id? number
----@field product? table
----@field user_id? number
+---@field products? table
+---@field userId? number
 
 ---@class CartCreateData
 ---@field id? number
----@field product? table
----@field user_id? number
+---@field products? table
+---@field userId? number
 
 ---@class CartUpdateData
 ---@field id number
+---@field products? table
+---@field userId? number
 
 ---@class CartRemoveMatch
 ---@field id number
@@ -69,6 +71,11 @@
 
 ---@class ProductUpdateData
 ---@field id number
+---@field category? string
+---@field description? string
+---@field image? string
+---@field price? number
+---@field title? string
 
 ---@class ProductRemoveMatch
 ---@field id number
@@ -96,6 +103,9 @@
 
 ---@class UserUpdateData
 ---@field id number
+---@field email? string
+---@field password? string
+---@field username? string
 
 ---@class UserRemoveMatch
 ---@field id number

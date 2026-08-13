@@ -52,7 +52,7 @@ except Exception as err:
 
 ### 3. Load a cart
 
-`load()` returns the bare record (a `dict`) and raises on error.
+`load()` returns the ENTITY — call data_get() for the record — and raises on error.
 
 ```python
 try:
@@ -65,14 +65,14 @@ except Exception as err:
 ### 4. Create, update, and remove
 
 ```python
-# Create — returns the bare created record (a dict)
-created = client.Cart().create({"product": [], "user_id": 1})
+# Create — returns the ENTITY (call data_get() for the record)
+created = client.Cart().create({"products": [], "userId": 1})
 
 # Update — the created record's id is a plain dict key
-client.Cart().update({"id": created["id"]})
+client.Cart().update({"id": created.data_get()["id"], "products": [], "userId": 1})
 
 # Remove
-client.Cart().remove({"id": created["id"]})
+client.Cart().remove({"id": created.data_get()["id"]})
 ```
 
 
@@ -82,8 +82,8 @@ Entity operations raise on failure, so wrap them in `try` / `except`:
 
 ```python
 try:
-    carts = client.Cart().list()
-    print(carts)
+    users = client.User().list()
+    print(users)
 except Exception as err:
     print(f"list failed: {err}")
 ```
@@ -149,9 +149,10 @@ Create a mock client for unit testing — no server required:
 ```python
 client = FakeStoreSDK.test()
 
-# Entity ops return the bare record and raise on error.
-cart = client.Cart().list()
-# cart contains the mock response record
+# Entity ops return the ENTITY and raises on error;
+# call data_get() for the record.
+user = client.User().list()
+# user contains the mock response record
 ```
 
 ### Use a custom fetch function
@@ -252,7 +253,7 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the bare result data (a `dict` for single-entity
+Entity operations return the ENTITY (call data_get() for the record) (a `dict` for single-entity
 ops, a `list` for `list`) and raise on error. Wrap calls in
 `try`/`except` to handle failures.
 
@@ -275,8 +276,8 @@ On error, `ok` is `False` and `err` contains the error value.
 | Field | Description |
 | --- | --- |
 | `id` |  |
-| `product` |  |
-| `user_id` |  |
+| `products` |  |
+| `userId` |  |
 
 Operations: Create, List, Load, Remove, Update.
 
@@ -346,8 +347,8 @@ Create an instance: `cart = client.Cart()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `int` |  |
-| `product` | `list` |  |
-| `user_id` | `int` |  |
+| `products` | `list` |  |
+| `userId` | `int` |  |
 
 #### Example: Load
 
@@ -558,11 +559,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```python
-cart = client.Cart()
-cart.list()
+user = client.User()
+user.list()
 
-# cart.data_get() now returns the cart data from the last list
-# cart.match_get() returns the last match criteria
+# user.data_get() now returns the user data from the last list
+# user.match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

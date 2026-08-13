@@ -26,8 +26,8 @@ import {
 describe('UserEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when FAKESTORE_TEST_LIVE=TRUE.
-  afterEach(liveDelay('FAKESTORE_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when FAKE_STORE_TEST_LIVE=TRUE.
+  afterEach(liveDelay('FAKE_STORE_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = FakeStoreSDK.test()
@@ -62,14 +62,14 @@ describe('UserEntity', async () => {
     const user_ref01_ent = client.User()
     let user_ref01_data = setup.data.new.user['user_ref01']
 
-    user_ref01_data = await user_ref01_ent.create(user_ref01_data)
+    user_ref01_data = (await user_ref01_ent.create(user_ref01_data)).data()
     assert(null != user_ref01_data.id)
 
 
     // LIST
     const user_ref01_match: any = {}
 
-    const user_ref01_list = await user_ref01_ent.list(user_ref01_match)
+    const user_ref01_list = (await user_ref01_ent.list(user_ref01_match)).map((e: any) => e.data())
 
     assert(!isempty(select(user_ref01_list, { id: user_ref01_data.id })))
 
@@ -81,7 +81,7 @@ describe('UserEntity', async () => {
     const user_ref01_markdef_up0 = { name: 'email', value: 'Mark01-user_ref01_' + setup.now }
     ;(user_ref01_data_up0 as any)[user_ref01_markdef_up0.name] = user_ref01_markdef_up0.value
 
-    const user_ref01_resdata_up0 = await user_ref01_ent.update(user_ref01_data_up0)
+    const user_ref01_resdata_up0 = (await user_ref01_ent.update(user_ref01_data_up0)).data()
     assert(user_ref01_resdata_up0.id === user_ref01_data_up0.id)
 
     assert((user_ref01_resdata_up0 as any)[user_ref01_markdef_up0.name] === user_ref01_markdef_up0.value)
@@ -90,7 +90,7 @@ describe('UserEntity', async () => {
     // LOAD
     const user_ref01_match_dt0: any = {}
     user_ref01_match_dt0.id = user_ref01_data.id
-    const user_ref01_data_dt0 = await user_ref01_ent.load(user_ref01_match_dt0)
+    const user_ref01_data_dt0 = (await user_ref01_ent.load(user_ref01_match_dt0)).data()
     assert(user_ref01_data_dt0.id === user_ref01_data.id)
 
 
@@ -102,7 +102,7 @@ describe('UserEntity', async () => {
     // LIST
     const user_ref01_match_rt0: any = {}
 
-    const user_ref01_list_rt0 = await user_ref01_ent.list(user_ref01_match_rt0)
+    const user_ref01_list_rt0 = (await user_ref01_ent.list(user_ref01_match_rt0)).map((e: any) => e.data())
 
     assert(isempty(select(user_ref01_list_rt0, { id: user_ref01_data.id })))
 

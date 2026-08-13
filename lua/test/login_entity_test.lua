@@ -29,7 +29,7 @@ describe("LoginEntity", function()
     -- The basic flow consumes synthetic IDs from the fixture. In live mode
     -- without an *_ENTID env override, those IDs hit the live API and 4xx.
     if setup.synthetic_only then
-      pending("live entity test uses synthetic IDs from fixture — set FAKESTORE_TEST_LOGIN_ENTID JSON to run live")
+      pending("live entity test uses synthetic IDs from fixture — set FAKE_STORE_TEST_LOGIN_ENTID JSON to run live")
       return
     end
     local client = setup.client
@@ -41,7 +41,7 @@ describe("LoginEntity", function()
 
     local login_ref01_data_result, err = login_ref01_ent:create(login_ref01_data, nil)
     assert.is_nil(err)
-    login_ref01_data = helpers.to_map(login_ref01_data_result)
+    login_ref01_data = helpers.to_map(type(login_ref01_data_result) == 'table' and login_ref01_data_result.data_get and login_ref01_data_result:data_get() or login_ref01_data_result)
     assert.is_not_nil(login_ref01_data)
 
   end)
@@ -79,22 +79,22 @@ function login_basic_setup(extra)
   -- Detect ENTID env override before envOverride consumes it. When live
   -- mode is on without a real override, the basic test runs against synthetic
   -- IDs from the fixture and 4xx's. Surface this so the test can skip.
-  local entid_env_raw = os.getenv("FAKESTORE_TEST_LOGIN_ENTID")
+  local entid_env_raw = os.getenv("FAKE_STORE_TEST_LOGIN_ENTID")
   local idmap_overridden = entid_env_raw ~= nil and entid_env_raw:match("^%s*{") ~= nil
 
   local env = runner.env_override({
-    ["FAKESTORE_TEST_LOGIN_ENTID"] = idmap,
-    ["FAKESTORE_TEST_LIVE"] = "FALSE",
-    ["FAKESTORE_TEST_EXPLAIN"] = "FALSE",
+    ["FAKE_STORE_TEST_LOGIN_ENTID"] = idmap,
+    ["FAKE_STORE_TEST_LIVE"] = "FALSE",
+    ["FAKE_STORE_TEST_EXPLAIN"] = "FALSE",
   })
 
   local idmap_resolved = helpers.to_map(
-    env["FAKESTORE_TEST_LOGIN_ENTID"])
+    env["FAKE_STORE_TEST_LOGIN_ENTID"])
   if idmap_resolved == nil then
     idmap_resolved = helpers.to_map(idmap)
   end
 
-  if env["FAKESTORE_TEST_LIVE"] == "TRUE" then
+  if env["FAKE_STORE_TEST_LIVE"] == "TRUE" then
     local merged_opts = vs.merge({
       {
       },
@@ -103,13 +103,13 @@ function login_basic_setup(extra)
     client = sdk.new(helpers.to_map(merged_opts))
   end
 
-  local live = env["FAKESTORE_TEST_LIVE"] == "TRUE"
+  local live = env["FAKE_STORE_TEST_LIVE"] == "TRUE"
   return {
     client = client,
     data = entity_data,
     idmap = idmap_resolved,
     env = env,
-    explain = env["FAKESTORE_TEST_EXPLAIN"] == "TRUE",
+    explain = env["FAKE_STORE_TEST_EXPLAIN"] == "TRUE",
     live = live,
     synthetic_only = live and not idmap_overridden,
     now = os.time() * 1000,

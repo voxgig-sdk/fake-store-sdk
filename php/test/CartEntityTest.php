@@ -72,7 +72,7 @@ class CartEntityTest extends TestCase
         // The basic flow consumes synthetic IDs from the fixture. In live mode
         // without an *_ENTID env override, those IDs hit the live API and 4xx.
         if (!empty($setup["synthetic_only"])) {
-            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set FAKESTORE_TEST_CART_ENTID JSON to run live");
+            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set FAKE_STORE_TEST_CART_ENTID JSON to run live");
             return;
         }
         $client = $setup["client"];
@@ -83,7 +83,7 @@ class CartEntityTest extends TestCase
             Vs::getpath($setup["data"], "new.cart"), "cart_ref01"));
 
         $cart_ref01_data_result = $cart_ref01_ent->create($cart_ref01_data, null);
-        $cart_ref01_data = Helpers::to_map($cart_ref01_data_result);
+        $cart_ref01_data = Helpers::to_map(is_object($cart_ref01_data_result) && method_exists($cart_ref01_data_result, 'data_get') ? $cart_ref01_data_result->data_get() : $cart_ref01_data_result);
         $this->assertNotNull($cart_ref01_data);
         $this->assertNotNull($cart_ref01_data["id"]);
 
@@ -104,7 +104,7 @@ class CartEntityTest extends TestCase
         ];
 
         $cart_ref01_resdata_up0_result = $cart_ref01_ent->update($cart_ref01_data_up0_up, null);
-        $cart_ref01_resdata_up0 = Helpers::to_map($cart_ref01_resdata_up0_result);
+        $cart_ref01_resdata_up0 = Helpers::to_map(is_object($cart_ref01_resdata_up0_result) && method_exists($cart_ref01_resdata_up0_result, 'data_get') ? $cart_ref01_resdata_up0_result->data_get() : $cart_ref01_resdata_up0_result);
         $this->assertNotNull($cart_ref01_resdata_up0);
         $this->assertEquals($cart_ref01_resdata_up0["id"], $cart_ref01_data_up0_up["id"]);
 
@@ -113,7 +113,7 @@ class CartEntityTest extends TestCase
             "id" => $cart_ref01_data["id"],
         ];
         $cart_ref01_data_dt0_loaded = $cart_ref01_ent->load($cart_ref01_match_dt0, null);
-        $cart_ref01_data_dt0_load_result = Helpers::to_map($cart_ref01_data_dt0_loaded);
+        $cart_ref01_data_dt0_load_result = Helpers::to_map(is_object($cart_ref01_data_dt0_loaded) && method_exists($cart_ref01_data_dt0_loaded, 'data_get') ? $cart_ref01_data_dt0_loaded->data_get() : $cart_ref01_data_dt0_loaded);
         $this->assertNotNull($cart_ref01_data_dt0_load_result);
         $this->assertEquals($cart_ref01_data_dt0_load_result["id"], $cart_ref01_data["id"]);
 
@@ -159,22 +159,22 @@ function cart_basic_setup($extra)
     // Detect ENTID env override before envOverride consumes it. When live
     // mode is on without a real override, the basic test runs against synthetic
     // IDs from the fixture and 4xx's. Surface this so the test can skip.
-    $entid_env_raw = getenv("FAKESTORE_TEST_CART_ENTID");
+    $entid_env_raw = getenv("FAKE_STORE_TEST_CART_ENTID");
     $idmap_overridden = $entid_env_raw !== false && str_starts_with(trim($entid_env_raw), "{");
 
     $env = Runner::env_override([
-        "FAKESTORE_TEST_CART_ENTID" => $idmap,
-        "FAKESTORE_TEST_LIVE" => "FALSE",
-        "FAKESTORE_TEST_EXPLAIN" => "FALSE",
+        "FAKE_STORE_TEST_CART_ENTID" => $idmap,
+        "FAKE_STORE_TEST_LIVE" => "FALSE",
+        "FAKE_STORE_TEST_EXPLAIN" => "FALSE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
-        $env["FAKESTORE_TEST_CART_ENTID"]);
+        $env["FAKE_STORE_TEST_CART_ENTID"]);
     if ($idmap_resolved === null) {
         $idmap_resolved = Helpers::to_map($idmap);
     }
 
-    if ($env["FAKESTORE_TEST_LIVE"] === "TRUE") {
+    if ($env["FAKE_STORE_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
             ],
@@ -183,13 +183,13 @@ function cart_basic_setup($extra)
         $client = new FakeStoreSDK(Helpers::to_map($merged_opts));
     }
 
-    $live = $env["FAKESTORE_TEST_LIVE"] === "TRUE";
+    $live = $env["FAKE_STORE_TEST_LIVE"] === "TRUE";
     return [
         "client" => $client,
         "data" => $entity_data,
         "idmap" => $idmap_resolved,
         "env" => $env,
-        "explain" => $env["FAKESTORE_TEST_EXPLAIN"] === "TRUE",
+        "explain" => $env["FAKE_STORE_TEST_EXPLAIN"] === "TRUE",
         "live" => $live,
         "synthetic_only" => $live && !$idmap_overridden,
         "now" => (int)(microtime(true) * 1000),

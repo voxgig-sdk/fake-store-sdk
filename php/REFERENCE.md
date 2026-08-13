@@ -105,8 +105,8 @@ $cart = $client->Cart();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `int` | No |  |
-| `product` | `array` | No |  |
-| `user_id` | `int` | No |  |
+| `products` | `array` | No |  |
+| `userId` | `int` | No |  |
 
 ### Operations
 

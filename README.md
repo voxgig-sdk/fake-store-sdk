@@ -38,18 +38,27 @@ network, and no credentials:
 ### TypeScript
 
 ```ts
-const client = FakeStoreSDK.test()
-const carts = await client.Cart().list()
-// carts is an array of bare Cart records populated with mock data
-console.log(carts)
+// The offline mock starts EMPTY — seed it with the records the test needs.
+// Shape: { entity: { <entity-name>: { <id>: <record> } } }
+const client = FakeStoreSDK.test({
+  entity: {
+    user: {
+      test01: { id: 'test01' },
+    },
+  },
+})
+const users = await client.User().list()
+// users is an array of User entities, populated with mock data
+// — call users[0].data() for the record itself
+console.log(users)
 ```
 
 ### Python
 
 ```python
 client = FakeStoreSDK.test()
-carts = client.Cart().list()
-print(carts)
+users = client.User().list()
+print(users)
 ```
 
 ### PHP
@@ -57,16 +66,16 @@ print(carts)
 ```php
 // Seed fixture data so offline calls resolve without a live server.
 $client = FakeStoreSDK::test([
-    "entity" => ["cart" => ["test01" => ["id" => "test01"]]],
+    "entity" => ["user" => ["test01" => ["id" => "test01"]]],
 ]);
-$carts = $client->Cart()->list();
+$users = $client->User()->list();
 ```
 
 ### Golang
 
 ```go
 client := sdk.Test()
-result, err := client.Cart(nil).List(
+result, err := client.User(nil).List(
     nil, nil,
 )
 ```
@@ -76,16 +85,16 @@ result, err := client.Cart(nil).List(
 ```ruby
 # Seed fixture data so offline calls resolve without a live server.
 client = FakeStoreSDK.test({
-  "entity" => { "cart" => { "test01" => { "id" => "test01" } } },
+  "entity" => { "user" => { "test01" => { "id" => "test01" } } },
 })
-carts = client.Cart.list()
+users = client.User.list()
 ```
 
 ### Lua
 
 ```lua
 local client = sdk.test()
-local results, err = client:Cart():list()
+local results, err = client:User():list()
 ```
 
 ## Packages
@@ -110,7 +119,7 @@ import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
 
 const client = new FakeStoreSDK()
 
-// List all carts (returns Cart[])
+// List all carts (returns CartEntity[] — .data() for the record)
 const carts = await client.Cart().list()
 for (const cart of carts) {
   console.log(cart)
@@ -194,7 +203,7 @@ $client = new FakeStoreSDK();
 $carts = $client->Cart()->list();
 print_r($carts);
 
-// Load a specific cart (returns the bare record; throws on error)
+// Load a specific cart (returns the ENTITY; call data_get() for the record; throws on error)
 $cart = $client->Cart()->load(["id" => 1]);
 print_r($cart);
 ```
@@ -225,7 +234,7 @@ client = FakeStoreSDK.new
 carts = client.Cart.list
 puts carts
 
-# Load a specific cart (returns the bare record; raises on error)
+# Load a specific cart (returns the ENTITY; call data_get for the record)
 cart = client.Cart.load({ "id" => 1 })
 puts cart
 ```
@@ -362,6 +371,9 @@ Pass custom features via the `extend` option at construction time.
 
 This SDK is generated from the upstream OpenAPI specification. It is an
 unofficial client and is not affiliated with the API provider.
+
+The OpenAPI spec(s) this SDK was generated from are kept in the
+[`.sdk/def/`](.sdk/def/) folder.
 
 - Upstream API: [https://fakestoreapi.com/docs](https://fakestoreapi.com/docs)
 

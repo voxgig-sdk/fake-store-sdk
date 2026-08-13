@@ -37,14 +37,14 @@ module FakeStoreConfig
             },
             {
               "active" => true,
-              "name" => "product",
+              "name" => "products",
               "req" => false,
               "type" => "`$ARRAY`",
               "index$" => 1,
             },
             {
               "active" => true,
-              "name" => "user_id",
+              "name" => "userId",
               "req" => false,
               "type" => "`$INTEGER`",
               "index$" => 2,
@@ -59,6 +59,7 @@ module FakeStoreConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "POST",
                   "orig" => "/carts",
                   "parts" => [
@@ -81,6 +82,7 @@ module FakeStoreConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/carts",
                   "parts" => [
@@ -115,6 +117,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/carts/{id}",
                   "parts" => [
@@ -154,6 +157,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "DELETE",
                   "orig" => "/carts/{id}",
                   "parts" => [
@@ -193,6 +197,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "PUT",
                   "orig" => "/carts/{id}",
                   "parts" => [
@@ -251,6 +256,7 @@ module FakeStoreConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "POST",
                   "orig" => "/auth/login",
                   "parts" => [
@@ -326,6 +332,7 @@ module FakeStoreConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "POST",
                   "orig" => "/products",
                   "parts" => [
@@ -348,6 +355,7 @@ module FakeStoreConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/products",
                   "parts" => [
@@ -382,6 +390,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/products/{id}",
                   "parts" => [
@@ -421,6 +430,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "DELETE",
                   "orig" => "/products/{id}",
                   "parts" => [
@@ -460,6 +470,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "PUT",
                   "orig" => "/products/{id}",
                   "parts" => [
@@ -525,6 +536,7 @@ module FakeStoreConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "POST",
                   "orig" => "/users",
                   "parts" => [
@@ -547,6 +559,7 @@ module FakeStoreConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/users",
                   "parts" => [
@@ -581,6 +594,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/users/{id}",
                   "parts" => [
@@ -620,6 +634,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "DELETE",
                   "orig" => "/users/{id}",
                   "parts" => [
@@ -659,6 +674,7 @@ module FakeStoreConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "PUT",
                   "orig" => "/users/{id}",
                   "parts" => [

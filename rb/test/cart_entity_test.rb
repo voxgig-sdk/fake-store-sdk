@@ -62,7 +62,7 @@ class CartEntityTest < Minitest::Test
     # The basic flow consumes synthetic IDs from the fixture. In live mode
     # without an *_ENTID env override, those IDs hit the live API and 4xx.
     if setup[:synthetic_only]
-      skip "live entity test uses synthetic IDs from fixture — set FAKESTORE_TEST_CART_ENTID JSON to run live"
+      skip "live entity test uses synthetic IDs from fixture — set FAKE_STORE_TEST_CART_ENTID JSON to run live"
       return
     end
     client = setup[:client]
@@ -73,7 +73,7 @@ class CartEntityTest < Minitest::Test
       Vs.getpath(setup[:data], "new.cart"), "cart_ref01"))
 
     cart_ref01_data_result = cart_ref01_ent.create(cart_ref01_data, nil)
-    cart_ref01_data = Helpers.to_map(cart_ref01_data_result)
+    cart_ref01_data = Helpers.to_map(cart_ref01_data_result.respond_to?(:data_get) ? cart_ref01_data_result.data_get : cart_ref01_data_result)
     assert !cart_ref01_data.nil?
     assert !cart_ref01_data["id"].nil?
 
@@ -94,7 +94,7 @@ class CartEntityTest < Minitest::Test
     }
 
     cart_ref01_resdata_up0_result = cart_ref01_ent.update(cart_ref01_data_up0_up, nil)
-    cart_ref01_resdata_up0 = Helpers.to_map(cart_ref01_resdata_up0_result)
+    cart_ref01_resdata_up0 = Helpers.to_map(cart_ref01_resdata_up0_result.respond_to?(:data_get) ? cart_ref01_resdata_up0_result.data_get : cart_ref01_resdata_up0_result)
     assert !cart_ref01_resdata_up0.nil?
     assert_equal cart_ref01_resdata_up0["id"], cart_ref01_data_up0_up["id"]
 
@@ -103,7 +103,7 @@ class CartEntityTest < Minitest::Test
       "id" => cart_ref01_data["id"],
     }
     cart_ref01_data_dt0_loaded = cart_ref01_ent.load(cart_ref01_match_dt0, nil)
-    cart_ref01_data_dt0_load_result = Helpers.to_map(cart_ref01_data_dt0_loaded)
+    cart_ref01_data_dt0_load_result = Helpers.to_map(cart_ref01_data_dt0_loaded.respond_to?(:data_get) ? cart_ref01_data_dt0_loaded.data_get : cart_ref01_data_dt0_loaded)
     assert !cart_ref01_data_dt0_load_result.nil?
     assert_equal cart_ref01_data_dt0_load_result["id"], cart_ref01_data["id"]
 
@@ -153,22 +153,22 @@ def cart_basic_setup(extra)
   # Detect ENTID env override before envOverride consumes it. When live
   # mode is on without a real override, the basic test runs against synthetic
   # IDs from the fixture and 4xx's. Surface this so the test can skip.
-  entid_env_raw = ENV["FAKESTORE_TEST_CART_ENTID"]
+  entid_env_raw = ENV["FAKE_STORE_TEST_CART_ENTID"]
   idmap_overridden = !entid_env_raw.nil? && entid_env_raw.strip.start_with?("{")
 
   env = Runner.env_override({
-    "FAKESTORE_TEST_CART_ENTID" => idmap,
-    "FAKESTORE_TEST_LIVE" => "FALSE",
-    "FAKESTORE_TEST_EXPLAIN" => "FALSE",
+    "FAKE_STORE_TEST_CART_ENTID" => idmap,
+    "FAKE_STORE_TEST_LIVE" => "FALSE",
+    "FAKE_STORE_TEST_EXPLAIN" => "FALSE",
   })
 
   idmap_resolved = Helpers.to_map(
-    env["FAKESTORE_TEST_CART_ENTID"])
+    env["FAKE_STORE_TEST_CART_ENTID"])
   if idmap_resolved.nil?
     idmap_resolved = Helpers.to_map(idmap)
   end
 
-  if env["FAKESTORE_TEST_LIVE"] == "TRUE"
+  if env["FAKE_STORE_TEST_LIVE"] == "TRUE"
     merged_opts = Vs.merge([
       {
       },
@@ -177,13 +177,13 @@ def cart_basic_setup(extra)
     client = FakeStoreSDK.new(Helpers.to_map(merged_opts))
   end
 
-  live = env["FAKESTORE_TEST_LIVE"] == "TRUE"
+  live = env["FAKE_STORE_TEST_LIVE"] == "TRUE"
   {
     client: client,
     data: entity_data,
     idmap: idmap_resolved,
     env: env,
-    explain: env["FAKESTORE_TEST_EXPLAIN"] == "TRUE",
+    explain: env["FAKE_STORE_TEST_EXPLAIN"] == "TRUE",
     live: live,
     synthetic_only: live && !idmap_overridden,
     now: (Time.now.to_f * 1000).to_i,

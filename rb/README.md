@@ -37,7 +37,7 @@ begin
   # list returns an Array of Cart records — iterate directly.
   carts = client.Cart.list
   carts.each do |item|
-    puts "#{item["id"]} #{item["product"]}"
+    puts "#{item["id"]} #{item["products"]}"
   end
 rescue => err
   warn "list failed: #{err}"
@@ -48,7 +48,7 @@ end
 
 ```ruby
 begin
-  # load returns the bare Cart record (raises on error).
+  # load returns the ENTITY — call data_get for the Cart record (raises on error).
   cart = client.Cart.load({ "id" => 1 })
   puts cart
 rescue => err
@@ -59,14 +59,14 @@ end
 ### 4. Create, update, and remove
 
 ```ruby
-# create returns the bare created Cart record.
-created = client.Cart.create({ "product" => [], "user_id" => 1 })
+# create returns the ENTITY — call data_get for the created Cart record.
+created = client.Cart.create({ "products" => [], "userId" => 1 })
 
-# Update — index the bare record directly (created["id"]).
-client.Cart.update({ "id" => created["id"] })
+# Update — index the record via data_get (created.data_get["id"]).
+client.Cart.update({ "id" => created.data_get["id"], "products" => [], "userId" => 1 })
 
 # Remove
-client.Cart.remove({ "id" => created["id"] })
+client.Cart.remove({ "id" => created.data_get["id"] })
 ```
 
 
@@ -76,7 +76,7 @@ Entity operations raise on failure, so rescue them:
 
 ```ruby
 begin
-  carts = client.Cart.list()
+  users = client.User.list()
 rescue => err
   warn "list failed: #{err}"
 end
@@ -144,12 +144,13 @@ data via the `entity` option so offline calls resolve without a live server:
 
 ```ruby
 client = FakeStoreSDK.test({
-  "entity" => { "cart" => { "test01" => { "id" => "test01" } } },
+  "entity" => { "user" => { "test01" => { "id" => "test01" } } },
 })
 
-# Entity ops return the bare mock record (raises on error).
-cart = client.Cart.list()
-puts cart
+# Entity ops return the ENTITY (raises on error);
+# call data_get for the mock record.
+user = client.User.list()
+puts user
 ```
 
 ### Use a custom fetch function
@@ -272,8 +273,8 @@ returns a result `Hash` with these keys:
 | Field | Description |
 | --- | --- |
 | `id` |  |
-| `product` |  |
-| `user_id` |  |
+| `products` |  |
+| `userId` |  |
 
 Operations: Create, List, Load, Remove, Update.
 
@@ -343,13 +344,13 @@ Create an instance: `cart = client.Cart`
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `Integer` |  |
-| `product` | `Array` |  |
-| `user_id` | `Integer` |  |
+| `products` | `Array` |  |
+| `userId` | `Integer` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare Cart record (raises on error).
+# load returns the ENTITY — call data_get for the Cart record (raises on error).
 cart = client.Cart.load({ "id" => 1 })
 ```
 
@@ -422,7 +423,7 @@ Create an instance: `product = client.Product`
 #### Example: Load
 
 ```ruby
-# load returns the bare Product record (raises on error).
+# load returns the ENTITY — call data_get for the Product record (raises on error).
 product = client.Product.load({ "id" => 1 })
 ```
 
@@ -467,7 +468,7 @@ Create an instance: `user = client.User`
 #### Example: Load
 
 ```ruby
-# load returns the bare User record (raises on error).
+# load returns the ENTITY — call data_get for the User record (raises on error).
 user = client.User.load({ "id" => 1 })
 ```
 
@@ -562,11 +563,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```ruby
-cart = client.Cart
-cart.list()
+user = client.User
+user.list()
 
-# cart.data_get now returns the cart data from the last list
-# cart.match_get returns the last match criteria
+# user.data_get now returns the user data from the last list
+# user.match_get returns the last match criteria
 ```
 
 Call `make` to create a fresh instance with the same configuration

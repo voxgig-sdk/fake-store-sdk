@@ -67,14 +67,14 @@ func main() {
     fmt.Println(cart)
 
     // Create a cart.
-    created, err := client.Cart(nil).Create(map[string]any{"product": []any{}, "user_id": 1}, nil)
+    created, err := client.Cart(nil).Create(map[string]any{"products": []any{}, "userId": 1}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(created)
 
     // Update a cart.
-    updated, err := client.Cart(nil).Update(map[string]any{"id": 1}, nil)
+    updated, err := client.Cart(nil).Update(map[string]any{"id": 1, "products": []any{}, "userId": 1}, nil)
     if err != nil {
         panic(err)
     }
@@ -96,12 +96,12 @@ Every entity operation returns `(value, error)`. Check `err` before
 using the value — there is no exception to catch:
 
 ```go
-carts, err := client.Cart(nil).List(nil, nil)
+users, err := client.User(nil).List(nil, nil)
 if err != nil {
     // handle err
     return
 }
-_ = carts
+_ = users
 ```
 
 `Direct` follows the same `(value, error)` convention:
@@ -165,13 +165,13 @@ Create a mock client for unit testing — no server required:
 ```go
 client := sdk.Test()
 
-cart, err := client.Cart(nil).List(
+user, err := client.User(nil).List(
     nil, nil,
 )
 if err != nil {
     panic(err)
 }
-fmt.Println(cart) // the returned mock data
+fmt.Println(user) // the returned mock data
 ```
 
 ### Use a custom fetch function
@@ -297,8 +297,8 @@ Only `Direct()` returns a response envelope — a `map[string]any` with
 | Field | Description |
 | --- | --- |
 | `"id"` |  |
-| `"product"` |  |
-| `"user_id"` |  |
+| `"products"` |  |
+| `"userId"` |  |
 
 Operations: Create, List, Load, Remove, Update.
 
@@ -368,8 +368,8 @@ Create an instance: `cart := client.Cart(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `int` |  |
-| `product` | `[]any` |  |
-| `user_id` | `int` |  |
+| `products` | `[]any` |  |
+| `userId` | `int` |  |
 
 #### Example: Load
 
@@ -618,11 +618,11 @@ Entity instances are stateful. After a successful `List`, the entity
 stores the returned data and match criteria internally.
 
 ```go
-cart := client.Cart(nil)
-cart.List(nil, nil)
+user := client.User(nil)
+user.List(nil, nil)
 
-// cart.Data() now returns the cart data from the last list
-// cart.Match() returns the last match criteria
+// user.Data() now returns the user data from the last list
+// user.Match() returns the last match criteria
 ```
 
 Call `Make()` to create a fresh instance with the same configuration

@@ -111,8 +111,8 @@ fmt.Println(cart.GetName()) // "cart"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `int` | No |  |
-| `product` | `[]any` | No |  |
-| `user_id` | `int` | No |  |
+| `products` | `[]any` | No |  |
+| `userId` | `int` | No |  |
 
 ### Operations
 
