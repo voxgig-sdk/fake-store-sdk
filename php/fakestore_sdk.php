@@ -40,7 +40,7 @@ class FakeStoreSDK
         $utility = new FakeStoreUtility();
         $this->_utility = $utility;
 
-        $config = FakeStoreConfig::make_config();
+        $config = FakeStoreConfig::shared_config();
 
         $this->_rootctx = ($utility->make_context)([
             "client" => $this,

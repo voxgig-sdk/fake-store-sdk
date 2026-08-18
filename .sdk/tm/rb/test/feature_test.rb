@@ -15,7 +15,7 @@ require_relative "../FakeStore_sdk"
 module FakeStoreFeatureHarness
   # True when this SDK was generated with the named feature.
   def self.has_feature?(name)
-    f = FakeStoreConfig.make_config["feature"]
+    f = FakeStoreConfig.shared_config["feature"]
     f.is_a?(Hash) && !f[name].nil?
   end
 

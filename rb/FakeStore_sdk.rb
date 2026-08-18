@@ -28,7 +28,7 @@ class FakeStoreSDK
     utility = FakeStoreUtility.new
     @_utility = utility
 
-    config = FakeStoreConfig.make_config
+    config = FakeStoreConfig.shared_config
 
     @_rootctx = utility.make_context.call({
       "client" => self,

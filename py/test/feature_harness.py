@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from urllib.parse import quote
 
-from fakestore_sdk.config import make_config
+from fakestore_sdk.config import shared_config
 from fakestore_sdk.features import _make_feature
 from fakestore_sdk.core.control import FakeStoreControl
 from fakestore_sdk.core.error import FakeStoreError
@@ -24,7 +24,7 @@ from fakestore_sdk.core.spec import FakeStoreSpec
 
 # True when this SDK was generated with the named feature.
 def has_feature(name):
-    feature = make_config().get("feature")
+    feature = shared_config().get("feature")
     return isinstance(feature, dict) and feature.get(name) is not None
 
 
