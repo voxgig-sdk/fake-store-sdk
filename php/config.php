@@ -33,6 +33,9 @@ class FakeStoreConfig
         return [
             "main" => [
                 "name" => "FakeStore",
+                "slug" => "fake-store",
+                "version" => "0.0.1",
+                "target" => "php",
             ],
             "feature" => [
                 "test" => [

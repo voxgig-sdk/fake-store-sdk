@@ -19,6 +19,9 @@ module FakeStoreConfig
     {
       "main" => {
         "name" => "FakeStore",
+        "slug" => "fake-store",
+        "version" => "0.0.1",
+        "target" => "rb",
       },
       "feature" => {
         "test" => {
