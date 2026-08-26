@@ -42,6 +42,7 @@ class FakeStoreConfig
           'options' => [
             'active' => false,
           ],
+          'transport' => 'base',
         ],
             ],
             "options" => [
