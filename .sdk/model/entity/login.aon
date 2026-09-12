@@ -30,9 +30,13 @@ main: kit: entity: login: {
         {
           method: "POST"
           orig: "/auth/login"
-          parts: [
-            "auth"
-            "login"
+          segments: [
+            {
+              lit: "auth"
+            }
+            {
+              lit: "login"
+            }
           ]
           transform: {
             req: "`reqdata`"

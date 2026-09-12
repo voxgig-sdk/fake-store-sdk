@@ -40,8 +40,10 @@ main: kit: entity: user: {
         {
           method: "POST"
           orig: "/users"
-          parts: [
-            "users"
+          segments: [
+            {
+              lit: "users"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -56,8 +58,10 @@ main: kit: entity: user: {
         {
           method: "GET"
           orig: "/users"
-          parts: [
-            "users"
+          segments: [
+            {
+              lit: "users"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -83,9 +87,13 @@ main: kit: entity: user: {
           }
           method: "GET"
           orig: "/users/{id}"
-          parts: [
-            "users"
-            "{id}"
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -116,9 +124,13 @@ main: kit: entity: user: {
           }
           method: "DELETE"
           orig: "/users/{id}"
-          parts: [
-            "users"
-            "{id}"
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -149,9 +161,13 @@ main: kit: entity: user: {
           }
           method: "PUT"
           orig: "/users/{id}"
-          parts: [
-            "users"
-            "{id}"
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [

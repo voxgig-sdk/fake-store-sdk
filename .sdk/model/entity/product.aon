@@ -21,11 +21,13 @@ main: kit: entity: product: {
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "image"
       req: false
       type: "`$STRING`"
     }
     {
+      format: "float"
       name: "price"
       req: false
       type: "`$NUMBER`"
@@ -50,8 +52,10 @@ main: kit: entity: product: {
         {
           method: "POST"
           orig: "/products"
-          parts: [
-            "products"
+          segments: [
+            {
+              lit: "products"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -66,8 +70,10 @@ main: kit: entity: product: {
         {
           method: "GET"
           orig: "/products"
-          parts: [
-            "products"
+          segments: [
+            {
+              lit: "products"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -93,9 +99,13 @@ main: kit: entity: product: {
           }
           method: "GET"
           orig: "/products/{id}"
-          parts: [
-            "products"
-            "{id}"
+          segments: [
+            {
+              lit: "products"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -126,9 +136,13 @@ main: kit: entity: product: {
           }
           method: "DELETE"
           orig: "/products/{id}"
-          parts: [
-            "products"
-            "{id}"
+          segments: [
+            {
+              lit: "products"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -159,9 +173,13 @@ main: kit: entity: product: {
           }
           method: "PUT"
           orig: "/products/{id}"
-          parts: [
-            "products"
-            "{id}"
+          segments: [
+            {
+              lit: "products"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [

@@ -35,8 +35,10 @@ main: kit: entity: cart: {
         {
           method: "POST"
           orig: "/carts"
-          parts: [
-            "carts"
+          segments: [
+            {
+              lit: "carts"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -51,8 +53,10 @@ main: kit: entity: cart: {
         {
           method: "GET"
           orig: "/carts"
-          parts: [
-            "carts"
+          segments: [
+            {
+              lit: "carts"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -78,9 +82,13 @@ main: kit: entity: cart: {
           }
           method: "GET"
           orig: "/carts/{id}"
-          parts: [
-            "carts"
-            "{id}"
+          segments: [
+            {
+              lit: "carts"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -111,9 +119,13 @@ main: kit: entity: cart: {
           }
           method: "DELETE"
           orig: "/carts/{id}"
-          parts: [
-            "carts"
-            "{id}"
+          segments: [
+            {
+              lit: "carts"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -144,9 +156,13 @@ main: kit: entity: cart: {
           }
           method: "PUT"
           orig: "/carts/{id}"
-          parts: [
-            "carts"
-            "{id}"
+          segments: [
+            {
+              lit: "carts"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [

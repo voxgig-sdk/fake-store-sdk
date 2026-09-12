@@ -1,0 +1,104 @@
+export interface Cart {
+    id?: number;
+    products?: any[];
+    userId?: number;
+}
+export interface CartLoadMatch {
+    id: number;
+}
+export interface CartListMatch {
+    id?: number;
+    products?: any[];
+    userId?: number;
+}
+export interface CartCreateData {
+    id?: number;
+    products?: any[];
+    userId?: number;
+}
+export interface CartUpdateData {
+    id: number;
+    products?: any[];
+    userId?: number;
+}
+export interface CartRemoveMatch {
+    id: number;
+}
+export interface Login {
+    password?: string;
+    token?: string;
+    username?: string;
+}
+export interface LoginCreateData {
+    password?: string;
+    token?: string;
+    username?: string;
+}
+export interface Product {
+    category?: string;
+    description?: string;
+    id?: number;
+    image?: string;
+    price?: number;
+    title?: string;
+}
+export interface ProductLoadMatch {
+    id: number;
+}
+export interface ProductListMatch {
+    category?: string;
+    description?: string;
+    id?: number;
+    image?: string;
+    price?: number;
+    title?: string;
+}
+export interface ProductCreateData {
+    category?: string;
+    description?: string;
+    id?: number;
+    image?: string;
+    price?: number;
+    title?: string;
+}
+export interface ProductUpdateData {
+    id: number;
+    category?: string;
+    description?: string;
+    image?: string;
+    price?: number;
+    title?: string;
+}
+export interface ProductRemoveMatch {
+    id: number;
+}
+export interface User {
+    email?: string;
+    id?: number;
+    password?: string;
+    username?: string;
+}
+export interface UserLoadMatch {
+    id: number;
+}
+export interface UserListMatch {
+    email?: string;
+    id?: number;
+    password?: string;
+    username?: string;
+}
+export interface UserCreateData {
+    email?: string;
+    id?: number;
+    password?: string;
+    username?: string;
+}
+export interface UserUpdateData {
+    id: number;
+    email?: string;
+    password?: string;
+    username?: string;
+}
+export interface UserRemoveMatch {
+    id: number;
+}
