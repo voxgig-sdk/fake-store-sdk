@@ -105,7 +105,7 @@ local results, err = client:User():list()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
+| TypeScript | `@voxgig-sdk/fake-store-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
 | Python | `voxgig-sdk-fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
 | PHP | `voxgig-sdk/fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
 | Golang | `github.com/voxgig-sdk/fake-store-sdk/go` | `go get github.com/voxgig-sdk/fake-store-sdk/go@latest` |
@@ -119,7 +119,7 @@ local results, err = client:User():list()
 ### TypeScript
 
 ```ts
-import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
+import { FakeStoreSDK } from '@voxgig-sdk/fake-store-sdk'
 
 const client = new FakeStoreSDK()
 

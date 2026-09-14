@@ -28,7 +28,7 @@ loading a specific record.
 ### 1. Create a client
 
 ```ts
-import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
+import { FakeStoreSDK } from '@voxgig-sdk/fake-store-sdk'
 
 const client = new FakeStoreSDK()
 ```
@@ -622,7 +622,7 @@ fake-store/
 Import the SDK from the package root:
 
 ```ts
-import { FakeStoreSDK } from '@voxgig-sdk/fake-store'
+import { FakeStoreSDK } from '@voxgig-sdk/fake-store-sdk'
 ```
 
 ### Entity state

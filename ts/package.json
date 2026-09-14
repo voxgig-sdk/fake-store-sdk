@@ -1,5 +1,5 @@
 {
-  "name": "@voxgig-sdk/fake-store",
+  "name": "@voxgig-sdk/fake-store-sdk",
   "version": "0.0.1",
   "description": "Unofficial generated TypeScript SDK for the FakeStore public API. Not affiliated with or endorsed by the upstream API provider.",
   "keywords": [
