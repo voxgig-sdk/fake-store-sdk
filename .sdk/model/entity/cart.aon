@@ -33,6 +33,12 @@ main: kit: entity: cart: {
       name: "create"
       points: [
         {
+          contract: {
+            id: "POST /carts"
+            json: "{\"operationId\":\"addCart\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"id\":{\"type\":\"integer\"},\"products\":{\"items\":{\"properties\":{\"category\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"image\":{\"format\":\"uri\",\"type\":\"string\"},\"price\":{\"format\":\"float\",\"type\":\"number\"},\"title\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"userId\":{\"type\":\"integer\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"id\":{\"type\":\"integer\"},\"products\":{\"items\":{\"properties\":{\"category\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"image\":{\"format\":\"uri\",\"type\":\"string\"},\"price\":{\"format\":\"float\",\"type\":\"number\"},\"title\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"userId\":{\"type\":\"integer\"}},\"type\":\"object\"}}},\"description\":\"Cart created successfully\"},\"400\":{\"description\":\"Bad request\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "POST"
           orig: "/carts"
           segments: [
@@ -51,6 +57,12 @@ main: kit: entity: cart: {
       name: "list"
       points: [
         {
+          contract: {
+            id: "GET /carts"
+            json: "{\"operationId\":\"getAllCarts\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"items\":{\"properties\":{\"id\":{\"type\":\"integer\"},\"products\":{\"items\":{\"properties\":{\"category\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"image\":{\"format\":\"uri\",\"type\":\"string\"},\"price\":{\"format\":\"float\",\"type\":\"number\"},\"title\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"userId\":{\"type\":\"integer\"}},\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Success\"},\"400\":{\"description\":\"Bad request\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "GET"
           orig: "/carts"
           segments: [
@@ -79,6 +91,12 @@ main: kit: entity: cart: {
                 type: "`$INTEGER`"
               }
             ]
+          }
+          contract: {
+            id: "GET /carts/{id}"
+            json: "{\"operationId\":\"getCartById\",\"parameters\":[{\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"id\":{\"type\":\"integer\"},\"products\":{\"items\":{\"properties\":{\"category\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"image\":{\"format\":\"uri\",\"type\":\"string\"},\"price\":{\"format\":\"float\",\"type\":\"number\"},\"title\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"userId\":{\"type\":\"integer\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"400\":{\"description\":\"Bad request\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
           }
           method: "GET"
           orig: "/carts/{id}"
@@ -117,6 +135,12 @@ main: kit: entity: cart: {
               }
             ]
           }
+          contract: {
+            id: "DELETE /carts/{id}"
+            json: "{\"operationId\":\"deleteCart\",\"parameters\":[{\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Cart deleted successfully\"},\"400\":{\"description\":\"Bad request\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "DELETE"
           orig: "/carts/{id}"
           segments: [
@@ -153,6 +177,12 @@ main: kit: entity: cart: {
                 type: "`$INTEGER`"
               }
             ]
+          }
+          contract: {
+            id: "PUT /carts/{id}"
+            json: "{\"operationId\":\"updateCart\",\"parameters\":[{\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"id\":{\"type\":\"integer\"},\"products\":{\"items\":{\"properties\":{\"category\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"image\":{\"format\":\"uri\",\"type\":\"string\"},\"price\":{\"format\":\"float\",\"type\":\"number\"},\"title\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"userId\":{\"type\":\"integer\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"id\":{\"type\":\"integer\"},\"products\":{\"items\":{\"properties\":{\"category\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"image\":{\"format\":\"uri\",\"type\":\"string\"},\"price\":{\"format\":\"float\",\"type\":\"number\"},\"title\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"userId\":{\"type\":\"integer\"}},\"type\":\"object\"}}},\"description\":\"Cart updated successfully\"},\"400\":{\"description\":\"Bad request\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
           }
           method: "PUT"
           orig: "/carts/{id}"

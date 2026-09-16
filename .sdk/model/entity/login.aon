@@ -28,6 +28,12 @@ main: kit: entity: login: {
       name: "create"
       points: [
         {
+          contract: {
+            id: "POST /auth/login"
+            json: "{\"operationId\":\"loginUser\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"password\":{\"type\":\"string\"},\"username\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"token\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Login successful\"},\"400\":{\"description\":\"Bad request\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "POST"
           orig: "/auth/login"
           segments: [

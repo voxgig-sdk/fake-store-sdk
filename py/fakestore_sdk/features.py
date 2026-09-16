@@ -1,12 +1,18 @@
 # FakeStore SDK feature factory
 
 from fakestore_sdk.feature.base_feature import FakeStoreBaseFeature
+from fakestore_sdk.feature.ratelimit_feature import FakeStoreRatelimitFeature
+from fakestore_sdk.feature.retry_feature import FakeStoreRetryFeature
 from fakestore_sdk.feature.test_feature import FakeStoreTestFeature
+from fakestore_sdk.feature.timeout_feature import FakeStoreTimeoutFeature
 
 
 _FEATURES = {
     "base": lambda: FakeStoreBaseFeature(),
+    "ratelimit": lambda: FakeStoreRatelimitFeature(),
+    "retry": lambda: FakeStoreRetryFeature(),
     "test": lambda: FakeStoreTestFeature(),
+    "timeout": lambda: FakeStoreTimeoutFeature(),
 }
 
 

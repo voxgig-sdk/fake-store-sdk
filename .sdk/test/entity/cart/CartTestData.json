@@ -4,17 +4,17 @@
       "CART00": {
         "id": "CART00",
         "products": [],
-        "userId": "s20"
+        "userId": 32
       },
       "CART01": {
         "id": "CART01",
         "products": [],
-        "userId": "s3e"
+        "userId": 62
       },
       "CART02": {
         "id": "CART02",
         "products": [],
-        "userId": "s5c"
+        "userId": 92
       }
     }
   },
@@ -22,7 +22,388 @@
     "cart": {
       "cart_ref01": {
         "products": [],
-        "userId": "s7a"
+        "userId": 122
+      }
+    }
+  },
+  "requests": {
+    "POST /carts": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "addCart",
+        "parameters": [],
+        "protocol": "http",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "products": {
+                    "items": {
+                      "properties": {
+                        "category": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "image": {
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "price": {
+                          "format": "float",
+                          "type": "number"
+                        },
+                        "title": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "userId": {
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "products": {
+                      "items": {
+                        "properties": {
+                          "category": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "image": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "price": {
+                            "format": "float",
+                            "type": "number"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "userId": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Cart created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "securitySource": "unspecified"
+      }
+    },
+    "GET /carts": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "getAllCarts",
+        "parameters": [],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "products": {
+                        "items": {
+                          "properties": {
+                            "category": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "integer"
+                            },
+                            "image": {
+                              "format": "uri",
+                              "type": "string"
+                            },
+                            "price": {
+                              "format": "float",
+                              "type": "number"
+                            },
+                            "title": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "userId": {
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "securitySource": "unspecified"
+      }
+    },
+    "GET /carts/{id}": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "getCartById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "products": {
+                      "items": {
+                        "properties": {
+                          "category": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "image": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "price": {
+                            "format": "float",
+                            "type": "number"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "userId": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "securitySource": "unspecified"
+      }
+    },
+    "DELETE /carts/{id}": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "deleteCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "description": "Cart deleted successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "securitySource": "unspecified"
+      }
+    },
+    "PUT /carts/{id}": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "updateCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "protocol": "http",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "products": {
+                    "items": {
+                      "properties": {
+                        "category": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "image": {
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "price": {
+                          "format": "float",
+                          "type": "number"
+                        },
+                        "title": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "userId": {
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "products": {
+                      "items": {
+                        "properties": {
+                          "category": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "image": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "price": {
+                            "format": "float",
+                            "type": "number"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "userId": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Cart updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "securitySource": "unspecified"
       }
     }
   }

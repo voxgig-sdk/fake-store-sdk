@@ -29,5 +29,54 @@
         "username": "s7a"
       }
     }
+  },
+  "requests": {
+    "POST /auth/login": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "loginUser",
+        "parameters": [],
+        "protocol": "http",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Login successful"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "securitySource": "unspecified"
+      }
+    }
   }
 }
