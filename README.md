@@ -105,12 +105,12 @@ local results, err = client:User():list()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/fake-store-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
-| Python | `voxgig-sdk-fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
-| PHP | `voxgig-sdk/fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
+| TypeScript | `@voxgig-sdk/fake-store-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/tags) |
+| Python | `voxgig-sdk-fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/tags) |
+| PHP | `voxgig-sdk/fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/tags) |
 | Golang | `github.com/voxgig-sdk/fake-store-sdk/go` | `go get github.com/voxgig-sdk/fake-store-sdk/go@latest` |
-| Ruby | `voxgig-sdk-fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
-| Lua | `voxgig-sdk-fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/releases) |
+| Ruby | `voxgig-sdk-fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/tags) |
+| Lua | `voxgig-sdk-fake-store` | publish pending — [install from git tag](https://github.com/voxgig-sdk/fake-store-sdk/tags) |
 | Go CLI | `github.com/voxgig-sdk/fake-store-sdk/go-cli` | `go install github.com/voxgig-sdk/fake-store-sdk/go-cli/cmd/fake-store@latest` |
 | Go MCP server | `github.com/voxgig-sdk/fake-store-sdk/go-mcp` | `go get github.com/voxgig-sdk/fake-store-sdk/go-mcp@latest` |
 

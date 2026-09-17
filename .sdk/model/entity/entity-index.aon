@@ -1,6 +1,6 @@
 # Entity Models
 
-@"cart.aon"
-@"login.aon"
-@"product.aon"
-@"user.aon"
+@"./cart.aon"
+@"./login.aon"
+@"./product.aon"
+@"./user.aon"
