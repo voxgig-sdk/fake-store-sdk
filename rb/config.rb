@@ -102,14 +102,17 @@ module FakeStoreConfig
           "fields" => [
             {
               "name" => "id",
+              "title" => "Id",
               "type" => "`$INTEGER`",
             },
             {
               "name" => "products",
+              "title" => "Products",
               "type" => "`$ARRAY`",
             },
             {
               "name" => "userId",
+              "title" => "User Id",
               "type" => "`$INTEGER`",
             },
           ],
@@ -124,7 +127,6 @@ module FakeStoreConfig
               "name" => "create",
               "points" => [
                 {
-                  "args" => {},
                   "kind" => "http",
                   "method" => "POST",
                   "orig" => "/carts",
@@ -133,14 +135,16 @@ module FakeStoreConfig
                       "lit" => "carts",
                     },
                   ],
-                  "select" => {},
+                  "parts" => [
+                    "carts",
+                  ],
+                  "rename" => {},
                   "transform" => {
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
-                  "parts" => [
-                    "carts",
-                  ],
+                  "args" => {},
+                  "select" => {},
                 },
               ],
             },
@@ -149,7 +153,6 @@ module FakeStoreConfig
               "name" => "list",
               "points" => [
                 {
-                  "args" => {},
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/carts",
@@ -158,14 +161,16 @@ module FakeStoreConfig
                       "lit" => "carts",
                     },
                   ],
-                  "select" => {},
+                  "parts" => [
+                    "carts",
+                  ],
+                  "rename" => {},
                   "transform" => {
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
-                  "parts" => [
-                    "carts",
-                  ],
+                  "args" => {},
+                  "select" => {},
                 },
               ],
             },
@@ -174,17 +179,6 @@ module FakeStoreConfig
               "name" => "load",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/carts/{id}",
@@ -196,19 +190,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "carts",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "carts",
-                    "{id}",
-                  ],
                 },
               ],
             },
@@ -217,17 +223,6 @@ module FakeStoreConfig
               "name" => "remove",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "DELETE",
                   "orig" => "/carts/{id}",
@@ -239,19 +234,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "carts",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "carts",
-                    "{id}",
-                  ],
                 },
               ],
             },
@@ -260,17 +267,6 @@ module FakeStoreConfig
               "name" => "update",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "PUT",
                   "orig" => "/carts/{id}",
@@ -282,19 +278,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "carts",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "carts",
-                    "{id}",
-                  ],
                 },
               ],
             },
@@ -307,14 +315,17 @@ module FakeStoreConfig
           "fields" => [
             {
               "name" => "password",
+              "title" => "Password",
               "type" => "`$STRING`",
             },
             {
               "name" => "token",
+              "title" => "Token",
               "type" => "`$STRING`",
             },
             {
               "name" => "username",
+              "title" => "Username",
               "type" => "`$STRING`",
             },
           ],
@@ -325,7 +336,6 @@ module FakeStoreConfig
               "name" => "create",
               "points" => [
                 {
-                  "args" => {},
                   "kind" => "http",
                   "method" => "POST",
                   "orig" => "/auth/login",
@@ -337,15 +347,17 @@ module FakeStoreConfig
                       "lit" => "login",
                     },
                   ],
-                  "select" => {},
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
                   "parts" => [
                     "auth",
                     "login",
                   ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {},
+                  "select" => {},
                 },
               ],
             },
@@ -358,28 +370,34 @@ module FakeStoreConfig
           "fields" => [
             {
               "name" => "category",
+              "title" => "Category",
               "type" => "`$STRING`",
             },
             {
               "name" => "description",
+              "title" => "Description",
               "type" => "`$STRING`",
             },
             {
               "name" => "id",
+              "title" => "Id",
               "type" => "`$INTEGER`",
             },
             {
-              "format" => "uri",
               "name" => "image",
+              "title" => "Image",
               "type" => "`$STRING`",
+              "format" => "uri",
             },
             {
-              "format" => "float",
               "name" => "price",
+              "title" => "Price",
               "type" => "`$NUMBER`",
+              "format" => "float",
             },
             {
               "name" => "title",
+              "title" => "Title",
               "type" => "`$STRING`",
             },
           ],
@@ -394,7 +412,6 @@ module FakeStoreConfig
               "name" => "create",
               "points" => [
                 {
-                  "args" => {},
                   "kind" => "http",
                   "method" => "POST",
                   "orig" => "/products",
@@ -403,14 +420,16 @@ module FakeStoreConfig
                       "lit" => "products",
                     },
                   ],
-                  "select" => {},
+                  "parts" => [
+                    "products",
+                  ],
+                  "rename" => {},
                   "transform" => {
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
-                  "parts" => [
-                    "products",
-                  ],
+                  "args" => {},
+                  "select" => {},
                 },
               ],
             },
@@ -419,7 +438,6 @@ module FakeStoreConfig
               "name" => "list",
               "points" => [
                 {
-                  "args" => {},
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/products",
@@ -428,14 +446,16 @@ module FakeStoreConfig
                       "lit" => "products",
                     },
                   ],
-                  "select" => {},
+                  "parts" => [
+                    "products",
+                  ],
+                  "rename" => {},
                   "transform" => {
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
-                  "parts" => [
-                    "products",
-                  ],
+                  "args" => {},
+                  "select" => {},
                 },
               ],
             },
@@ -444,17 +464,6 @@ module FakeStoreConfig
               "name" => "load",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/products/{id}",
@@ -466,19 +475,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "products",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "products",
-                    "{id}",
-                  ],
                 },
               ],
             },
@@ -487,17 +508,6 @@ module FakeStoreConfig
               "name" => "remove",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "DELETE",
                   "orig" => "/products/{id}",
@@ -509,19 +519,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "products",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "products",
-                    "{id}",
-                  ],
                 },
               ],
             },
@@ -530,17 +552,6 @@ module FakeStoreConfig
               "name" => "update",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "PUT",
                   "orig" => "/products/{id}",
@@ -552,19 +563,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "products",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "products",
-                    "{id}",
-                  ],
                 },
               ],
             },
@@ -577,18 +600,22 @@ module FakeStoreConfig
           "fields" => [
             {
               "name" => "email",
+              "title" => "Email",
               "type" => "`$STRING`",
             },
             {
               "name" => "id",
+              "title" => "Id",
               "type" => "`$INTEGER`",
             },
             {
               "name" => "password",
+              "title" => "Password",
               "type" => "`$STRING`",
             },
             {
               "name" => "username",
+              "title" => "Username",
               "type" => "`$STRING`",
             },
           ],
@@ -603,7 +630,6 @@ module FakeStoreConfig
               "name" => "create",
               "points" => [
                 {
-                  "args" => {},
                   "kind" => "http",
                   "method" => "POST",
                   "orig" => "/users",
@@ -612,14 +638,16 @@ module FakeStoreConfig
                       "lit" => "users",
                     },
                   ],
-                  "select" => {},
+                  "parts" => [
+                    "users",
+                  ],
+                  "rename" => {},
                   "transform" => {
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
-                  "parts" => [
-                    "users",
-                  ],
+                  "args" => {},
+                  "select" => {},
                 },
               ],
             },
@@ -628,7 +656,6 @@ module FakeStoreConfig
               "name" => "list",
               "points" => [
                 {
-                  "args" => {},
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/users",
@@ -637,14 +664,16 @@ module FakeStoreConfig
                       "lit" => "users",
                     },
                   ],
-                  "select" => {},
+                  "parts" => [
+                    "users",
+                  ],
+                  "rename" => {},
                   "transform" => {
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
-                  "parts" => [
-                    "users",
-                  ],
+                  "args" => {},
+                  "select" => {},
                 },
               ],
             },
@@ -653,17 +682,6 @@ module FakeStoreConfig
               "name" => "load",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/users/{id}",
@@ -675,19 +693,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "users",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "users",
-                    "{id}",
-                  ],
                 },
               ],
             },
@@ -696,17 +726,6 @@ module FakeStoreConfig
               "name" => "remove",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "DELETE",
                   "orig" => "/users/{id}",
@@ -718,19 +737,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "users",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "users",
-                    "{id}",
-                  ],
                 },
               ],
             },
@@ -739,17 +770,6 @@ module FakeStoreConfig
               "name" => "update",
               "points" => [
                 {
-                  "args" => {
-                    "params" => [
-                      {
-                        "kind" => "param",
-                        "name" => "id",
-                        "orig" => "id",
-                        "reqd" => true,
-                        "type" => "`$INTEGER`",
-                      },
-                    ],
-                  },
                   "kind" => "http",
                   "method" => "PUT",
                   "orig" => "/users/{id}",
@@ -761,19 +781,31 @@ module FakeStoreConfig
                       "var" => "id",
                     },
                   ],
+                  "parts" => [
+                    "users",
+                    "{id}",
+                  ],
+                  "rename" => {},
+                  "transform" => {
+                    "req" => "`reqdata`",
+                    "res" => "`body`",
+                  },
+                  "args" => {
+                    "params" => [
+                      {
+                        "name" => "id",
+                        "orig" => "id",
+                        "type" => "`$INTEGER`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
+                  },
                   "select" => {
                     "exist" => [
                       "id",
                     ],
                   },
-                  "transform" => {
-                    "req" => "`reqdata`",
-                    "res" => "`body`",
-                  },
-                  "parts" => [
-                    "users",
-                    "{id}",
-                  ],
                 },
               ],
             },

@@ -1,7 +1,7 @@
 // Typed models for the FakeStore SDK.
 //
-// GENERATED from the API model: main.kit.entity.<e>.fields[] and per-op
-// params (op.<name>.points[].args.params[]). Field/param types come from the
+// GENERATED from the API model: main.kit.entity.<e>.fields{} and per-op
+// params (op.<name>.points[].g.params[]). Field/param types come from the
 // canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 // @voxgig/apidef VALID_CANON). Do not edit by hand.
 package entity
@@ -14,9 +14,6 @@ import (
 
 // Cart is the typed data model for the cart entity.
 type Cart struct {
-	Id *int `json:"id,omitempty"`
-	Products *[]any `json:"products,omitempty"`
-	UserId *int `json:"userId,omitempty"`
 }
 
 // CartLoadMatch is the typed request payload for Cart.LoadTyped.
@@ -52,9 +49,6 @@ type CartRemoveMatch struct {
 
 // Login is the typed data model for the login entity.
 type Login struct {
-	Password *string `json:"password,omitempty"`
-	Token *string `json:"token,omitempty"`
-	Username *string `json:"username,omitempty"`
 }
 
 // LoginCreateData is the typed request payload for Login.CreateTyped.
@@ -66,12 +60,6 @@ type LoginCreateData struct {
 
 // Product is the typed data model for the product entity.
 type Product struct {
-	Category *string `json:"category,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Id *int `json:"id,omitempty"`
-	Image *string `json:"image,omitempty"`
-	Price *float64 `json:"price,omitempty"`
-	Title *string `json:"title,omitempty"`
 }
 
 // ProductLoadMatch is the typed request payload for Product.LoadTyped.
@@ -116,10 +104,6 @@ type ProductRemoveMatch struct {
 
 // User is the typed data model for the user entity.
 type User struct {
-	Email *string `json:"email,omitempty"`
-	Id *int `json:"id,omitempty"`
-	Password *string `json:"password,omitempty"`
-	Username *string `json:"username,omitempty"`
 }
 
 // UserLoadMatch is the typed request payload for User.LoadTyped.

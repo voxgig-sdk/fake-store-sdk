@@ -1,0 +1,18 @@
+# BasicLoginFlow
+
+main: kit: flow: BasicLoginFlow:
+{
+  entity: "login",
+  kind: "basic",
+  name: "BasicLoginFlow",
+  step: [
+    {
+      i: {
+        ref: "login_ref01"
+      }
+
+      o: "create"
+    }
+  ],
+  "key$": "BasicLoginFlow"
+}

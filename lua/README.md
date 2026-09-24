@@ -43,7 +43,7 @@ local carts, err = client:Cart():list()
 if err then error(err) end
 
 for _, item in ipairs(carts) do
-  print(item["id"], item["products"])
+  print(item["id"])
 end
 ```
 

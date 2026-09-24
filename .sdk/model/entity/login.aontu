@@ -1,0 +1,60 @@
+# Entity: login
+
+main: kit: entity: login: {
+
+  alias: field: {}
+
+  fields: {
+    password: {
+      h: "Password"
+      n: "password"
+      r: false
+      t: "`$STRING`"
+    }
+    token: {
+      h: "Token"
+      n: "token"
+      r: false
+      t: "`$STRING`"
+    }
+    username: {
+      h: "Username"
+      n: "username"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  name: "login"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /auth/login"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/auth/login"
+          s: [
+            {
+              lit: "auth"
+            }
+            {
+              lit: "login"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

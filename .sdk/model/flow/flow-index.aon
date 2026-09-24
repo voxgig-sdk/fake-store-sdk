@@ -1,6 +1,0 @@
-# Flows
-
-@"./BasicCartFlow.aon"
-@"./BasicLoginFlow.aon"
-@"./BasicProductFlow.aon"
-@"./BasicUserFlow.aon"
