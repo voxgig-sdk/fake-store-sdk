@@ -37,6 +37,8 @@ require_once __DIR__ . '/TransformResponse.php';
 
 FakeStoreUtility::setRegistrar(function (FakeStoreUtility $u): void {
     $u->clean = [FakeStoreClean::class, 'call'];
+    $u->clean_add = [FakeStoreClean::class, 'add'];
+    $u->clean_explain = [FakeStoreDone::class, 'clean_explain'];
     $u->done = [FakeStoreDone::class, 'call'];
     $u->make_error = [FakeStoreMakeError::class, 'call'];
     $u->feature_add = [FakeStoreFeatureAdd::class, 'call'];

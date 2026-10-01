@@ -33,6 +33,8 @@ require_relative 'transform_response'
 
 FakeStoreUtility.registrar = ->(u) {
   u.clean = FakeStoreUtilities::Clean
+  u.clean_add = FakeStoreUtilities::CleanAdd
+  u.clean_explain = FakeStoreUtilities::CleanExplain
   u.done = FakeStoreUtilities::Done
   u.make_error = FakeStoreUtilities::MakeError
   u.feature_add = FakeStoreUtilities::FeatureAdd
