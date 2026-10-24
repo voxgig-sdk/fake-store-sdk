@@ -3,5 +3,21 @@
     "SUMMARY.md"
   ],
   "config": ".sdk/doc/qa/vale.ini",
-  "routes": {}
+  "routes": {},
+  "quoted": {
+    "SUMMARY.md": [
+      "A free fake API for testing and prototyping e-commerce applications.",
+      "Cart created successfully",
+      "Cart deleted successfully",
+      "Cart updated successfully",
+      "Login successful",
+      "Product created successfully",
+      "Product deleted successfully",
+      "Product updated successfully",
+      "Success",
+      "User created successfully",
+      "User deleted successfully",
+      "User updated successfully"
+    ]
+  }
 }

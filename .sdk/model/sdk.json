@@ -131,6 +131,11 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "id",
+                    "products",
+                    "userId"
+                  ],
                   "co": {
                     "id": "POST /carts",
                     "source": "openapi3",
@@ -142,6 +147,10 @@
                   "o": "/carts",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "carts"
@@ -171,6 +180,10 @@
                   "o": "/carts",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "carts"
@@ -215,6 +228,10 @@
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "carts"
@@ -283,6 +300,11 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "id",
+                    "products",
+                    "userId"
+                  ],
                   "co": {
                     "id": "PUT /carts/{id}",
                     "source": "openapi3",
@@ -309,6 +331,10 @@
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "carts"
@@ -365,6 +391,10 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "password",
+                    "username"
+                  ],
                   "co": {
                     "id": "POST /auth/login",
                     "source": "openapi3",
@@ -376,6 +406,10 @@
                   "o": "/auth/login",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "auth"
@@ -459,6 +493,14 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "category",
+                    "description",
+                    "id",
+                    "image",
+                    "price",
+                    "title"
+                  ],
                   "co": {
                     "id": "POST /products",
                     "source": "openapi3",
@@ -470,6 +512,10 @@
                   "o": "/products",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "products"
@@ -499,6 +545,10 @@
                   "o": "/products",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "products"
@@ -543,6 +593,10 @@
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "products"
@@ -611,6 +665,14 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "category",
+                    "description",
+                    "id",
+                    "image",
+                    "price",
+                    "title"
+                  ],
                   "co": {
                     "id": "PUT /products/{id}",
                     "source": "openapi3",
@@ -637,6 +699,10 @@
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "products"
@@ -704,6 +770,12 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "email",
+                    "id",
+                    "password",
+                    "username"
+                  ],
                   "co": {
                     "id": "POST /users",
                     "source": "openapi3",
@@ -715,6 +787,10 @@
                   "o": "/users",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "users"
@@ -744,6 +820,10 @@
                   "o": "/users",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "users"
@@ -788,6 +868,10 @@
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "users"
@@ -856,6 +940,12 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "email",
+                    "id",
+                    "password",
+                    "username"
+                  ],
                   "co": {
                     "id": "PUT /users/{id}",
                     "source": "openapi3",
@@ -882,6 +972,10 @@
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "users"
@@ -1225,6 +1319,7 @@
             },
             "optspec": {
               "clearTimer": "`$FUNCTION`",
+              "now": "`$FUNCTION`",
               "setTimer": "`$FUNCTION`"
             },
             "strict": false
@@ -1697,7 +1792,7 @@
       "optspec": {
         "allow": {
           "method": "GET,PUT,POST,PATCH,DELETE,OPTIONS",
-          "op": "create,update,load,list,remove,command,direct,graphql"
+          "op": "create,update,patch,load,list,remove,command,direct,graphql"
         },
         "apikey": "",
         "auth": {
@@ -1750,6 +1845,11 @@
         "top": {
           "active": true
         }
+      },
+      "publisher": {
+        "name": "",
+        "security": "",
+        "url": ""
       },
       "repo": {
         "host": "github.com",
@@ -1980,7 +2080,10 @@
             "version": "0.0.1"
           },
           "superseded": [],
-          "title": "Go MCP server"
+          "title": "Go MCP server",
+          "tool": {
+            "write": false
+          }
         },
         "lua": {
           "active": true,
@@ -2357,6 +2460,17 @@
           "base": "",
           "strict": true
         }
+      },
+      "text": {
+        "about_md": "",
+        "docs_url": "",
+        "entity_desc": {},
+        "homepage": "",
+        "meta_source": "",
+        "summary": "",
+        "tagline": "",
+        "title": "",
+        "website": ""
       }
     }
   },

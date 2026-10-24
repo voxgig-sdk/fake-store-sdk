@@ -59,7 +59,6 @@ class Login(TypedDict, total=False):
 
 class LoginCreateData(TypedDict, total=False):
     password: str
-    token: str
     username: str
 
 

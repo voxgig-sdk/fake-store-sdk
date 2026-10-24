@@ -9,7 +9,7 @@ import { createLiveTransport } from '../../live-runner'
 import { runLiveEntity } from '../../live-entity'
 
 
-import { FakeStoreSDK, BaseFeature, stdutil } from '../../..'
+import { FakeStoreSDK, BaseFeature, config, stdutil } from '../../..'
 
 import {
   envOverride,
@@ -41,6 +41,64 @@ describe('CartEntity', async () => {
   })
 
 
+  class FailHook extends BaseFeature {
+    name = 'failhook'
+    version = '0.0.1'
+    active = true
+    unexpected = 0
+    init() { }
+    PreSpec() { throw new Error('cart hook failed') }
+    PreUnexpected() { this.unexpected++ }
+  }
+
+  test('stream-error', async () => {
+    const offline = { net: { offline: true } }
+    await assert.rejects(async () => {
+      for await (const _item of FakeStoreSDK.test(offline).Cart().stream('list')) { }
+    }, /offline/)
+
+    for await (const _item of FakeStoreSDK.test(offline).Cart()
+      .stream('list', undefined, { ctrl: { throw: false } })) { }
+
+    if (null != (config as any).feature?.rbac) {
+      const denied = FakeStoreSDK.test(undefined, { feature: { rbac: { active: true, deny: true } } })
+      await assert.rejects(async () => {
+        for await (const _item of denied.Cart().stream('list')) { }
+      }, (err: any) => 'rbac_denied' === err.code)
+    }
+  })
+
+  test('stream-ctrl', async () => {
+    const explain: any = {}
+    const ctrl: any = { explain }
+    for await (const _item of FakeStoreSDK.test().Cart().stream('list', undefined, { ctrl })) { }
+    assert.deepStrictEqual(Object.keys(ctrl), ['explain'])
+    assert(explain === ctrl.explain && 0 < Object.keys(explain).length)
+  })
+
+  test('unexpected', async () => {
+    const hook = new FailHook()
+    const client = new FakeStoreSDK({ feature: { test: { active: true } }, extend: [hook] })
+    await assert.rejects(client.Cart().list(), /hook failed/)
+    assert(0 < hook.unexpected)
+
+    const fired = hook.unexpected
+    assert.strictEqual(await client.Cart().list(undefined, { throw: false }), undefined)
+    assert(fired < hook.unexpected)
+  })
+
+  test('validate', async (t) => {
+    if (null == (config as any).feature?.validate) {
+      t.skip('feature not present in this SDK: validate')
+      return
+    }
+    const client = FakeStoreSDK.test(undefined, { feature: { validate: { active: true } } })
+    await assert.rejects(client.Cart().list({"id":"x"} as any),
+      (err: any) => 'validate_failed' === err.code)
+  })
+
+
+
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.FAKE_STORE_TEST_LIVE
@@ -51,7 +109,7 @@ describe('CartEntity', async () => {
     
     const setup = basicSetup()
     if (setup.live) {
-      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"id":{"a":true,"h":"Id","n":"id","r":false,"t":"`$INTEGER`","key$":"id","index$":0},"products":{"a":true,"h":"Products","n":"products","r":false,"t":"`$ARRAY`","key$":"products","index$":1},"userId":{"a":true,"h":"User Id","n":"userId","r":false,"t":"`$INTEGER`","key$":"userId","index$":2}},"id":{"field":"id","name":"id"},"name":"cart","op":{"create":{"input":"data","name":"create","points":[{"a":true,"co":{"id":"POST /carts","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/carts","q":{},"r":{},"s":[{"lit":"carts"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"create"},"list":{"input":"data","name":"list","points":[{"a":true,"co":{"id":"GET /carts","source":"openapi3","version":2},"g":{},"k":"http","m":"GET","o":"/carts","q":{},"r":{},"s":[{"lit":"carts"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"list"},"load":{"input":"data","name":"load","points":[{"a":true,"co":{"id":"GET /carts/{id}","source":"openapi3","version":2},"g":{"params":[{"a":true,"k":"param","n":"id","or":"id","r":true,"t":"`$INTEGER`","index$":0}]},"k":"http","m":"GET","o":"/carts/{id}","q":{"exist":["id"]},"r":{},"s":[{"lit":"carts"},{"var":"id"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"load"},"remove":{"input":"data","name":"remove","points":[{"a":true,"co":{"id":"DELETE /carts/{id}","source":"openapi3","version":2},"g":{"params":[{"a":true,"k":"param","n":"id","or":"id","r":true,"t":"`$INTEGER`","index$":0}]},"k":"http","m":"DELETE","o":"/carts/{id}","q":{"exist":["id"]},"r":{},"s":[{"lit":"carts"},{"var":"id"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"remove"},"update":{"input":"data","name":"update","points":[{"a":true,"co":{"id":"PUT /carts/{id}","source":"openapi3","version":2},"g":{"params":[{"a":true,"k":"param","n":"id","or":"id","r":true,"t":"`$INTEGER`","index$":0}]},"k":"http","m":"PUT","o":"/carts/{id}","q":{"exist":["id"]},"r":{},"s":[{"lit":"carts"},{"var":"id"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"update"}},"relations":{"ancestors":[]},"key$":"cart","name__orig":"cart","Name":"Cart","name_":"cart","name-":"cart","NAME":"CART","index$":0}, {"active":true,"entity":"cart","key$":"BasicCartFlow","kind":"basic","name":"BasicCartFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"cart_ref01"},"m":{},"o":"create","s":[],"v":[],"index$":0},{"a":true,"d":{},"i":{},"m":{},"o":"list","s":[],"v":[{"apply":"ItemExists","def":{"ref":"cart_ref01"}}],"index$":1},{"a":true,"d":{},"i":{"ref":"cart_ref01","srcdatavar":"cart_ref01_data","suffix":"_up0"},"m":{},"o":"update","s":[{"apply":"TextFieldMark","def":{"mark":"Mark01-cart_ref01"}}],"v":[],"index$":2},{"a":true,"d":{},"i":{"ref":"cart_ref01","srcdatavar":"cart_ref01_data","suffix":"_dt0"},"m":{"id":"cart01"},"o":"load","s":[],"v":[{"apply":"TextFieldMark","def":{"mark":"Mark01-cart_ref01"}}],"index$":3},{"a":true,"d":{},"i":{"ref":"cart_ref01","suffix":"_rm0"},"m":{"id":"cart01"},"o":"remove","s":[],"v":[],"index$":4},{"a":true,"d":{},"i":{"suffix":"_rt0"},"m":{},"o":"list","s":[],"v":[{"apply":"ItemNotExists","def":{"ref":"cart_ref01"}}],"index$":5}]}, 'Cart', {"POST /carts":{"protocol":"http","requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"integer","key$":"id"},"userId":{"type":"integer","key$":"userId"},"products":{"type":"array","items":{"type":"object","properties":{"id":{"type":"integer","key$":"id"},"title":{"type":"string","key$":"title"},"price":{"type":"number","format":"float","key$":"price"},"description":{"type":"string","key$":"description"},"category":{"type":"string","key$":"category"},"image":{"type":"string","format":"uri","key$":"image"}},"x-ref":"#/components/schemas/Product"},"key$":"products"}},"x-ref":"#/components/schemas/Cart","index$":1}}}},"parameters":[]},"GET /carts":{"protocol":"http","parameters":[]},"GET /carts/{id}":{"protocol":"http","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"},"index$":0}]},"DELETE /carts/{id}":{"protocol":"http","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"},"index$":0}]},"PUT /carts/{id}":{"protocol":"http","requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"integer","key$":"id"},"userId":{"type":"integer","key$":"userId"},"products":{"type":"array","items":{"type":"object","properties":{"id":{"type":"integer","key$":"id"},"title":{"type":"string","key$":"title"},"price":{"type":"number","format":"float","key$":"price"},"description":{"type":"string","key$":"description"},"category":{"type":"string","key$":"category"},"image":{"type":"string","format":"uri","key$":"image"}},"x-ref":"#/components/schemas/Product"},"key$":"products"}},"x-ref":"#/components/schemas/Cart","index$":1}}}},"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"},"index$":0}]}})
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"id":{"a":true,"h":"Id","n":"id","r":false,"t":"`$INTEGER`","key$":"id","index$":0},"products":{"a":true,"h":"Products","n":"products","r":false,"t":"`$ARRAY`","key$":"products","index$":1},"userId":{"a":true,"h":"User Id","n":"userId","r":false,"t":"`$INTEGER`","key$":"userId","index$":2}},"id":{"field":"id","name":"id"},"name":"cart","op":{"create":{"input":"data","name":"create","points":[{"a":true,"bf":["id","products","userId"],"co":{"id":"POST /carts","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/carts","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"carts"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"create"},"list":{"input":"data","name":"list","points":[{"a":true,"co":{"id":"GET /carts","source":"openapi3","version":2},"g":{},"k":"http","m":"GET","o":"/carts","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"carts"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"list"},"load":{"input":"data","name":"load","points":[{"a":true,"co":{"id":"GET /carts/{id}","source":"openapi3","version":2},"g":{"params":[{"a":true,"k":"param","n":"id","or":"id","r":true,"t":"`$INTEGER`","index$":0}]},"k":"http","m":"GET","o":"/carts/{id}","q":{"exist":["id"]},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"carts"},{"var":"id"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"load"},"remove":{"input":"data","name":"remove","points":[{"a":true,"co":{"id":"DELETE /carts/{id}","source":"openapi3","version":2},"g":{"params":[{"a":true,"k":"param","n":"id","or":"id","r":true,"t":"`$INTEGER`","index$":0}]},"k":"http","m":"DELETE","o":"/carts/{id}","q":{"exist":["id"]},"r":{},"s":[{"lit":"carts"},{"var":"id"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"remove"},"update":{"input":"data","name":"update","points":[{"a":true,"bf":["id","products","userId"],"co":{"id":"PUT /carts/{id}","source":"openapi3","version":2},"g":{"params":[{"a":true,"k":"param","n":"id","or":"id","r":true,"t":"`$INTEGER`","index$":0}]},"k":"http","m":"PUT","o":"/carts/{id}","q":{"exist":["id"]},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"carts"},{"var":"id"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"update"}},"relations":{"ancestors":[]},"key$":"cart","name__orig":"cart","Name":"Cart","name_":"cart","name-":"cart","NAME":"CART","index$":0}, {"active":true,"entity":"cart","key$":"BasicCartFlow","kind":"basic","name":"BasicCartFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"cart_ref01"},"m":{},"o":"create","s":[],"v":[],"index$":0},{"a":true,"d":{},"i":{},"m":{},"o":"list","s":[],"v":[{"apply":"ItemExists","def":{"ref":"cart_ref01"}}],"index$":1},{"a":true,"d":{},"i":{"ref":"cart_ref01","srcdatavar":"cart_ref01_data","suffix":"_up0"},"m":{},"o":"update","s":[{"apply":"TextFieldMark","def":{"mark":"Mark01-cart_ref01"}}],"v":[],"index$":2},{"a":true,"d":{},"i":{"ref":"cart_ref01","srcdatavar":"cart_ref01_data","suffix":"_dt0"},"m":{"id":"cart01"},"o":"load","s":[],"v":[{"apply":"TextFieldMark","def":{"mark":"Mark01-cart_ref01"}}],"index$":3},{"a":true,"d":{},"i":{"ref":"cart_ref01","suffix":"_rm0"},"m":{"id":"cart01"},"o":"remove","s":[],"v":[],"index$":4},{"a":true,"d":{},"i":{"suffix":"_rt0"},"m":{},"o":"list","s":[],"v":[{"apply":"ItemNotExists","def":{"ref":"cart_ref01"}}],"index$":5}]}, 'Cart', {"POST /carts":{"protocol":"http","requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"integer","key$":"id"},"userId":{"type":"integer","key$":"userId"},"products":{"type":"array","items":{"type":"object","properties":{"id":{"type":"integer","key$":"id"},"title":{"type":"string","key$":"title"},"price":{"type":"number","format":"float","key$":"price"},"description":{"type":"string","key$":"description"},"category":{"type":"string","key$":"category"},"image":{"type":"string","format":"uri","key$":"image"}},"x-ref":"#/components/schemas/Product"},"key$":"products"}},"x-ref":"#/components/schemas/Cart","index$":1}}}},"parameters":[]},"GET /carts":{"protocol":"http","parameters":[]},"GET /carts/{id}":{"protocol":"http","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"},"index$":0}]},"DELETE /carts/{id}":{"protocol":"http","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"},"index$":0}]},"PUT /carts/{id}":{"protocol":"http","requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"integer","key$":"id"},"userId":{"type":"integer","key$":"userId"},"products":{"type":"array","items":{"type":"object","properties":{"id":{"type":"integer","key$":"id"},"title":{"type":"string","key$":"title"},"price":{"type":"number","format":"float","key$":"price"},"description":{"type":"string","key$":"description"},"category":{"type":"string","key$":"category"},"image":{"type":"string","format":"uri","key$":"image"}},"x-ref":"#/components/schemas/Product"},"key$":"products"}},"x-ref":"#/components/schemas/Cart","index$":1}}}},"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"},"index$":0}]}}, { strict: LIVE_STRICT, t })
     }
     const client = setup.client
     const struct = setup.struct
@@ -108,6 +166,12 @@ describe('CartEntity', async () => {
 })
 
 
+
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true
 
 function basicSetup(extra?: any) {
   // TODO: fix test def options

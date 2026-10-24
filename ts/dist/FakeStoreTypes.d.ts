@@ -31,7 +31,6 @@ export interface Login {
 }
 export interface LoginCreateData {
     password?: string;
-    token?: string;
     username?: string;
 }
 export interface Product {

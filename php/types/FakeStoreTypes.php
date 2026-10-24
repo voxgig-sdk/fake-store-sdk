@@ -68,7 +68,6 @@ class Login
 class LoginCreateData
 {
     public ?string $password = null;
-    public ?string $token = null;
     public ?string $username = null;
 }
 

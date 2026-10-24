@@ -116,14 +116,10 @@ Login = Struct.new(
 # @!attribute [rw] password
 #   @return [String, nil]
 #
-# @!attribute [rw] token
-#   @return [String, nil]
-#
 # @!attribute [rw] username
 #   @return [String, nil]
 LoginCreateData = Struct.new(
   :password,
-  :token,
   :username,
   keyword_init: true
 )

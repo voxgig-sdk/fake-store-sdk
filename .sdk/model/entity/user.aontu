@@ -42,6 +42,12 @@ main: kit: entity: user: {
       name: "create"
       points: [
         {
+          bf: [
+            "email"
+            "id"
+            "password"
+            "username"
+          ]
           co: {
             id: "POST /users"
             source: "openapi3"
@@ -49,6 +55,10 @@ main: kit: entity: user: {
           }
           m: "POST"
           o: "/users"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "users"
@@ -72,6 +82,10 @@ main: kit: entity: user: {
           }
           m: "GET"
           o: "/users"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "users"
@@ -110,6 +124,10 @@ main: kit: entity: user: {
             exist: [
               "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -172,6 +190,12 @@ main: kit: entity: user: {
       name: "update"
       points: [
         {
+          bf: [
+            "email"
+            "id"
+            "password"
+            "username"
+          ]
           co: {
             id: "PUT /users/{id}"
             source: "openapi3"
@@ -194,6 +218,10 @@ main: kit: entity: user: {
             exist: [
               "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

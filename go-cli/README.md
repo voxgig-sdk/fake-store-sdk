@@ -23,7 +23,7 @@ export FAKE_STORE_APIKEY=sk_live_xxx
 ./fake-store-cli load 1 cart            # {id:1} shorthand
 ./fake-store-cli load '{id:1}' cart       # explicit match map
 ./fake-store-cli update '{name:"x"}' cart
-./fake-store-cli list login
+./fake-store-cli list product
 
 # 5. Override the API base URL for a single call
 FAKE_STORE_BASE=https://api.example.com ./fake-store-cli list cart

@@ -54,7 +54,6 @@ type Login struct {
 // LoginCreateData is the typed request payload for Login.CreateTyped.
 type LoginCreateData struct {
 	Password *string `json:"password,omitempty"`
-	Token *string `json:"token,omitempty"`
 	Username *string `json:"username,omitempty"`
 }
 

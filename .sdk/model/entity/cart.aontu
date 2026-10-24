@@ -36,6 +36,11 @@ main: kit: entity: cart: {
       name: "create"
       points: [
         {
+          bf: [
+            "id"
+            "products"
+            "userId"
+          ]
           co: {
             id: "POST /carts"
             source: "openapi3"
@@ -43,6 +48,10 @@ main: kit: entity: cart: {
           }
           m: "POST"
           o: "/carts"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "carts"
@@ -66,6 +75,10 @@ main: kit: entity: cart: {
           }
           m: "GET"
           o: "/carts"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "carts"
@@ -104,6 +117,10 @@ main: kit: entity: cart: {
             exist: [
               "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -166,6 +183,11 @@ main: kit: entity: cart: {
       name: "update"
       points: [
         {
+          bf: [
+            "id"
+            "products"
+            "userId"
+          ]
           co: {
             id: "PUT /carts/{id}"
             source: "openapi3"
@@ -188,6 +210,10 @@ main: kit: entity: cart: {
             exist: [
               "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

@@ -56,6 +56,14 @@ main: kit: entity: product: {
       name: "create"
       points: [
         {
+          bf: [
+            "category"
+            "description"
+            "id"
+            "image"
+            "price"
+            "title"
+          ]
           co: {
             id: "POST /products"
             source: "openapi3"
@@ -63,6 +71,10 @@ main: kit: entity: product: {
           }
           m: "POST"
           o: "/products"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "products"
@@ -86,6 +98,10 @@ main: kit: entity: product: {
           }
           m: "GET"
           o: "/products"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "products"
@@ -124,6 +140,10 @@ main: kit: entity: product: {
             exist: [
               "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -186,6 +206,14 @@ main: kit: entity: product: {
       name: "update"
       points: [
         {
+          bf: [
+            "category"
+            "description"
+            "id"
+            "image"
+            "price"
+            "title"
+          ]
           co: {
             id: "PUT /products/{id}"
             source: "openapi3"
@@ -208,6 +236,10 @@ main: kit: entity: product: {
             exist: [
               "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

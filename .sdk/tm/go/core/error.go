@@ -12,6 +12,8 @@ type FakeStoreError struct {
 	Ctx    *Context `json:"-"`
 	Result any
 	Spec   any
+	// The HTTP status, -1 when there was no response.
+	Status int
 }
 
 func NewFakeStoreError(code string, msg string, ctx *Context) *FakeStoreError {
@@ -21,7 +23,12 @@ func NewFakeStoreError(code string, msg string, ctx *Context) *FakeStoreError {
 		Code:               code,
 		Msg:                msg,
 		Ctx:                ctx,
+		Status:             -1,
 	}
+}
+
+func (e *FakeStoreError) NotFound() bool {
+	return 404 == e.Status
 }
 
 func (e *FakeStoreError) Error() string {
@@ -35,6 +42,7 @@ func (e *FakeStoreError) Record() map[string]any {
 		"sdk":     e.Sdk,
 		"code":    e.Code,
 		"message": e.Msg,
+		"status":  e.Status,
 		"result":  e.Result,
 		"spec":    e.Spec,
 	}

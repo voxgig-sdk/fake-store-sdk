@@ -39,7 +39,6 @@
 
 ---@class LoginCreateData
 ---@field password? string
----@field token? string
 ---@field username? string
 
 ---@class Product
